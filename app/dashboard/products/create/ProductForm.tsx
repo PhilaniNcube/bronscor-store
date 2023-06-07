@@ -1,5 +1,6 @@
 "use client"
 import { useSupabase } from "@/Providers/SupabaseProvider";
+import Image from 'next/image'
 import {
   Form,
   FormControl,
@@ -20,10 +21,12 @@ import { Button } from "@/components/ui/button";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Database } from "@/schema";
 import { Trash2Icon } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+import { cn } from "@/lib/utils";
 
 
 const ProductSchema = z.object({
@@ -67,7 +70,46 @@ type Props = {
   brands: Database["public"]["Tables"]["brands"]["Row"][];
 }
 
+const STORAGE_URL = "https://yzyjttocciydqnybhqne.supabase.co/storage/v1/object/public/products/"
+
 const ProductForm = ({brands, categories}:Props) => {
+
+const router = useRouter();
+
+const [image, setImage] = useState('/images/placeholder-image.png')
+
+const [loading, setLoading] = useState(false)
+
+const {supabase} = useSupabase()
+
+
+const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  setLoading(true)
+
+  if(!e.target.files) {
+    alert('Please select an image to upload')
+    return
+  }
+  const file = e.target.files[0]
+
+  const { data, error } = await supabase.storage
+    .from("products")
+    .upload(uuidv4(), file);
+
+  if(error) {
+    alert('Error uploading image' + error.message);
+     setLoading(false);
+    return
+  } else {
+    setImage(`${STORAGE_URL}${data.path}`);
+     setLoading(false);
+  }
+
+  setLoading(false);
+
+};
+
+
 
     const {
       register,
@@ -78,8 +120,8 @@ const ProductForm = ({brands, categories}:Props) => {
       resolver: zodResolver(ProductSchema),
     });
 
-  const {supabase} = useSupabase()
-  const router = useRouter();
+
+
 
   const [details, setDetails] = useState([
     {
@@ -101,239 +143,286 @@ const ProductForm = ({brands, categories}:Props) => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
-    >
-      <div className="w-full flex space-x-4">
-        <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
-          <Label htmlFor="name">Product Name</Label>
-          <Input
-            type="text"
-            id="name"
-            {...register("name")}
-            placeholder="Enter product name"
-            className="border border-neutral-300 bg-white"
-          />
-          {errors.name && (
-            <p className="text-xs text-red-600 ">{errors.name.message}</p>
-          )}
-        </div>{" "}
-        <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
-          <Label htmlFor="item_id">Product ID/SKU</Label>
-          <Input
-            type="text"
-            id="item_id"
-            {...register("item_id")}
-            placeholder="Enter product id or sku"
-            className="border border-neutral-300 bg-white"
-          />
-          {errors.short_description && (
-            <p className="text-xs text-red-600 ">
-              {errors.short_description.message}
-            </p>
-          )}
-        </div>
-      </div>
+    <div className="w-full flex gap-6 justify-between">
+      <div className="w-full p-4 bg-slate-300 rounded-lg">
+        <h1 className="text-3xl font-semibold text-black">
+          Create New Product
+        </h1>
+        <Separator className="w-full my-4 text-bronscor" />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
+        >
+          <div className="w-full flex space-x-4">
+            <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
+              <Label htmlFor="name">Product Name</Label>
+              <Input
+                type="text"
+                id="name"
+                {...register("name")}
+                placeholder="Enter product name"
+                className="border border-neutral-300 bg-white"
+              />
+              {errors.name && (
+                <p className="text-xs text-red-600 ">{errors.name.message}</p>
+              )}
+            </div>{" "}
+            <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
+              <Label htmlFor="item_id">Product ID/SKU</Label>
+              <Input
+                type="text"
+                id="item_id"
+                {...register("item_id")}
+                placeholder="Enter product id or sku"
+                className="border border-neutral-300 bg-white"
+              />
+              {errors.short_description && (
+                <p className="text-xs text-red-600 ">
+                  {errors.short_description.message}
+                </p>
+              )}
+            </div>
+          </div>
 
-      <div className="w-full flex flex-col  space-y-1 relative mt-4">
-        <Label htmlFor="short_description">Short Description</Label>
-        <Input
-          type="text"
-          id="short_description"
-          {...register("short_description")}
-          placeholder="Enter short description"
-          className="border border-neutral-300 bg-white"
-        />
-        {errors.short_description && (
-          <p className="text-xs text-red-600 ">
-            {errors.short_description.message}
-          </p>
-        )}
-      </div>
-      <div className="w-full flex flex-col  space-y-1 relative mt-4">
-        <Label htmlFor="description">Description</Label>
-        <Textarea
-          id="description"
-          {...register("description")}
-          placeholder="Enter product description"
-          className="border border-neutral-300 bg-white"
-        />
-        {errors.description && (
-          <p className="text-xs text-red-600 ">{errors.description.message}</p>
-        )}
-      </div>
-      <div className="w-full gap-3 flex relative mt-4">
-        <div className="w-1/4">
-          <Label htmlFor="width" className="text-xs">
-            Width(cm)
-          </Label>
-          <Input
-            id="width"
-            {...register("dimensions.width")}
-            className="border border-neutral-300 bg-white"
-          />
-        </div>
-        <div className="w-1/4">
-          <Label htmlFor="height" className="text-xs">
-            Height(cm)
-          </Label>
-          <Input
-            id="height"
-            {...register("dimensions.height")}
-            className="border border-neutral-300 bg-white"
-          />
-        </div>
-        <div className="w-1/4">
-          <Label htmlFor="depth" className="text-xs">
-            Depth(cm)
-          </Label>
-          <Input
-            id="depth"
-            {...register("dimensions.depth")}
-            className="border border-neutral-300 bg-white"
-          />
-        </div>
-        <div className="w-1/4">
-          <Label htmlFor="weight" className="text-xs">
-            Weight(grams)
-          </Label>
-          <Input
-            id="weight"
-            {...register("dimensions.weight")}
-            className="border border-neutral-300 bg-white"
-          />
-        </div>
-      </div>
+          <div className="w-full flex flex-col  space-y-1 relative mt-4">
+            <Label htmlFor="short_description">Short Description</Label>
+            <Input
+              type="text"
+              id="short_description"
+              {...register("short_description")}
+              placeholder="Enter short description"
+              className="border border-neutral-300 bg-white"
+            />
+            {errors.short_description && (
+              <p className="text-xs text-red-600 ">
+                {errors.short_description.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full flex flex-col  space-y-1 relative mt-4">
+            <Label htmlFor="description">Description</Label>
+            <Textarea
+              id="description"
+              {...register("description")}
+              placeholder="Enter product description"
+              className="border border-neutral-300 bg-white"
+            />
+            {errors.description && (
+              <p className="text-xs text-red-600 ">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+          <div className="w-full gap-3 flex relative mt-4">
+            <div className="w-1/4">
+              <Label htmlFor="width" className="text-xs">
+                Width(cm)
+              </Label>
+              <Input
+                id="width"
+                {...register("dimensions.width")}
+                className="border border-neutral-300 bg-white"
+              />
+            </div>
+            <div className="w-1/4">
+              <Label htmlFor="height" className="text-xs">
+                Height(cm)
+              </Label>
+              <Input
+                id="height"
+                {...register("dimensions.height")}
+                className="border border-neutral-300 bg-white"
+              />
+            </div>
+            <div className="w-1/4">
+              <Label htmlFor="depth" className="text-xs">
+                Depth(cm)
+              </Label>
+              <Input
+                id="depth"
+                {...register("dimensions.depth")}
+                className="border border-neutral-300 bg-white"
+              />
+            </div>
+            <div className="w-1/4">
+              <Label htmlFor="weight" className="text-xs">
+                Weight(grams)
+              </Label>
+              <Input
+                id="weight"
+                {...register("dimensions.weight")}
+                className="border border-neutral-300 bg-white"
+              />
+            </div>
+          </div>
 
-      <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
+          <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
 
-      <div className="w-full flex flex-col space-y-3 my-4">
-        <h3 className="my-3 text-neutral-800 font-medium">
-          Add Product Attributes
-        </h3>
+          <div className="w-full flex flex-col space-y-3 my-4">
+            <h3 className="my-3 text-neutral-800 font-medium">
+              Add Product Attributes
+            </h3>
 
-        <Label htmlFor="details">Product Details</Label>
-        <div className="flex flex-col space-y-3 ">
-          {fields.map((field, index) => {
-            return (
-              <div key={field.id} className="flex items-center space-x-4">
-                <Input
-                  type="text"
-                  {...register(`details.${index}.key`)}
-                  placeholder="Enter detail name e.g. Colour"
-                  className="border border-neutral-300 bg-white"
-                />
-                <Input
-                  type="text"
-                  {...register(`details.${index}.value`)}
-                  placeholder="Enter detail value e.g. Black"
-                  className="border border-neutral-300 bg-white"
-                />
-                <Button
-                  type="button"
-                  variant="destructive"
-                  onClick={() => remove(index)}
-                  className="flex space-x-2"
-                >
-                  <Trash2Icon className="w-4 h-4" />
-                </Button>
+            <Label htmlFor="details">Product Details</Label>
+            <div className="flex flex-col space-y-3 ">
+              {fields.map((field, index) => {
+                return (
+                  <div key={field.id} className="flex items-center space-x-4">
+                    <Input
+                      type="text"
+                      {...register(`details.${index}.key`)}
+                      placeholder="Enter detail name e.g. Colour"
+                      className="border border-neutral-300 bg-white"
+                    />
+                    <Input
+                      type="text"
+                      {...register(`details.${index}.value`)}
+                      placeholder="Enter detail value e.g. Black"
+                      className="border border-neutral-300 bg-white"
+                    />
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      onClick={() => remove(index)}
+                      className="flex space-x-2"
+                    >
+                      <Trash2Icon className="w-4 h-4" />
+                    </Button>
+                  </div>
+                );
+              })}
+              {errors.details && (
+                <p className="text-xs text-red-600 ">
+                  {errors.details.message} for details
+                </p>
+              )}
+              <Button
+                type="button"
+                onClick={() => append({ key: "", value: "" })}
+                className="mt-4 w-fit px-4"
+              >
+                Add Detail
+              </Button>
+            </div>
+          </div>
+
+          <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
+
+          <div className="mt-4 w-full ">
+            <RadioGroup className="my-3 relative" {...register("brand_id")}>
+              <Label className="text-lg">Select A Brand</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {brands.map((brand) => (
+                  <div key={brand.id} className="flex items-center space-x-2">
+                    <RadioGroupItem
+                      {...register("brand_id")}
+                      id={brand.name}
+                      value={String(brand.id)}
+                    />
+                    <Label htmlFor={String(brand.name)} className="text-xs">
+                      {brand.name}
+                    </Label>
+                  </div>
+                ))}
               </div>
-            );
-          })}
-          {errors.details && (
-            <p className="text-xs text-red-600 ">
-              {errors.details.message} for details
-            </p>
-          )}
-          <Button
-            type="button"
-            onClick={() => append({ key: "", value: "" })}
-            className="mt-4 w-fit px-4"
-          >
-            Add Detail
+              {errors.brand_id && (
+                <p className="text-xs text-red-600 ">
+                  {errors.brand_id.message}
+                </p>
+              )}
+            </RadioGroup>
+          </div>
+
+          <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
+
+          <div className="mt-4 w-full ">
+            <RadioGroup className="my-3 relative" {...register("category_id")}>
+              <Label className="text-lg">Select A Category</Label>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categories.map((category) => (
+                  <div
+                    key={category.id}
+                    className="flex items-center space-x-2"
+                  >
+                    <RadioGroupItem
+                      {...register("category_id")}
+                      id={category.name}
+                      value={String(category.id)}
+                    />
+                    <Label htmlFor={String(category.name)} className="text-xs">
+                      {category.name}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+              {errors.category_id && (
+                <p className="text-xs text-red-600 ">
+                  {errors.category_id.message}
+                </p>
+              )}
+            </RadioGroup>
+          </div>
+
+          <Separator className="my-4 text-neutral-700 border border-neutral-300" />
+          <div className="flex justify-start items-center space-x-6">
+            <div className=" flex items-center space-x-2 ">
+              <Switch id="featured" {...register("featured")} />
+              <Label htmlFor="featured">Featured</Label>
+
+              {errors.featured && (
+                <p className="text-xs text-red-600 ">
+                  {errors.featured.message}
+                </p>
+              )}
+            </div>
+            <div className=" flex items-center space-x-2 ">
+              <Switch id="in_stock" {...register("in_stock")} />
+              <Label htmlFor="in_stock">In Stock</Label>
+
+              {errors.in_stock && (
+                <p className="text-xs text-red-600 ">
+                  {errors.in_stock.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <Separator className="my-4 text-neutral-700 border border-neutral-300" />
+
+          <Button type="submit" className="flex w-full">
+            Save Product
           </Button>
+        </form>
+      </div>
+      <div className="w-1/3 bg-slate-100 border border-slate-400 rounded-lg">
+        <div className="p-4 mb-5">
+          <Label
+            htmlFor="image"
+            className="text-neutral-800 text-lg font-medium"
+          >
+            Upload Product Image
+          </Label>
+          <Input
+            onChange={handleUpload}
+            type="file"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
+            className="bg-white"
+          />
+        </div>
+        <div className="flex flex-col items-center justify-center space-y-3 px-3">
+          <Image
+            src={image}
+            width="500"
+            height="500"
+            className={cn(
+              "w-full object-cover rounded-lg border border-slate-200",
+              loading && 'animate-pulse'
+            )}
+            alt="Product Image"
+          />
         </div>
       </div>
-
-      <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
-
-      <div className="mt-4 w-full ">
-        <RadioGroup className="my-3 relative" {...register("brand_id")}>
-          <Label className="text-lg">Select A Brand</Label>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {brands.map((brand) => (
-              <div key={brand.id} className="flex items-center space-x-2">
-                <RadioGroupItem
-                  {...register("brand_id")}
-                  id={brand.name}
-                  value={String(brand.id)}
-                />
-                <Label htmlFor={String(brand.name)} className="text-xs">
-                  {brand.name}
-                </Label>
-              </div>
-            ))}
-          </div>
-          {errors.brand_id && (
-            <p className="text-xs text-red-600 ">{errors.brand_id.message}</p>
-          )}
-        </RadioGroup>
-      </div>
-
-      <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
-
-      <div className="mt-4 w-full ">
-        <RadioGroup className="my-3 relative" {...register("category_id")}>
-          <Label className="text-lg">Select A Category</Label>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {categories.map((category) => (
-              <div key={category.id} className="flex items-center space-x-2">
-                <RadioGroupItem
-                  {...register("category_id")}
-                  id={category.name}
-                  value={String(category.id)}
-                />
-                <Label htmlFor={String(category.name)} className="text-xs">
-                  {category.name}
-                </Label>
-              </div>
-            ))}
-          </div>
-          {errors.category_id && (
-            <p className="text-xs text-red-600 ">
-              {errors.category_id.message}
-            </p>
-          )}
-        </RadioGroup>
-      </div>
-
-      <Separator className="my-4 text-neutral-700 border border-neutral-300" />
-      <div className="flex justify-start items-center space-x-6">
-        <div className=" flex items-center space-x-2 ">
-          <Switch id="featured" {...register("featured")} />
-          <Label htmlFor="featured">Featured</Label>
-
-          {errors.featured && (
-            <p className="text-xs text-red-600 ">{errors.featured.message}</p>
-          )}
-        </div>
-        <div className=" flex items-center space-x-2 ">
-          <Switch id="in_stock" {...register("in_stock")} />
-          <Label htmlFor="in_stock">In Stock</Label>
-
-          {errors.in_stock && (
-            <p className="text-xs text-red-600 ">{errors.in_stock.message}</p>
-          )}
-        </div>
-      </div>
-
-      <Separator className="my-4 text-neutral-700 border border-neutral-300" />
-
-      <Button type="submit" className="flex w-full">
-        Save Product
-      </Button>
-    </form>
+    </div>
   );
 };
 export default ProductForm;
