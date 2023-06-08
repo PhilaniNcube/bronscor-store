@@ -228,9 +228,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               className="border border-neutral-300 bg-white"
             />
             {errors.price && (
-              <p className="text-xs text-red-600 ">
-                {errors.price.message}
-              </p>
+              <p className="text-xs text-red-600 ">{errors.price.message}</p>
             )}
           </div>
           <div className="w-full flex flex-col  space-y-1 relative mt-4">
@@ -360,19 +358,20 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
           </div>
           <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
           <div className="mt-4 w-full ">
-            <RadioGroup className="my-3 relative" {...register("brand_id")}>
+            <fieldset className="my-3 relative" {...register("brand_id")}>
               <Label className="text-lg">Select A Brand</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
                 {brands.map((brand) => (
                   <div key={brand.id} className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      {...register("brand_id")}
+                    <input
+                      type="radio"
                       id={brand.name}
+                      {...register("brand_id")}
                       value={String(brand.id)}
                     />
-                    <Label htmlFor={String(brand.name)} className="text-xs">
+                    <label htmlFor={brand.name} className="text-xs">
                       {brand.name}
-                    </Label>
+                    </label>
                   </div>
                 ))}
               </div>
@@ -381,24 +380,28 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                   {errors.brand_id.message}
                 </p>
               )}
-            </RadioGroup>
+            </fieldset>
           </div>
           <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
           <div className="mt-4 w-full ">
-            <RadioGroup className="my-3 relative" {...register("category_id")}>
+            <fieldset
+              className="my-3 relative"
+              {...register("category_id")}
+            >
               <Label className="text-lg">Select A Category</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
                 {categories.map((category) => (
                   <div
                     key={category.id}
                     className="flex items-center space-x-2"
                   >
-                    <RadioGroupItem
+                    <input
+                      type="radio"
+                      id={String(category.id)}
                       {...register("category_id")}
-                      id={category.name}
                       value={String(category.id)}
                     />
-                    <Label htmlFor={String(category.name)} className="text-xs">
+                    <Label htmlFor={String(category.id)} className="text-xs">
                       {category.name}
                     </Label>
                   </div>
@@ -409,7 +412,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                   {errors.category_id.message}
                 </p>
               )}
-            </RadioGroup>
+            </fieldset>
           </div>
           <Separator className="my-4 text-neutral-700 border border-neutral-300" />
           <Separator className="my-4 text-neutral-700 border border-neutral-300" />

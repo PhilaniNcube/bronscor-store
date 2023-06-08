@@ -193,7 +193,7 @@ console.log({product})
       alert("Error creating product");
       return;
     } else {
-      alert("Product created successfully");
+      alert("Product updated successfully");
       console.log({ updatedProduct });
       router.refresh();
     }
