@@ -1,6 +1,6 @@
-"use client"
+"use client";
 import { useSupabase } from "@/Providers/SupabaseProvider";
-import Image from 'next/image'
+import Image from "next/image";
 import {
   Form,
   FormControl,
@@ -29,7 +29,6 @@ import { v4 as uuidv4 } from "uuid";
 import { cn } from "@/lib/utils";
 import slugify from "slugify";
 
-
 const ProductSchema = z.object({
   name: z
     .string()
@@ -46,10 +45,10 @@ const ProductSchema = z.object({
     .min(3, "Description cannot be shorter than 3 characters")
     .max(100, "Description cannot be longer than 50 characters"),
   dimensions: z.object({
-    width: z.string({required_error: "Width is required"}),
-    height: z.string({required_error: "Height is required"}),
-    depth: z.string({required_error: "Depth is required"}),
-    weight: z.string({required_error: "Weight is required"}),
+    width: z.string({ required_error: "Width is required" }),
+    height: z.string({ required_error: "Height is required" }),
+    depth: z.string({ required_error: "Depth is required" }),
+    weight: z.string({ required_error: "Weight is required" }),
   }),
   brand_id: z.string(),
   category_id: z.string(),
@@ -63,64 +62,76 @@ const ProductSchema = z.object({
 
 type FormProps = z.infer<typeof ProductSchema>;
 
-
 type Props = {
   categories: Database["public"]["Tables"]["categories"]["Row"][];
   brands: Database["public"]["Tables"]["brands"]["Row"][];
-}
-
-const STORAGE_URL = "https://yzyjttocciydqnybhqne.supabase.co/storage/v1/object/public/products/"
-
-const ProductForm = ({brands, categories}:Props) => {
-
-const router = useRouter();
-
-const [image, setImage] = useState('/images/placeholder-image.png')
-
-const [loading, setLoading] = useState(false)
-
-const {supabase} = useSupabase()
-
-
-const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  setLoading(true)
-
-  if(!e.target.files) {
-    alert('Please select an image to upload')
-    return
-  }
-  const file = e.target.files[0]
-
-  const { data, error } = await supabase.storage
-    .from("products")
-    .upload(uuidv4(), file);
-
-  if(error) {
-    alert('Error uploading image' + error.message);
-     setLoading(false);
-    return
-  } else {
-    setImage(`${STORAGE_URL}${data.path}`);
-     setLoading(false);
-  }
-
-  setLoading(false);
-
+  product: Database["public"]["Tables"]["products"]["Row"];
 };
 
+const STORAGE_URL =
+  "https://yzyjttocciydqnybhqne.supabase.co/storage/v1/object/public/products/";
 
+const UpdateProduct = ({ brands, categories, product }: Props) => {
 
-    const {
-      register,
-      control,
-      handleSubmit,
-      formState: { errors },
-    } = useForm<z.infer<typeof ProductSchema>>({
-      resolver: zodResolver(ProductSchema),
-    });
+console.log({product})
 
+  const router = useRouter();
 
+  const [image, setImage] = useState(product.image);
 
+  const [loading, setLoading] = useState(false);
+
+  const { supabase } = useSupabase();
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
+
+    if (!e.target.files) {
+      alert("Please select an image to upload");
+      return;
+    }
+    const file = e.target.files[0];
+
+    const { data, error } = await supabase.storage
+      .from("products")
+      .upload(uuidv4(), file);
+
+    if (error) {
+      alert("Error uploading image" + error.message);
+      setLoading(false);
+      return;
+    } else {
+      setImage(`${STORAGE_URL}${data.path}`);
+      setLoading(false);
+    }
+
+    setLoading(false);
+  };
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof ProductSchema>>({
+    resolver: zodResolver(ProductSchema),
+    defaultValues: {
+      name: product.name,
+      description: product.description,
+      item_id: product.item_id,
+      price: String(product.price),
+      short_description: product.short_description,
+      dimensions: {
+        width: String(product.dimensions?.width),
+        height: String(product.dimensions?.height),
+        depth: String(product.dimensions?.depth),
+        weight: String(product.dimensions?.weight),
+      },
+      brand_id: String(product.brand_id.id),
+      category_id: String(product.category_id.id),
+      details: product.details,
+    }
+  });
 
   const [details, setDetails] = useState([
     {
@@ -129,61 +140,69 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     },
   ]);
 
-   const { fields, append, remove } = useFieldArray({
-     control,
-     name: "details",
-   });
-
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "details",
+  });
 
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
+    console.log({data});
+
+    const {
+      name,
+      description,
+      item_id,
+      price,
+      short_description,
+      dimensions,
+      brand_id,
+      category_id,
+      details,
+    } = data;
 
 
-    console.log(data)
+
+    const slug = slugify(name.toLowerCase());
+
+    const { data: updatedProduct, error } = await supabase
+      .from("products")
+      .update({
+        name,
+        slug,
+        description,
+        item_id,
+        price: +price,
+        short_description,
+        dimensions: {
+          width: +dimensions.width,
+          height: +dimensions.height,
+          depth: +dimensions.depth,
+          weight: +dimensions.weight,
+        },
+        brand_id: +brand_id,
+        category_id: +category_id,
+        details,
+        image,
+      })
+      .eq("id", product.id)
+      .select("*")
+      .single();
 
 
-    const {name, description, item_id, price, short_description, dimensions, brand_id, category_id,  details  } = data
-
-    console.log({name, description, item_id, price, short_description, dimensions, brand_id, category_id, details  })
-
-    const slug = slugify(name)
-
-    const { data: product, error } = await supabase.from("products").insert([{
-    name,
-    slug,
-    description,
-    item_id,
-    price: +price,
-    short_description,
-    dimensions: {
-      width: +dimensions.width,
-      height: +dimensions.height,
-      depth: +dimensions.depth,
-      weight: +dimensions.weight
-    },
-    brand_id: +brand_id,
-    category_id:+category_id,
-    details,
-    image
-    }]).select('*').single()
-
-
-    if(error) {
-      alert('Error creating product')
-      return
+    if (error) {
+      alert("Error creating product");
+      return;
     } else {
-      alert('Product created successfully')
-      console.log(product)
-      router.push(`/dashboard/products/${product?.id}`)
+      alert("Product created successfully");
+      console.log({ updatedProduct });
+      router.refresh();
     }
-
-  }
+  };
 
   return (
     <div className="w-full flex gap-6 justify-between">
       <div className="w-full p-4 bg-slate-300 rounded-lg">
-        <h1 className="text-3xl font-semibold text-black">
-          Create New Product
-        </h1>
+        <h1 className="text-3xl font-semibold text-black">Update Product</h1>
         <Separator className="w-full my-4 text-bronscor" />
         <form
           onSubmit={handleSubmit(onSubmit)}
@@ -228,9 +247,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               className="border border-neutral-300 bg-white"
             />
             {errors.price && (
-              <p className="text-xs text-red-600 ">
-                {errors.price.message}
-              </p>
+              <p className="text-xs text-red-600 ">{errors.price.message}</p>
             )}
           </div>
           <div className="w-full flex flex-col  space-y-1 relative mt-4">
@@ -360,19 +377,20 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
           </div>
           <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
           <div className="mt-4 w-full ">
-            <RadioGroup className="my-3 relative" {...register("brand_id")}>
+            <fieldset className="my-3 relative" {...register("brand_id")} defaultValue={String(product.brand_id.id)}>
               <Label className="text-lg">Select A Brand</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
                 {brands.map((brand) => (
                   <div key={brand.id} className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      {...register("brand_id")}
+                    <input
+                      type="radio"
                       id={brand.name}
+                      {...register("brand_id")}
                       value={String(brand.id)}
                     />
-                    <Label htmlFor={String(brand.name)} className="text-xs">
+                    <label htmlFor={brand.name} className="text-xs">
                       {brand.name}
-                    </Label>
+                    </label>
                   </div>
                 ))}
               </div>
@@ -381,24 +399,25 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                   {errors.brand_id.message}
                 </p>
               )}
-            </RadioGroup>
+            </fieldset>
           </div>
           <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
           <div className="mt-4 w-full ">
-            <RadioGroup className="my-3 relative" {...register("category_id")}>
+            <fieldset className="my-3 relative" {...register("category_id")} defaultValue={String(product.category_id.id)}>
               <Label className="text-lg">Select A Category</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
                 {categories.map((category) => (
                   <div
                     key={category.id}
                     className="flex items-center space-x-2"
                   >
-                    <RadioGroupItem
+                    <input
+                       type="radio"
+                      id={String(category.id)}
                       {...register("category_id")}
-                      id={category.name}
                       value={String(category.id)}
                     />
-                    <Label htmlFor={String(category.name)} className="text-xs">
+                    <Label htmlFor={String(category.id)} className="text-xs">
                       {category.name}
                     </Label>
                   </div>
@@ -409,7 +428,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                   {errors.category_id.message}
                 </p>
               )}
-            </RadioGroup>
+            </fieldset>
           </div>
           <Separator className="my-4 text-neutral-700 border border-neutral-300" />
           <Separator className="my-4 text-neutral-700 border border-neutral-300" />
@@ -449,4 +468,4 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     </div>
   );
 };
-export default ProductForm;
+export default UpdateProduct;

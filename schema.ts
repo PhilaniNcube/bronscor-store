@@ -134,12 +134,27 @@ export interface Database {
           description: string
           item_id: string
           short_description: string
-          demensions: Json
+          dimensions?: {
+            width?: number
+            height?: number
+            depth?: number
+            weight?: number
+          }
           price: number
-          brand_id: number
-          category_id: number
+          brand_id: {
+            id: number
+            name: string
+            slug: string
+            description: string
+            created_at: string
+          }
+          category_id: Database['public']['Tables']['categories']['Row']
           in_stock: boolean
           featured: boolean
+          details: {
+            key: string
+            value: string
+          }[]
         }
         Insert: {
           id?: string
@@ -150,12 +165,21 @@ export interface Database {
           description?: string
           item_id?: string
           short_description?: string
-          demensions?: Json
+                 dimensions?: {
+            width?: number
+            height?: number
+            depth?: number
+            weight?: number
+          }
           price?: number
           brand_id?: number
           category_id?: number
           in_stock?: boolean
           featured?: boolean
+          details?: {
+            key: string
+            value: string
+          }[]
         }
         Update: {
           id?: string
@@ -166,12 +190,21 @@ export interface Database {
           description?: string
           item_id?: string
           short_description?: string
-          demensions?: Json
+          dimensions?: {
+            width?: number
+            height?: number
+            depth?: number
+            weight?: number
+          }
           price?: number
           brand_id?: number
           category_id?: number
           in_stock?: boolean
           featured?: boolean
+          details?: {
+            key: string
+            value: string
+          }[]
         }
       }
       profiles: {
