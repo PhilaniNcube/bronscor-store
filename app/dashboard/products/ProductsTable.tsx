@@ -16,6 +16,7 @@ import { Switch } from "@/components/ui/switch";
 import { useSupabase } from "@/Providers/SupabaseProvider";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/utils";
 
 type ProductsTableProps = {
   products: Database['public']['Tables']['products']['Row'][]
@@ -30,6 +31,7 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
           <TableHead className="">SKU/ID</TableHead>
           <TableHead className="">Brand</TableHead>
           <TableHead className="">Category</TableHead>
+          <TableHead className="">Price</TableHead>
           <TableHead className="">In Stock</TableHead>
           <TableHead className="">Featured</TableHead>
           <TableHead className="">View</TableHead>
@@ -42,6 +44,7 @@ const ProductsTable = ({ products }: ProductsTableProps) => {
             <TableCell>{product.item_id}</TableCell>
             <TableCell>{product.brand_id.name}</TableCell>
             <TableCell>{product.category_id.name}</TableCell>
+            <TableCell>{formatCurrency(product.price)}</TableCell>
             <TableCell>
               <Toggle id={product.id} checked={product.in_stock} attr="in_stock" />
             </TableCell>

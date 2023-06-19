@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Slot } from "@radix-ui/react-slot";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
@@ -241,10 +240,11 @@ console.log({product})
           <div className="w-full flex flex-col  space-y-1 relative mt-4">
             <Label htmlFor="price">Price</Label>
             <Input
-              type="float"
+              type="number"
               id="price"
               {...register("price")}
               className="border border-neutral-300 bg-white"
+              step="any"
             />
             {errors.price && (
               <p className="text-xs text-red-600 ">{errors.price.message}</p>
@@ -318,6 +318,7 @@ console.log({product})
                 Weight(grams)
               </Label>
               <Input
+                type="number"
                 id="weight"
                 {...register("dimensions.weight")}
                 className="border border-neutral-300 bg-white"

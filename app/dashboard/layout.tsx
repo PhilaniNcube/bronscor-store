@@ -25,13 +25,15 @@ const layout = async ({children}:Props) => {
       <aside className="relative isolate">
         <div className="sticky top-0 flex flex-col items-center justify-between h-[calc(100vh-75px)] w-64 bg-black border-t border-white">
           <div className="flex flex-col items-center justify-start space-y-4 py-4 h-full w-full">
-            <Image
-              src="/images/logo.png"
-              width={822}
-              height={303}
-              alt="Bronscor"
-              className="w-3/4 object-cover"
-            />
+            <Link href="/">
+              <Image
+                src="/images/logo.png"
+                width={822}
+                height={303}
+                alt="Bronscor"
+                className="w-3/4 object-cover"
+              />
+            </Link>
             <Separator className="w-full text-bronscor" />
             <div className="flex flex-col px-4 items-center justify-center space-y-4 w-full">
               <Link
@@ -82,7 +84,7 @@ const layout = async ({children}:Props) => {
         </div>
       </aside>
       <main className="flex-1 container h-[calc(100vh-75px)]">
-        <ScrollArea className="py-4 w-full h-[calc(100vh-75px)]">
+        <ScrollArea className="py-4 w-full h-[calc(100vh-75px)] px-4">
           {children}
         </ScrollArea>
       </main>

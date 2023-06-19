@@ -8,3 +8,7 @@ export const supabase = createClientComponentClient<Database>()
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+
+export function formatCurrency(value: number) {
+  return new Intl.NumberFormat('en-ZA', { style: 'currency', currency: 'ZAR' }).format(value)
+}

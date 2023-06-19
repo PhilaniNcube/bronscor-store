@@ -1,4 +1,7 @@
+import { cookies } from "next/headers"
 import { supabase } from "./utils"
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { Database } from "@/schema"
 
   const getUser = async () => {
    const {data, error} = await supabase.auth.getUser()
@@ -8,3 +11,12 @@ import { supabase } from "./utils"
   }
 
   export default getUser
+
+
+  export const getAdmin = async () => {
+
+     const {data:is_admin} = await supabase.rpc("is_admin").single()
+
+      return is_admin
+
+  }

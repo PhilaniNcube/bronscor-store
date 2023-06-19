@@ -104,6 +104,7 @@ export interface Database {
           shipping_address: Json
           payment_method: string
           total_amount: number
+          tracking_number:string | null
         }
         Insert: {
           id: string
@@ -113,6 +114,7 @@ export interface Database {
           shipping_address?: Json
           payment_method?: string
           total_amount?: number
+          tracking_number?:string
         }
         Update: {
           id?: string
@@ -122,6 +124,7 @@ export interface Database {
           shipping_address?: Json
           payment_method?: string
           total_amount?: number
+          tracking_number?:string
         }
       }
       products: {

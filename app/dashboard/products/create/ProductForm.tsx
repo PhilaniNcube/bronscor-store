@@ -1,27 +1,15 @@
 "use client"
 import { useSupabase } from "@/Providers/SupabaseProvider";
 import Image from 'next/image'
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Slot } from "@radix-ui/react-slot";
 import { Button } from "@/components/ui/button";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
-import { ChangeEventHandler, useState } from "react";
+import {  useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Database } from "@/schema";
 import { Trash2Icon } from "lucide-react";
@@ -145,7 +133,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 
     console.log({name, description, item_id, price, short_description, dimensions, brand_id, category_id, details  })
 
-    const slug = slugify(name)
+    const slug = slugify(name.toLowerCase(), {remove: /[*+~.()'"!:@]/g})
 
     const { data: product, error } = await supabase.from("products").insert([{
     name,
@@ -222,8 +210,9 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
           <div className="w-full flex flex-col  space-y-1 relative mt-4">
             <Label htmlFor="price">Price</Label>
             <Input
-              type="float"
+              type="number"
               id="price"
+              step="any"
               {...register("price")}
               className="border border-neutral-300 bg-white"
             />
@@ -299,6 +288,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 Weight(grams)
               </Label>
               <Input
+                type="number"
                 id="weight"
                 {...register("dimensions.weight")}
                 className="border border-neutral-300 bg-white"
@@ -384,10 +374,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
           </div>
           <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
           <div className="mt-4 w-full ">
-            <fieldset
-              className="my-3 relative"
-              {...register("category_id")}
-            >
+            <fieldset className="my-3 relative" {...register("category_id")}>
               <Label className="text-lg">Select A Category</Label>
               <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
                 {categories.map((category) => (

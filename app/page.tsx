@@ -1,9 +1,30 @@
 import Image from 'next/image'
+import { Metadata } from "next";
+import { getFeaturedProducts } from '@/lib/products';
+import HomepageHero from './HomepageHero';
+import FeaturedProducts from './FeaturedProducts';
+import { getCategories } from '@/lib/categories';
+import CategoriesGrid from '@/components/Categories/CategoriesGrid';
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "Bronscor",
+  description:
+    "Suppliers of Special Steels, Castings, 3D Printing Works and Tools & Hardware",
+ assets: ['/images/logo.png']
+};
+
+export default async function Home() {
+
+  const productsData =  getFeaturedProducts()
+  const categoriesData = getCategories()
+
+  const [products, categories] = await Promise.all([productsData, categoriesData])
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-
+    <main className="">
+      <HomepageHero />
+      <FeaturedProducts products={products} />
+      <CategoriesGrid categories={categories} />
     </main>
   )
 }

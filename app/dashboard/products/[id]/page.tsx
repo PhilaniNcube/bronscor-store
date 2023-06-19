@@ -2,6 +2,8 @@ import { getBrands } from "@/lib/brands";
 import { getCategories } from "@/lib/categories";
 import { getProductById } from "@/lib/products";
 import UpdateProduct from "./UpdateProduct";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const page = async ({params: {id}}:{params: {id:string}}) => {
 
@@ -17,7 +19,12 @@ const page = async ({params: {id}}:{params: {id:string}}) => {
   ]);
 
   return (
-    <div>
+    <div className="w-full">
+      <div className="flex justify-start mb-4">
+        <Link href="/dashboard/products">
+          <Button className="bg-bronscor text-black hover:bg-bronscor/80">Back to Products</Button>
+        </Link>
+      </div>
       <UpdateProduct categories={categories} brands={brands} product={product} />
     </div>
   );
