@@ -12,14 +12,15 @@ import { ArrowLeft, MinusSquare, PlusSquare } from "lucide-react";
 import { LucideTrash } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import SignIn from "@/components/Modals/SignIn";
+import { Database } from "@/schema";
 
 type ComponentProps = {
-  user: User | null
+  user: Database["public"]["Tables"]["profiles"]["Row"] | null;
 }
 
 const CartDetails = ({user}:ComponentProps) => {
 
-  console.log('Cart Page',user)
+  console.log('Cart Page',{user})
 
   const { supabase } = useSupabase();
   const router = useRouter();
@@ -98,7 +99,7 @@ const CartDetails = ({user}:ComponentProps) => {
         </div>
 
         <div className="w-full">
-          {user === null || user === undefined ? (<div className="flex justify-center w-full py-4 bg-black rounded-md"><SignIn /></div>) : (
+          {user === null || typeof user === "undefined" ? (<div className="flex justify-center w-full py-4 bg-black rounded-md"><SignIn /></div>) : (
             <div className="flex flex-col items-start w-full space-y-4">
               <h2 className="text-xl font-bold">Order Summary</h2>
             </div>

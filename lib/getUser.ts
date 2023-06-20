@@ -20,3 +20,19 @@ import { Database } from "@/schema"
       return is_admin
 
   }
+
+
+  export const getProfile = async () => {
+
+   const supabase = createServerComponentClient<Database>({cookies})
+
+    const {data:profile, error} = await supabase.from("profiles").select('*').single()
+
+    if (error) {
+     console.error(error)
+     return null
+    }
+
+    return profile
+
+  }
