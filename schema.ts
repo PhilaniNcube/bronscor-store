@@ -243,3 +243,8 @@ export interface Database {
   }
 }
 
+
+export interface CartItem {
+  product: Database['public']['Tables']['products']['Row']
+  quantity: number
+}

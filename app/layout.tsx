@@ -8,6 +8,7 @@ import { cookies } from 'next/headers'
 import { getCategories } from '@/lib/categories'
 import { Metadata } from "next";
 import Footer from './Footer'
+import CartProvider from '@/components/Providers/CartProvider'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -48,9 +49,11 @@ const UserData =  supabase.auth.getUser();
     <html lang="en">
       <body className={inter.className}>
         <SupabaseProvider>
-          <Navbar user={user} categories={categories}  />
-          {children}
-          <Footer categories={categories} />
+          <CartProvider>
+            <Navbar user={user} categories={categories} />
+            {children}
+            <Footer categories={categories} />
+          </CartProvider>
         </SupabaseProvider>
       </body>
     </html>

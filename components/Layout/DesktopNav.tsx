@@ -19,6 +19,9 @@ import { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
 import SignIn from "../Modals/SignIn";
 import { Database } from "@/schema";
+import { useAppDispatch } from "@/app/store/store";
+import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
+import { useSelector } from "react-redux";
 
 type Props = {
   user: User | null;
@@ -30,6 +33,8 @@ type Props = {
 
 const DesktopNav = ({user, categories}:Props) => {
 
+  const qty = useSelector(totalCartItemsSelector);
+
 const {supabase } = useSupabase();
 const signOut = async () => {
  const data = await supabase.auth.signOut();
@@ -37,14 +42,14 @@ const signOut = async () => {
 }
 
   return (
-    <div className="hidden md:flex justify-between items-center">
+    <div className="items-center justify-between hidden md:flex">
       <Link href="/">
         <Image
           src="/images/logo.png"
           width={822}
           height={303}
           alt="Bronscor"
-          className="w-40 object-cover py-2"
+          className="object-cover w-40 py-2"
         />
       </Link>
       <div>
@@ -52,7 +57,7 @@ const signOut = async () => {
           <NavigationMenuList>
             {/* <NavigationMenuItem>
               <Link href="/products" legacyBehavior passHref>
-                <NavigationMenuLink className="bg-black  text-bronscor">
+                <NavigationMenuLink className="bg-black text-bronscor">
                   Products
                 </NavigationMenuLink>
               </Link>
@@ -71,7 +76,7 @@ const signOut = async () => {
                         legacyBehavior
                         passHref
                       >
-                        <NavigationMenuLink className="hover:text-bronscor px-3 py-2 rounded hover:bg-slate-100 text-sm">
+                        <NavigationMenuLink className="px-3 py-2 text-sm rounded hover:text-bronscor hover:bg-slate-100">
                           {category.name}
                         </NavigationMenuLink>
                       </Link>
@@ -82,7 +87,7 @@ const signOut = async () => {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Link href="/steel" legacyBehavior passHref>
-                <NavigationMenuLink className="bg-black  text-bronscor">
+                <NavigationMenuLink className="bg-black text-bronscor">
                   Steel
                 </NavigationMenuLink>
               </Link>
@@ -94,7 +99,7 @@ const signOut = async () => {
         {user ? (
           <div className="flex items-center space-x-4">
             <Link href="/account">
-              <UserIcon className="text-bronscor border rounded-full border-bronscor" />
+              <UserIcon className="border rounded-full text-bronscor border-bronscor" />
             </Link>
             <Button
               onClick={() => {
@@ -114,8 +119,9 @@ const signOut = async () => {
           </>
         )}
 
-        <Link href="/cart">
-          <ShoppingBag />
+        <Link href="/cart" className="relative">
+          <ShoppingBag className="text-bronscor" />
+          {qty > 0 && (<span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-600 rounded-full -top-2 -right-2">{qty}</span>)}
         </Link>
       </div>
     </div>
