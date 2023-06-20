@@ -18,6 +18,20 @@ const ProductDetails = ({product}:ComponentProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
+  const keyStr =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+  const triplet = (e1: number, e2: number, e3: number) =>
+    keyStr.charAt(e1 >> 2) +
+    keyStr.charAt(((e1 & 3) << 4) | (e2 >> 4)) +
+    keyStr.charAt(((e2 & 15) << 2) | (e3 >> 6)) +
+    keyStr.charAt(e3 & 63);
+
+  const rgbDataURL = (r: number, g: number, b: number) =>
+    `data:image/gif;base64,R0lGODlhAQABAPAA${
+      triplet(0, r, g) + triplet(b, 255, 255)
+    }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`;
+
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
       <div className="p-2 rounded-lg md:p-4 overflow-clip">
@@ -25,6 +39,8 @@ const ProductDetails = ({product}:ComponentProps) => {
           src={product.image}
           width={500}
           height={500}
+          placeholder="blur"
+          blurDataURL={rgbDataURL(255, 255, 255)}
           quality={100}
           alt={product.name}
           className="object-cover w-full"
@@ -38,6 +54,21 @@ const ProductDetails = ({product}:ComponentProps) => {
           {formatCurrency(product.price)}
         </h1>
         <p className="mt-3 text-md text-slate-600">{product.description}</p>
+        <Button
+          type="button"
+          className="w-full mt-6 text-white bg-black hover:text-bronscor"
+          onClick={() => {
+            console.log("add to cart");
+            dispatch(
+              addToCart({
+                product: product,
+                quantity: 1,
+              })
+            );
+          }}
+        >
+          Add To Cart
+        </Button>
         <Separator className="my-4" />
         <p className="text-xl font-medium">Product Details</p>
         <div className="w-full mt-2">
@@ -81,22 +112,6 @@ const ProductDetails = ({product}:ComponentProps) => {
             </p>
           </div>
         </div>
-
-        <Button
-          type="button"
-          className="w-full mt-6 text-white bg-black hover:text-bronscor"
-          onClick={() =>  {
-            console.log('add to cart');
-             dispatch(
-              addToCart({
-                product: product,
-                quantity: 1,
-              })
-            );
-          }}
-        >
-          Add To Cart
-        </Button>
       </div>
     </div>
   );

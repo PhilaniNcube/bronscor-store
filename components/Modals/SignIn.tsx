@@ -27,6 +27,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { FormEvent } from "react";
 import { supabase } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
 
@@ -42,6 +43,8 @@ const SignIn = () => {
     resolver: zodResolver(FormSchema),
   });
 
+  const router = useRouter();
+
   const onSubmit = async (data: any) => {
     const { first_name, last_name, password, email } = data;
 
@@ -49,6 +52,12 @@ const SignIn = () => {
       email,
       password,
     });
+
+    if (error) {
+      alert(`Error login in: ${error.message}`);
+    }
+
+    router.refresh()
   };
 
   return (
@@ -70,7 +79,7 @@ const SignIn = () => {
           <form onSubmit={form.handleSubmit(onSubmit)}>
 
 
-            <div className="flex flex-col items-start space-y-2 py-4">
+            <div className="flex flex-col items-start py-4 space-y-2">
               <FormField
                 control={form.control}
                 name="email"
@@ -88,7 +97,7 @@ const SignIn = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
+            <div className="flex flex-col items-start py-4 space-y-2">
               <FormField
                 control={form.control}
                 name="password"
@@ -110,9 +119,9 @@ const SignIn = () => {
                 )}
               />
             </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
+            <div className="flex flex-col items-start py-4 space-y-2">
               <Button
-                className="w-full bg-bronscor text-black hover:bg-bronscor/80"
+                className="w-full text-black bg-bronscor hover:bg-bronscor/80"
                 type="submit"
               >
                 Sign In
