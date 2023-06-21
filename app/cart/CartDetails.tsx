@@ -13,6 +13,55 @@ import { LucideTrash } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import SignIn from "@/components/Modals/SignIn";
 import { Database } from "@/schema";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import * as z from "zod"
+import {useForm} from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+
+const provinces = [
+  "Eastern Cape",
+  "Free State",
+  "Gauteng",
+  "KwaZulu-Natal",
+  "Limpopo",
+  "North West",
+  "Northern Cape",
+  "Mpumalanga",
+  "Western Cape",
+] as const;
+
+const formSchema = z.object({
+  street_address: z.string().min(2).max(50),
+  company: z.string().nullable(),
+  type: z.enum(["business", "residential", "school"]),
+  local_area: z.string(),
+  city: z.string(),
+  zone: z.enum(provinces),
+  country: z.string(),
+  code: z.string(),
+  phone: z
+    .string()
+    .min(10, { message: "Phone number must be 10 digits" })
+    .max(10, { message: "Phone number must be 10 digits" }),
+});
 
 type ComponentProps = {
   user: Database["public"]["Tables"]["profiles"]["Row"] | null;
@@ -20,7 +69,59 @@ type ComponentProps = {
 
 const CartDetails = ({user}:ComponentProps) => {
 
+
+    const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        street_address: "",
+        company: "",
+        type: "business",
+        code: "",
+        local_area: "",
+        city: "",
+        zone: provinces[0],
+        country: "ZA",
+        phone: "",
+      },
+    });
+
+    const {
+      handleSubmit,
+      register,
+      reset,
+      formState: { errors },
+    } = form
+
   console.log('Cart Page',{user})
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      // Do something with the form values.
+      // ✅ This will be type-safe and validated.
+      console.log(values);
+
+      const {data, error} = await supabase.from("orders").insert([{
+         status: "pending",
+         order_items: cartItems,
+         customer_id: user?.id ,
+         shipping_address: {
+          street_address: values.street_address,
+          company: values.company,
+          type: values.type,
+          local_area: values.local_area,
+          city: values.city,
+          zone: values.zone,
+          country: values.country,
+          code: values.code,
+          phone: values.phone,
+
+         }
+      }]).select('*')
+
+      console.log({data, error})
+
+      reset()
+
+    }
 
   const { supabase } = useSupabase();
   const router = useRouter();
@@ -43,8 +144,10 @@ const CartDetails = ({user}:ComponentProps) => {
                 Your cart is empty...
               </p>
 
-                <Button onClick={() => router.back()} variant="outline"><ArrowLeft />Back </Button>
-
+              <Button onClick={() => router.back()} variant="outline">
+                <ArrowLeft />
+                Back{" "}
+              </Button>
             </div>
           ) : (
             cartItems.map((item) => (
@@ -82,7 +185,9 @@ const CartDetails = ({user}:ComponentProps) => {
                     </Button>
                   </div>
 
-                  <p className="mt-4 text-xl font-medium">{formatCurrency(item.quantity * item.product.price)}</p>
+                  <p className="mt-4 text-xl font-medium">
+                    {formatCurrency(item.quantity * item.product.price)}
+                  </p>
                 </div>
                 <div className="">
                   <Button
@@ -99,9 +204,205 @@ const CartDetails = ({user}:ComponentProps) => {
         </div>
 
         <div className="w-full">
-          {user === null || typeof user === "undefined" ? (<div className="flex justify-center w-full py-4 bg-black rounded-md"><SignIn /></div>) : (
-            <div className="flex flex-col items-start w-full space-y-4">
+          {user === null || typeof user === "undefined" ? (
+            <div className="flex justify-center w-full py-4 rounded-md">
+              <SignIn />
+            </div>
+          ) : (
+            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-slate-100">
               <h2 className="text-xl font-bold">Order Summary</h2>
+              <div className="flex items-center justify-between w-full">
+                <p className="text-lg font-medium">Cart Total</p>
+                <p className="text-lg font-medium">
+                  {formatCurrency(totalPrice)}
+                </p>
+              </div>
+              <Separator className="text-slate-700 bg-slate-800" />
+              <div className="w-full">
+                <h3 className="text-xl font-medium">Add Delivery Address</h3>
+                <Form {...form}>
+                  <form
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="w-full mt-3"
+                  >
+                    <div className="flex flex-col space-y-2 w-full">
+                      <Label htmlFor="street_address">Street Address</Label>
+                      <Input
+                        {...register("street_address")}
+                        type="text"
+                        id="street_address"
+                        name="street_address"
+                        className="bg-white"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-2 w-full mt-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        {...register("company")}
+                        type="text"
+                        id="company"
+                        name="company"
+                        className="bg-white"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between w-full gap-4 mt-3">
+                      <div className="w-full flex flex-col space-y-2">
+                        <Label htmlFor="local_area">Suburb</Label>
+                        <Input
+                          {...register("local_area")}
+                          type="text"
+                          id="local_area"
+                          name="local_area"
+                          className="bg-white"
+                        />
+                      </div>
+                      <div className="w-full flex flex-col space-y-2">
+                        <Label htmlFor="city">City</Label>
+                        <Input
+                          {...register("city")}
+                          type="text"
+                          id="city"
+                          name="city"
+                          className="bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between w-full gap-4 mt-3">
+                      <div className="w-full flex flex-col space-y-2">
+                        <Label htmlFor="phone">Phone Number</Label>
+                        <Input
+                          {...register("phone")}
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          className="bg-white"
+                        />
+                      </div>
+                      <div className="w-full flex flex-col space-y-2">
+                        <Label htmlFor="code">Postal Code</Label>
+                        <Input
+                          {...register("code")}
+                          type="text"
+                          id="code"
+                          name="code"
+                          className="bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center justify-between w-full gap-4 mt-3">
+                      <div className="w-full flex flex-col space-y-2">
+                        <FormField
+                          control={form.control}
+                          name="type"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Select Address Type</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Province" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  <SelectItem  value="business">
+                                    Business
+                                  </SelectItem>
+                                  <SelectItem  value="residential">
+                                    Residential
+                                  </SelectItem>
+                                  <SelectItem  value="school">
+                                    School
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        {/* <Label htmlFor="type">Select Address Type</Label>
+                        <select {...register("type")}>
+                          <option
+                            className="text-lg p-2 hover:bg-slate-100"
+                            value="business"
+                          >
+                            Business
+                          </option>
+                          <option
+                            value="residential"
+                            className="text-lg p-2 hover:bg-slate-100"
+                          >
+                            Residential
+                          </option>
+                          <option
+                            className="text-lg p-2 hover:bg-slate-100"
+                            value="school"
+                          >
+                            School
+                          </option>
+                        </select> */}
+                      </div>
+                      <div className="w-full flex flex-col space-y-2">
+                        <FormField
+                          control={form.control}
+                          name="zone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Province</FormLabel>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="Select Province" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                  {provinces.map((province) => (
+                                    <SelectItem key={province} value={province}>
+                                      {province}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        {/* <Select {...register("code")}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue
+                              {...register("zone")}
+                              placeholder="Select Province"
+                            />
+                          </SelectTrigger>
+                          <SelectContent className="bg-white">
+                            {provinces.map((province) => (
+                              <SelectItem key={province} value={province}>
+                                {province}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select> */}
+                      </div>
+                    </div>
+
+                    <Button type="submit" className="w-full mt-6">
+                      Save
+                    </Button>
+                  </form>
+                </Form>
+              </div>
             </div>
           )}
         </div>

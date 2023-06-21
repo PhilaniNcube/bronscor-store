@@ -101,30 +101,63 @@ export interface Database {
           created_at: string
           customer_id: string
           status: string
-          shipping_address: Json
+          shipping_address: {
+            city: string
+            code: string
+            company?: string | null
+            country: string
+            local_area: string
+            phone: string
+            street_address: string
+            type: string
+            zone: string
+          }
           payment_method: string
           total_amount: number
           tracking_number:string | null
+          order_items: CartItem[]
         }
         Insert: {
-          id: string
+          id?: string
           created_at?: string
           customer_id?: string
           status?: string
-          shipping_address?: Json
+          shipping_address?: {
+            city: string
+            code: string
+            company?: string | null
+            country: string
+            local_area: string
+            phone: string
+            street_address: string
+            type: string
+            zone: string
+          }
           payment_method?: string
           total_amount?: number
           tracking_number?:string
+          order_items: CartItem[]
         }
         Update: {
           id?: string
           created_at?: string
           customer_id?: string
           status?: string
-          shipping_address?: Json
+          shipping_address?: {
+            city: string
+            code: string
+            company?: string | null
+            country: string
+            local_area: string
+            phone: string
+            street_address: string
+            type: string
+            zone: string
+          }
           payment_method?: string
           total_amount?: number
           tracking_number?:string
+          order_items?: CartItem[]
         }
       }
       products: {
