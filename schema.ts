@@ -99,7 +99,11 @@ export interface Database {
         Row: {
           id: string
           created_at: string
-          customer_id: string
+          customer_id: {
+            id: string
+            first_name: string
+            last_name: string
+          }
           status: string
           shipping_address: {
             city: string

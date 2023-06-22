@@ -115,11 +115,17 @@ const CartDetails = ({user}:ComponentProps) => {
           phone: values.phone,
 
          }
-      }]).select('*')
+      }]).select('*').single()
 
       console.log({data, error})
 
-      reset()
+if(error) {
+  console.log(error)
+} else if (data) {
+  reset()
+
+  router.push(`/account/orders/${data.id}`)
+}
 
     }
 
