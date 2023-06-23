@@ -103,6 +103,7 @@ const CartDetails = ({user}:ComponentProps) => {
          status: "pending",
          order_items: cartItems,
          customer_id: user?.id ,
+         sub_total: totalPrice,
          shipping_address: {
           street_address: values.street_address,
           company: values.company,
@@ -215,7 +216,7 @@ if(error) {
               <SignIn />
             </div>
           ) : (
-            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-slate-100">
+            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-slate-700">
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="flex items-center justify-between w-full">
                 <p className="text-lg font-medium">Cart Total</p>
@@ -223,7 +224,7 @@ if(error) {
                   {formatCurrency(totalPrice)}
                 </p>
               </div>
-              <Separator className="text-slate-700 bg-slate-800" />
+              <Separator className="text-white bg-slate-800" />
               <div className="w-full">
                 <h3 className="text-xl font-medium">Add Delivery Address</h3>
                 <Form {...form}>
@@ -238,7 +239,7 @@ if(error) {
                         type="text"
                         id="street_address"
                         name="street_address"
-                        className="bg-white"
+                        className="bg-white text-slate-700"
                         required
                       />
                     </div>
@@ -249,7 +250,7 @@ if(error) {
                         type="text"
                         id="company"
                         name="company"
-                        className="bg-white"
+                        className="bg-white text-slate-700"
                       />
                     </div>
 
@@ -261,7 +262,7 @@ if(error) {
                           type="text"
                           id="local_area"
                           name="local_area"
-                          className="bg-white"
+                          className="bg-white text-slate-700"
                         />
                       </div>
                       <div className="w-full flex flex-col space-y-2">
@@ -271,7 +272,7 @@ if(error) {
                           type="text"
                           id="city"
                           name="city"
-                          className="bg-white"
+                          className="bg-white text-slate-700"
                         />
                       </div>
                     </div>
@@ -284,7 +285,7 @@ if(error) {
                           type="tel"
                           id="phone"
                           name="phone"
-                          className="bg-white"
+                          className="bg-white text-slate-700"
                         />
                       </div>
                       <div className="w-full flex flex-col space-y-2">
@@ -294,7 +295,7 @@ if(error) {
                           type="text"
                           id="code"
                           name="code"
-                          className="bg-white"
+                          className="bg-white text-slate-700"
                         />
                       </div>
                     </div>
@@ -317,15 +318,13 @@ if(error) {
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem  value="business">
+                                  <SelectItem value="business">
                                     Business
                                   </SelectItem>
-                                  <SelectItem  value="residential">
+                                  <SelectItem value="residential">
                                     Residential
                                   </SelectItem>
-                                  <SelectItem  value="school">
-                                    School
-                                  </SelectItem>
+                                  <SelectItem value="school">School</SelectItem>
                                 </SelectContent>
                               </Select>
 

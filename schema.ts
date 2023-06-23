@@ -118,6 +118,8 @@ export interface Database {
           }
           payment_method: string
           total_amount: number
+          sub_total: number
+          shipping_cost:number
           tracking_number:string | null
           order_items: CartItem[]
         }
@@ -139,6 +141,8 @@ export interface Database {
           }
           payment_method?: string
           total_amount?: number
+          sub_total?: number
+          shipping_cost?:number
           tracking_number?:string
           order_items: CartItem[]
         }
@@ -160,6 +164,8 @@ export interface Database {
           }
           payment_method?: string
           total_amount?: number
+          sub_total?: number
+          shipping_cost?:number
           tracking_number?:string
           order_items?: CartItem[]
         }

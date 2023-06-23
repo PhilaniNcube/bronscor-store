@@ -50,10 +50,10 @@ const ProductDetails = ({product}:ComponentProps) => {
         <h1 className="text-2xl font-medium text-black md:text-4xl">
           {product.name}
         </h1>
-        <h1 className="my-2 text-3xl font-medium text-slate-800">
+        <h1 className="my-2 text-3xl font-medium text-white">
           {formatCurrency(product.price)}
         </h1>
-        <p className="mt-3 text-md text-slate-600">{product.description}</p>
+        <p className="mt-3 text-md text-white">{product.description}</p>
         <Button
           type="button"
           className="w-full mt-6 text-white bg-black hover:text-bronscor"
@@ -77,8 +77,8 @@ const ProductDetails = ({product}:ComponentProps) => {
               key={index}
               className="flex items-center justify-between w-full py-2 border-b border-slate-300"
             >
-              <p className="font-medium text-md text-slate-700">{detail.key}</p>
-              <p className="font-medium text-md text-slate-700">
+              <p className="font-medium text-md text-white">{detail.key}</p>
+              <p className="font-medium text-md text-white">
                 {detail.value}
               </p>
             </div>
@@ -88,26 +88,26 @@ const ProductDetails = ({product}:ComponentProps) => {
         <p className="mt-6 text-xl font-medium">Dimensions</p>
         <div className="w-full mt-2">
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-slate-700">Width</p>
-            <p className="font-medium text-md text-slate-700">
+            <p className="font-medium text-md text-white">Width</p>
+            <p className="font-medium text-md text-white">
               {product.dimensions?.width}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-slate-700">Height</p>
-            <p className="font-medium text-md text-slate-700">
+            <p className="font-medium text-md text-white">Height</p>
+            <p className="font-medium text-md text-white">
               {product.dimensions?.height}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-slate-700">Depth</p>
-            <p className="font-medium text-md text-slate-700">
+            <p className="font-medium text-md text-white">Depth</p>
+            <p className="font-medium text-md text-white">
               {product.dimensions?.depth}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-slate-700">Weight</p>
-            <p className="font-medium text-md text-slate-700">
+            <p className="font-medium text-md text-white">Weight</p>
+            <p className="font-medium text-md text-white">
               {product.dimensions?.weight} grams
             </p>
           </div>

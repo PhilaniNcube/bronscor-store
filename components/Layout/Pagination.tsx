@@ -28,7 +28,7 @@ const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
           </Button>
         </Link>
       )}
-      <p className="text-xs font-medium text-slate-700">
+      <p className="text-xs font-medium text-white">
         Page {page} of {lastPage} Pages
       </p>
       {page !== lastPage && (

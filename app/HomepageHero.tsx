@@ -13,7 +13,7 @@ const HomepageHero = () => {
             Hardware
           </h1>
           <Link href="/products">
-            <Button className="bg-bronscor hover:shadow-md hover:bg-bronscor/90 text-black uppercase font-semibold text-lg flex space-x-3 items-center justify-center mt-4">Shop Now</Button>
+            <Button className="bg-bronscor hover:shadow-md hover:bg-slate-900 text-white uppercase font-semibold text-lg flex space-x-3 items-center justify-center mt-4">Shop Now</Button>
           </Link>
         </div>
       </div>
