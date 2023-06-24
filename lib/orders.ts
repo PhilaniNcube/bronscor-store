@@ -52,6 +52,19 @@ export const updateOrderStatus = async (order:Database["public"]['Tables']['orde
       return order
     }
 
+}
 
+
+export const getMyOrders = async (customerId:string) => {
+
+    const supabase = createServerComponentClient<Database>({cookies})
+
+    const {data:order, error} = await supabase.from("orders").select('*, customer_id(*)').eq('customer_id', customerId)
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return order
 
 }

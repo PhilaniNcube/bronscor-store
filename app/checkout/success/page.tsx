@@ -13,6 +13,21 @@ const order = await getOrderById(order_id)
 
 const updatedOrder = await updateOrderStatus(order)
 
+// const mail = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/email`, {
+//   method: "POST",
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+//   body: JSON.stringify({
+//     email: updatedOrder.shipping_address.email,
+//     first_name: updatedOrder.customer_id.first_name,
+//     last_name: updatedOrder.customer_id.last_name,
+//     satatus: updatedOrder.status,
+//   }),
+// }).then(res => res.json()).catch(err => console.log(err))
+
+// console.log("Mail",mail)
+
   return (
     <div className="container my-6">
       <h1 className="text-2xl md:text-3xl font-medium mb-4">

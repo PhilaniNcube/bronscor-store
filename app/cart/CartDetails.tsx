@@ -149,7 +149,7 @@ if(error) {
     return group;
   });
 
-  const url = new URL(`http://localhost:3000/api/shipping`);
+  const url = new URL(`${process.env.NEXT_PUBLIC_SITE_URL}/api/shipping`);
 
   const res = await fetch(url, {
     method: "POST",
