@@ -34,6 +34,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useState } from "react";
 
 
 const provinces = [
@@ -57,6 +58,7 @@ const formSchema = z.object({
   zone: z.enum(provinces),
   country: z.string(),
   code: z.string(),
+  email: z.string().email(),
   phone: z
     .string()
     .min(10, { message: "Phone number must be 10 digits" })
@@ -68,6 +70,8 @@ type ComponentProps = {
 }
 
 const CartDetails = ({user}:ComponentProps) => {
+
+  const [loading, setLoading] = useState(false)
 
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -82,6 +86,7 @@ const CartDetails = ({user}:ComponentProps) => {
         zone: provinces[0],
         country: "ZA",
         phone: "",
+        email: "",
       },
     });
 
@@ -95,6 +100,7 @@ const CartDetails = ({user}:ComponentProps) => {
   console.log('Cart Page',{user})
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+      setLoading(true)
       // Do something with the form values.
       // ✅ This will be type-safe and validated.
       console.log(values);
@@ -104,6 +110,7 @@ const CartDetails = ({user}:ComponentProps) => {
          order_items: cartItems,
          customer_id: user?.id ,
          sub_total: totalPrice,
+
          shipping_address: {
           street_address: values.street_address,
           company: values.company,
@@ -114,7 +121,7 @@ const CartDetails = ({user}:ComponentProps) => {
           country: values.country,
           code: values.code,
           phone: values.phone,
-
+          email: values.email
          }
       }]).select('*').single()
 
@@ -123,9 +130,69 @@ const CartDetails = ({user}:ComponentProps) => {
 if(error) {
   console.log(error)
 } else if (data) {
-  reset()
 
-  router.push(`/account/orders/${data.id}`)
+  let items = data.order_items
+
+  let group: any = [];
+  const dimensions = items.map((item) => {
+    let i = 1;
+    while (i <= item.quantity) {
+      group.push({
+        width: item.product.dimensions?.width,
+        height: item.product.dimensions?.height,
+        length: item.product.dimensions?.depth,
+        weight: item.product.dimensions?.weight! / 1000,
+      });
+      i++;
+    }
+
+    return group;
+  });
+
+  const url = new URL(`http://localhost:3000/api/shipping`);
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      type: data.shipping_address.type,
+      company: data.shipping_address.company,
+      street_address: data.shipping_address.street_address,
+      city: data.shipping_address.city,
+      zone: data.shipping_address.zone,
+      country: data.shipping_address.country,
+      code: data.shipping_address.code,
+      parcels: dimensions,
+    }),
+  })
+    .then((res) => res.json())
+    .catch((err) => console.log(err));
+
+  const shippingCost = await res.data.rates[0].base_rate.charge;
+
+  const {data: updatedOrder, error: updatedOrderError} = await supabase
+    .from("orders")
+    .update({
+      shipping_cost: shippingCost.toFixed(2),
+      total_amount: (shippingCost + totalPrice).toFixed(2),
+    })
+    .eq("id", data.id).select('*').single();
+
+  if (updatedOrderError) {
+    console.log(updatedOrderError.message)
+    alert("There was an error saving the order: " + updatedOrderError.message);
+    setLoading(false);
+  }
+
+  if (updatedOrder) {
+    console.log(updatedOrder)
+    alert("Order saved successfully")
+    setLoading(false);
+    router.push(`/account/orders/${updatedOrder.id}`);
+  }
+  setLoading(false)
 }
 
     }
@@ -239,6 +306,17 @@ if(error) {
                         type="text"
                         id="street_address"
                         name="street_address"
+                        className="bg-white text-slate-700"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-2 w-full mt-2">
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        {...register("email")}
+                        type="text"
+                        id="email"
+                        name="email"
                         className="bg-white text-slate-700"
                         required
                       />
@@ -403,7 +481,7 @@ if(error) {
                     </div>
 
                     <Button type="submit" className="w-full mt-6">
-                      Save
+                      {loading ? 'Loading Please wait...' : 'Save'}
                     </Button>
                   </form>
                 </Form>

@@ -90,7 +90,12 @@ const SignUp = () => {
                   <FormItem>
                     <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="John" {...field} />
+                      <Input
+                        type="text"
+                        placeholder="John"
+                        {...field}
+                        className="text-slate-700"
+                      />
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.
@@ -108,7 +113,12 @@ const SignUp = () => {
                   <FormItem>
                     <FormLabel>Last Name</FormLabel>
                     <FormControl>
-                      <Input type="text" placeholder="Doe" {...field} />
+                      <Input
+                        type="text"
+                        placeholder="Doe"
+                        {...field}
+                        className="text-slate-700"
+                      />
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.

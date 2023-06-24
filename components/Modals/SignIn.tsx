@@ -73,12 +73,9 @@ const SignIn = () => {
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Sign In</DialogTitle>
-
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-
-
             <div className="flex flex-col items-start py-4 space-y-2">
               <FormField
                 control={form.control}
@@ -87,7 +84,12 @@ const SignIn = () => {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        className="text-slate-700"
+                        {...field}
+                      />
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.
@@ -109,6 +111,7 @@ const SignIn = () => {
                         type="password"
                         placeholder="password"
                         {...field}
+                        className="text-slate-700"
                       />
                     </FormControl>
                     {/* <FormDescription>

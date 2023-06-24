@@ -115,6 +115,7 @@ export interface Database {
             street_address: string
             type: string
             zone: string
+            email:string
           }
           payment_method: string
           total_amount: number
@@ -138,6 +139,7 @@ export interface Database {
             street_address: string
             type: string
             zone: string
+            email:string
           }
           payment_method?: string
           total_amount?: number
@@ -150,7 +152,7 @@ export interface Database {
           id?: string
           created_at?: string
           customer_id?: string
-          status?: string
+          status?: "pending" | "paid" | "cancelled"
           shipping_address?: {
             city: string
             code: string
@@ -161,6 +163,7 @@ export interface Database {
             street_address: string
             type: string
             zone: string
+            email: string
           }
           payment_method?: string
           total_amount?: number

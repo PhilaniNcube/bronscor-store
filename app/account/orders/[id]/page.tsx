@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getProfile } from "@/lib/getUser";
 import { getOrderById } from "@/lib/orders";
 import { formatCurrency } from "@/lib/utils";
+import { Database } from "@/schema";
+import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 
 type PageProps = {
   params: {
@@ -11,58 +14,16 @@ type PageProps = {
 
 const page = async ({params:{id}}:PageProps) => {
 
+ const profile = await getProfile();
+
   const order = await getOrderById(id)
 
-  const items = order.order_items
 
-  let group:any = []
-  const dimensions = items.map((item) => {
-
-
-    let i = 1
-    while (i <= item.quantity) {
-      group.push({
-        width: item.product.dimensions?.width,
-        height: item.product.dimensions?.height,
-        length: item.product.dimensions?.depth,
-        weight: item.product.dimensions?.weight! / 1000,
-      });
-      i++
-    }
-
-    return group
-
-  })
-
-
-
-  const url = new URL(`http://localhost:3000/api/shipping`)
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      type: order.shipping_address.type,
-      company: order.shipping_address.company,
-      street_address: order.shipping_address.street_address,
-      city: order.shipping_address.city,
-      zone: order.shipping_address.zone,
-      country: order.shipping_address.country,
-      code: order.shipping_address.code,
-      parcels: dimensions
-    })
-  }).then(res => res.json()).catch((err) => console.log(err))
-
-  const shippingCost = res.data.rates[0].base_rate.charge
-
-  console.log(res)
 
   return (
     <div className="my-6">
       <div className="container mx-auto">
-        <pre>{shippingCost}</pre>
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="w-full">
             <h1 className="text-2xl md:text-4xl font-medium">Order Details</h1>
@@ -101,14 +62,54 @@ const page = async ({params:{id}}:PageProps) => {
                 Order Sub Total: {formatCurrency(order.sub_total)}
               </h2>
               <h2 className="text-lg my-2 font-medium">
-                Order Shipping: {formatCurrency(shippingCost)}
+                Order Shipping: {formatCurrency(order.shipping_cost)}
               </h2>
               <Separator />
               <h2 className="text-lg my-2 font-medium">
-                Order Total: {formatCurrency(shippingCost + order.sub_total)}
+                Order Total: {formatCurrency(order.total_amount)}
               </h2>
-
-              <Button type="submit" className="bg-slate-900 mt-8 text-white w-full">Checkout</Button>
+              <form
+                action="https://sandbox.payfast.co.za/eng/process"
+                className="w-full"
+              >
+                <input type="hidden" name="merchant_id" value="10000100" />
+                <input
+                  type="hidden"
+                  name="merchant_key"
+                  value="46f0cd694581a"
+                />
+                <input type="hidden" name="amount" value={order.total_amount} />
+                <input type="hidden" name="item_name" value={order.id}></input>
+                <input
+                  type="hidden"
+                  name="return_url"
+                  value={`${process.env.NEXT_PUBLIC_PAYFAST_RETURN_URL}?order_id=${order.id}`}
+                />
+                <input
+                  type="hidden"
+                  name="cancel_url"
+                  value={process.env.NEXT_PUBLIC_PAYFAST_CANCEL_URL}
+                />
+                <input
+                  type="hidden"
+                  name="notify_url"
+                  value={`${process.env.NEXT_PUBLIC_PAYFAST_NOTIFY_URL}?order_id=${order.id}`}
+                />
+                <input
+                  type="hidden"
+                  name="name_first"
+                  value={profile?.first_name}
+                />
+                <input type="hidden" name="name_last" value={profile?.last_name} />
+                <input type="hidden" name="email_address" value={order.shipping_address.email} />
+                <input type="hidden" name="cell_number" value={order.shipping_address.phone} />
+                <Button
+                  type="submit"
+                  className="bg-slate-900 mt-8 text-white w-full"
+                >
+                  Checkout
+                </Button>
+              </form>
             </div>
           </div>
         </div>

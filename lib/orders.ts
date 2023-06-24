@@ -29,3 +29,29 @@ export const getOrderById = async (id:string) => {
     return order
 
 }
+
+export const updateOrderStatus = async (order:Database["public"]['Tables']['orders']['Row']) => {
+
+    const supabase = createServerComponentClient<Database>({cookies})
+
+    if(order.status === "paid") {
+      return order
+    } else if (order.status === "pending"){
+
+         const {data:updatedOrder, error} = await supabase.from("orders").update({
+      status: 'paid',
+    }).eq('id', order.id).single()
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+     return updatedOrder
+
+    } else {
+      return order
+    }
+
+
+
+}

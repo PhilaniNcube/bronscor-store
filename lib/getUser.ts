@@ -36,3 +36,16 @@ import { Database } from "@/schema"
     return profile
 
   }
+
+
+    export const getSession = async () => {
+
+   const supabase = createServerComponentClient<Database>({cookies})
+
+    const session = await supabase.auth.getSession()
+
+
+
+    return session
+
+  }
