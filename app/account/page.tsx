@@ -26,7 +26,7 @@ const page = async () => {
 
   return (
     <main className="container my-6">
-      <div className="w-full">
+      <div className="w-full min-h-[700px]">
         <div className="flex w-full justify-between items-center">
           <h1 className="text-3xl font-semibold">My Account</h1>
           {admin === true && (
@@ -40,22 +40,33 @@ const page = async () => {
         <Separator className="my-4" />
         <div className="w-full">
           {orders.map((order) => (
-            <div key={order.id} className="w-full flex gap-10 py-4 border-b border-slate-50">
+            <div
+              key={order.id}
+              className="w-full flex gap-10 py-4 border-b border-slate-50"
+            >
               <div className="">
-                <p className="text-lg">Order ID: {order.id.split('-')[0]}</p>
+                <p className="text-lg">Order ID: {order.id.split("-")[0]}</p>
                 <p className="text-lg">
                   Order Date: {format(new Date(order.created_at), "PPP")}
                 </p>
               </div>
               <div>
                 <p className="text-lg">Order Status: {order.status}</p>
-                <p className="text-lg">Order Amount: {formatCurrency(order.total_amount)}</p>
+                <p className="text-lg">
+                  Order Amount: {formatCurrency(order.total_amount)}
+                </p>
               </div>
-              <div className="flex-1 flex justify-end">
-                {order.order_items.map((item, i) => (
-                  <p key={i} className="text-md">{item.product.name} x {item.quantity}</p>
-                ))}
-
+              <div className="flex flex-col flex-1 items-end">
+                <div className="w-full flex justify-end">
+                  {order.order_items.map((item, i) => (
+                    <p key={i} className="text-md">
+                      {item.product.name} x {item.quantity}
+                    </p>
+                  ))}
+                </div>
+                <Link href={`/account/orders/${order.id}`} className="mt-6">
+                  <Button className="bg-slate-900" type="button">View Order</Button>
+                </Link>
               </div>
             </div>
           ))}
