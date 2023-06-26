@@ -273,6 +273,32 @@ export interface Database {
           last_name?: string
         }
       }
+      steel: {
+        Row: {
+          id: string
+          created_at: string
+          description: string
+          length: string
+          image: string
+          title: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          description?: string
+          length?: string
+          image?: string
+          title:string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          description?: string
+          length?: string
+          image?: string
+          title?  :string
+        }
+      }
     }
     Views: {
       [_ in never]: never
