@@ -1,6 +1,7 @@
 import { Database } from "@/schema";
 import DesktopNav from "./DesktopNav";
 import { User } from "@supabase/supabase-js";
+import MobileNav from "./MobileNav";
 
 type Props = {
   user:User | null
@@ -16,6 +17,7 @@ const Navbar = ({user, categories}:Props) => {
     <nav className="bg-black ">
       <div className="container">
         <DesktopNav user={user} categories={categories}  />
+        <MobileNav user={user} categories={categories}  />
       </div>
     </nav>
   );
