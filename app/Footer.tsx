@@ -51,9 +51,9 @@ const Footer = ({categories}:Props) => {
               className="w-full max-w-[190px] object-cover"
             />
 
-            <p className="text-md text-white ">
+            {/* <p className="text-md text-white ">
               We have the tools and supplies you need to get the job done right.{" "}
-            </p>
+            </p> */}
 
             <div className="w-full mt-4">
               <p className="text-xl font-medium">Accepted Payment Methods</p>

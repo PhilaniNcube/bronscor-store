@@ -9,7 +9,7 @@ const CategoriesGrid = ({categories}:Props) => {
   return (
     <section className="py-8">
       <div className="container w-full">
-        <h2 className="text-2xl font-bold mb-4">Shop By Category</h2>
+        <h2 className="text-2xl text-center font-bold mb-4">Shop By Category</h2>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category) => (
             <Link

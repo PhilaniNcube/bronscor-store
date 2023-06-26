@@ -88,7 +88,7 @@ const SignUp = () => {
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel className="text-slate-700">First Name</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -111,7 +111,7 @@ const SignUp = () => {
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel className="text-slate-700">Last Name</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -134,9 +134,14 @@ const SignUp = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-slate-700">Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="Email" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="Email"
+                        {...field}
+                        className="text-slate-700"
+                      />
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.
@@ -152,12 +157,13 @@ const SignUp = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>password</FormLabel>
+                    <FormLabel className="text-slate-700">password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
                         placeholder="password"
                         {...field}
+                        className="text-slate-700"
                       />
                     </FormControl>
                     {/* <FormDescription>
