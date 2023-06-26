@@ -47,7 +47,7 @@ const ProductDetails = ({product}:ComponentProps) => {
         />
       </div>
       <div className="w-full">
-        <h1 className="text-2xl font-medium text-black md:text-4xl">
+        <h1 className="text-2xl font-medium md:text-4xl">
           {product.name}
         </h1>
         <h1 className="my-2 text-3xl font-medium text-white">
