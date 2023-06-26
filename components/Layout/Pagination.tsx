@@ -19,21 +19,21 @@ const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
   const page = currentPage ? currentPage : 1;
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-100">
+    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-100 text-slate-700">
       {page !== 1 && (
         <Link href={`${location.pathname}?page=${page - 1}`}>
-          <Button variant="outline">
+          <Button variant="secondary">
             <ChevronLeftIcon className="mr-1" />
             Prev
           </Button>
         </Link>
       )}
-      <p className="text-xs font-medium text-white">
+      <p className="text-xs font-medium">
         Page {page} of {lastPage} Pages
       </p>
       {page !== lastPage && (
         <Link href={`${location.pathname}?page=${page + 1}`}>
-          <Button variant="outline">
+          <Button variant="secondary">
             Next
             <ChevronRightIcon className="ml-1" />
           </Button>

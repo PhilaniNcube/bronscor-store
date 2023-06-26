@@ -49,3 +49,21 @@ import { Database } from "@/schema"
     return session
 
   }
+
+
+  export const getProfiles = async (page = 1, page_size = 8) => {
+
+      const start = (page - 1) * page_size;
+  const end = page * page_size - 1
+
+  const supabase = createServerComponentClient<Database>({cookies})
+
+  const {data:profiles, error, count} = await supabase.from("profiles").select('*', {count: "exact"}).range(start, end).order('first_name', {ascending: true})
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {profiles, count}
+
+  }

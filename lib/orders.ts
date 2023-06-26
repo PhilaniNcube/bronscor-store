@@ -68,3 +68,39 @@ export const getMyOrders = async (customerId:string) => {
     return order
 
 }
+
+
+export const getPaidOrders = async () => {
+  const supabase = createServerComponentClient<Database>({cookies})
+
+  const {data:orders, error, count} = await supabase.from("orders").select('*', {count: "exact"}).eq('status', 'paid')
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    orders,
+    count
+  }
+
+}
+
+
+export const getAllOrders = async (page = 1, page_size = 8) => {
+  const start = (page - 1) * page_size;
+  const end = page * page_size - 1
+
+  const supabase = createServerComponentClient<Database>({cookies})
+
+    const {data:orders, error, count} = await supabase.from("orders").select('*, customer_id(first_name, last_name)', {count: "exact"}).range(start, end).order('created_at', {ascending: true})
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    orders,
+    count
+  }
+}

@@ -57,13 +57,13 @@ const layout = async ({children}:Props) => {
                 <Users2 className="w-6 h-6" />
                 <span>Customers</span>
               </Link>
-              <Link
+              {/* <Link
                 href="/dashboard/brands"
                 className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-slate-800 rounded w-full"
               >
                 <LassoSelectIcon className="w-6 h-6" />
                 <span>Brands</span>
-              </Link>
+              </Link> */}
               <Link
                 href="/dashboard/orders"
                 className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-slate-800 rounded w-full"
