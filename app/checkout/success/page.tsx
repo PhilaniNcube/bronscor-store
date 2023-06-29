@@ -36,7 +36,7 @@ const updatedOrder = await updateOrderStatus(order)
 
       <Separator className="my-4" />
       <Link className="mt-4" href="/account">
-        <Button className="bg-slate-900 text-white" type="button">
+        <Button className="bg-gray-800 text-white" type="button">
           Go to My Account
         </Button>
       </Link>

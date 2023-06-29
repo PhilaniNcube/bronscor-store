@@ -6,7 +6,7 @@ export const getCategories = async () => {
 
       const supabase = createServerComponentClient<Database>({cookies})
 
-      const {data:categories, error} = await supabase.from("categories").select('*')
+      const {data:categories, error} = await supabase.from("categories").select('*').order("name", { ascending: true })
 
       if (error) {
         throw new Error(error.message);

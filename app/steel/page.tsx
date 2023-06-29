@@ -11,7 +11,7 @@ const page = async () => {
         {steel.map((item) => (
           <article
             key={item.id}
-            className="w-full bg-slate-900 rounded-md shadow-md"
+            className="w-full bg-gray-800 rounded-md shadow-md"
           >
             <Image
               width={400}

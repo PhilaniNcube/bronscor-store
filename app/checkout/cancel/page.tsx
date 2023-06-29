@@ -7,7 +7,7 @@ const page = () => {
       <h1 className="text-2xl md:text-3xl font-medium">Order Failed</h1>
 
       <Link className="mt-4" href="/">
-        <Button className="bg-slate-900 text-white" type="button">Go back to the homepage</Button>
+        <Button className="bg-gray-800 text-white" type="button">Go back to the homepage</Button>
       </Link>
     </div>
   );

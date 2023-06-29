@@ -59,7 +59,7 @@ const MobileNav = ({user, categories}:Props) => {
                 <MenuIcon className="text-bronscor" size={24} />
               </Button>
             </SheetTrigger>
-            <SheetContent className="text-slate-800 w-[300px]">
+            <SheetContent className="text-gray-900 w-[300px]">
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
@@ -79,7 +79,7 @@ const MobileNav = ({user, categories}:Props) => {
                   ) : (
                     <div className="flex flex-col space-y-4">
                       <Link href="/account" className="flex space-x-2">
-                        <UserIcon className="border rounded-full text-slate-800 border-slate-800" />
+                        <UserIcon className="border rounded-full text-gray-900 border-gray-900" />
                         <span>My Account</span>
                       </Link>
                       <Button
@@ -87,7 +87,7 @@ const MobileNav = ({user, categories}:Props) => {
                           supabase.auth.signOut();
                         }}
 
-                        className="text-slate-800 bg-bronscor"
+                        className="text-gray-900 bg-bronscor"
                       >
                         Logout&nbsp; <UserMinusIcon size={16} />
                       </Button>

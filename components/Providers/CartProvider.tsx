@@ -15,7 +15,7 @@ interface Props {
 const CartProvider = ({ children }: Props) => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={"Loading..."} persistor={persistor}>
         {children}
       </PersistGate>
     </Provider>

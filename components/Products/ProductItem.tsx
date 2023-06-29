@@ -10,7 +10,7 @@ type ProductProps = {
 
 const ProductItem = ({ product }: ProductProps) => {
   return (
-    <div className="relative rounded-md text-white overflow-clip bg-slate-700 shadow-md hover:shadow-lg flex flex-col @container ">
+    <div className="relative rounded-md text-white overflow-clip bg-gray-900 shadow-md hover:shadow-lg flex flex-col @container ">
       <div className="flex w-full flex-col @sm:flex-row @lg:flex-col">
         <Image
           src={product.image}
@@ -23,7 +23,7 @@ const ProductItem = ({ product }: ProductProps) => {
           <h3 className="text-lg font-semibold">{product.name}</h3>
           <p className="text-sm">{formatCurrency(product.price)}</p>
           <Link href={`/products/${product.slug}`}>
-            <Button className="mt-3 bg-bronscor hover:shadow-md hover:bg-slate-900 w-full">
+            <Button className="mt-3 bg-bronscor hover:shadow-md hover:bg-gray-700 w-full">
               View Product
             </Button>
           </Link>

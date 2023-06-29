@@ -239,7 +239,7 @@ if(error) {
                 <div className="flex-1">
                   <h3 className="font-medium text-md">{item.product.name}</h3>
                   <p className="text-sm font-medium">
-                    Quantiy: {item.quantity}
+                    Quantity: {item.quantity}
                   </p>
 
                   <div className="flex items-center justify-start w-full mt-2 space-x-4">
@@ -283,7 +283,7 @@ if(error) {
               <SignIn />
             </div>
           ) : (
-            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-slate-700">
+            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-gray-900">
               <h2 className="text-xl font-bold">Order Summary</h2>
               <div className="flex items-center justify-between w-full">
                 <p className="text-lg font-medium">Cart Total</p>
@@ -291,7 +291,7 @@ if(error) {
                   {formatCurrency(totalPrice)}
                 </p>
               </div>
-              <Separator className="text-white bg-slate-800" />
+              <Separator className="text-white bg-gray-900" />
               <div className="w-full">
                 <h3 className="text-xl font-medium">Add Delivery Address</h3>
                 <Form {...form}>
@@ -306,7 +306,7 @@ if(error) {
                         type="text"
                         id="street_address"
                         name="street_address"
-                        className="bg-white text-slate-700"
+                        className="bg-white text-gray-900"
                         required
                       />
                     </div>
@@ -317,7 +317,7 @@ if(error) {
                         type="text"
                         id="email"
                         name="email"
-                        className="bg-white text-slate-700"
+                        className="bg-white text-gray-900"
                         required
                       />
                     </div>
@@ -328,7 +328,7 @@ if(error) {
                         type="text"
                         id="company"
                         name="company"
-                        className="bg-white text-slate-700"
+                        className="bg-white text-gray-900"
                       />
                     </div>
 
@@ -340,7 +340,7 @@ if(error) {
                           type="text"
                           id="local_area"
                           name="local_area"
-                          className="bg-white text-slate-700"
+                          className="bg-white text-gray-900"
                         />
                       </div>
                       <div className="w-full flex flex-col space-y-2">
@@ -350,7 +350,7 @@ if(error) {
                           type="text"
                           id="city"
                           name="city"
-                          className="bg-white text-slate-700"
+                          className="bg-white text-gray-900"
                         />
                       </div>
                     </div>
@@ -363,7 +363,7 @@ if(error) {
                           type="tel"
                           id="phone"
                           name="phone"
-                          className="bg-white text-slate-700"
+                          className="bg-white text-gray-900"
                         />
                       </div>
                       <div className="w-full flex flex-col space-y-2">
@@ -373,7 +373,7 @@ if(error) {
                           type="text"
                           id="code"
                           name="code"
-                          className="bg-white text-slate-700"
+                          className="bg-white text-gray-900"
                         />
                       </div>
                     </div>

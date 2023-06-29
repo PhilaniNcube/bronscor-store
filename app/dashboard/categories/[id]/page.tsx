@@ -37,7 +37,7 @@ const page = async ({params: {id}}:{params: {id: number}}) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full text-gray-900">
       <h1 className="text-3xl font-semibold text-black">{category.name}</h1>
       <Separator className="w-full my-4 text-bronscor" />
       <form

@@ -19,7 +19,7 @@ const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
   const page = currentPage ? currentPage : 1;
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-100 text-slate-700">
+    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-100 text-gray-900">
       {page !== 1 && (
         <Link href={`${location.pathname}?page=${page - 1}`}>
           <Button variant="secondary">

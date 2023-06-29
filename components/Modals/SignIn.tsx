@@ -87,7 +87,7 @@ const SignIn = () => {
                       <Input
                         type="email"
                         placeholder="Email"
-                        className="text-slate-700"
+                        className="text-gray-900"
                         {...field}
                       />
                     </FormControl>
@@ -111,7 +111,7 @@ const SignIn = () => {
                         type="password"
                         placeholder="password"
                         {...field}
-                        className="text-slate-700"
+                        className="text-gray-900"
                       />
                     </FormControl>
                     {/* <FormDescription>

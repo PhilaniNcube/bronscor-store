@@ -56,7 +56,7 @@ const ProductDetails = ({product}:ComponentProps) => {
         <p className="mt-3 text-md text-white">{product.description}</p>
         <Button
           type="button"
-          className="w-full mt-6 text-white bg-black hover:text-bronscor"
+          className="w-full mt-6 text-white bg-gray-900 hover:text-bronscor"
           onClick={() => {
             console.log("add to cart");
             dispatch(

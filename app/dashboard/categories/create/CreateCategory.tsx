@@ -77,7 +77,7 @@ const CreateCategory = () => {
               <FormItem>
                 <FormLabel>Category Name</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Name" {...field} />
+                  <Input className="bg-white text-gray-900" placeholder="Name" {...field} />
                 </FormControl>
                 <FormDescription>This is category name.</FormDescription>
                 <FormMessage />

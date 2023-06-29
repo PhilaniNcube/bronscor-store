@@ -65,7 +65,7 @@ const page = async () => {
                   ))}
                 </div>
                 <Link href={`/account/orders/${order.id}`} className="mt-6">
-                  <Button className="bg-slate-900" type="button">View Order</Button>
+                  <Button className="bg-gray-800" type="button">View Order</Button>
                 </Link>
               </div>
             </div>

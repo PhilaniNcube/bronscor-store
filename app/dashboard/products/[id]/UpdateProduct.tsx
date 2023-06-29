@@ -199,7 +199,7 @@ console.log({product})
   };
 
   return (
-    <div className="w-full flex gap-6 justify-between text-slate-800">
+    <div className="w-full flex gap-6 justify-between text-gray-900">
       <div className="w-full p-4 bg-slate-300 rounded-lg">
         <h1 className="text-3xl font-semibold text-black">Update Product</h1>
         <Separator className="w-full my-4 text-bronscor" />
