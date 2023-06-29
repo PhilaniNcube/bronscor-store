@@ -6,8 +6,16 @@ import { formatCurrency } from "@/lib/utils";
 import { Database } from "@/schema";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useAppDispatch } from "@/app/store/store";
-import { addToCart } from "@/app/store/features/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/app/store/store";
+import {
+  totalPriceSelector,
+  addToCart,
+  removeFromCart,
+  deleteFromCart,
+  productQtySelector,
+} from "@/app/store/features/cartSlice";
+import { MinusSquare, PlusSquare } from "lucide-react";
+import { useSelector } from "react-redux";
 
 
 type ComponentProps = {
@@ -17,6 +25,8 @@ type ComponentProps = {
 const ProductDetails = ({product}:ComponentProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+
+  //  const qty = useSelector(productQtySelector);
 
   const keyStr =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
@@ -47,28 +57,57 @@ const ProductDetails = ({product}:ComponentProps) => {
         />
       </div>
       <div className="w-full">
-        <h1 className="text-2xl font-medium md:text-4xl">
-          {product.name}
-        </h1>
+        <h1 className="text-2xl font-medium md:text-4xl">{product.name}</h1>
         <h1 className="my-2 text-3xl font-medium text-white">
           {formatCurrency(product.price)}
         </h1>
         <p className="mt-3 text-md text-white">{product.description}</p>
-        <Button
-          type="button"
-          className="w-full mt-6 text-white bg-gray-900 hover:text-bronscor"
-          onClick={() => {
-            console.log("add to cart");
-            dispatch(
-              addToCart({
-                product: product,
-                quantity: 1,
-              })
-            );
-          }}
-        >
-          Add To Cart
-        </Button>
+        <div className="flex items-center justify-between w-full mt-2 space-x-4">
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() =>
+              dispatch(
+                removeFromCart({
+                  product: product,
+                  quantity: 1,
+                })
+              )
+            }
+          >
+            <MinusSquare />
+          </Button>
+          <Button
+            type="button"
+            className="w-full text-white bg-gray-900 hover:text-bronscor"
+            onClick={() => {
+              console.log("add to cart");
+              dispatch(
+                addToCart({
+                  product: product,
+                  quantity: 1,
+                })
+              );
+            }}
+          >
+            Add To Cart
+          </Button>
+          <Button
+            variant="secondary"
+            type="button"
+            onClick={() =>
+              dispatch(
+                addToCart({
+                  product: product,
+                  quantity: 1,
+                })
+              )
+            }
+          >
+            <PlusSquare />
+          </Button>
+        </div>
+
         <Separator className="my-4" />
         <p className="text-xl font-medium">Product Details</p>
         <div className="w-full mt-2">
@@ -78,9 +117,7 @@ const ProductDetails = ({product}:ComponentProps) => {
               className="flex items-center justify-between w-full py-2 border-b border-slate-300"
             >
               <p className="font-medium text-md text-white">{detail.key}</p>
-              <p className="font-medium text-md text-white">
-                {detail.value}
-              </p>
+              <p className="font-medium text-md text-white">{detail.value}</p>
             </div>
           ))}
         </div>
