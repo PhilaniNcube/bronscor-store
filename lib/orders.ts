@@ -38,13 +38,15 @@ export const updateOrderStatus = async (order:Database["public"]['Tables']['orde
       return order
     } else if (order.status === "pending"){
 
-         const {data:updatedOrder, error} = await supabase.from("orders").update({
+    const {data:updatedOrder, error} = await supabase.from("orders").update({
       status: 'paid',
     }).eq('id', order.id).single()
 
     if (error) {
       throw new Error(error.message);
     }
+
+
 
      return updatedOrder
 

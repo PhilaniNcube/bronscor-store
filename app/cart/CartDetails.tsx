@@ -170,7 +170,7 @@ if(error) {
     .then((res) => res.json())
     .catch((err) => console.log(err));
 
-  const shippingCost = await res.data.rates[0].base_rate.charge;
+  const shippingCost = await res.data.rates[0].rate;
 
   const {data: updatedOrder, error: updatedOrderError} = await supabase
     .from("orders")

@@ -9,8 +9,8 @@ const HomepageHero = () => {
       <Image src="/images/ingco.webp" width={1920} height={620} alt="Hero Image" className="w-40 object-cover absolute top-4 right-10 z-20" />
       <Image src="/images/action.webp" width={1920} height={620} alt="Hero Image" className="w-full h-full object-cover absolute inset-0 z-0" />
       <div className="bg-slate-300/60 flex w-full z-10">
-        <div className="container flex flex-col justify-center items-start">
-          <h1 className="text-black font-semibold text-3xl md:text-4xl lg:text-5xl max-w-[30ch]">
+        <div className="container flex flex-col justify-center items-center">
+          <h1 className="text-black font-semibold text-3xl md:text-4xl text-center lg:text-5xl max-w-[30ch]">
             Steels, Castings, 3D Printing Works and Tools &
             Hardware
           </h1>
