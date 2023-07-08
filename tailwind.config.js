@@ -17,6 +17,7 @@ module.exports = {
     extend: {
       colors: {
         bronscor: "#dfa45d",
+        dark: "#433f40",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

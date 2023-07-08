@@ -44,7 +44,7 @@ const Footer = ({categories}:Props) => {
           {/* Grid One */}
           <div className="flex flex-col">
             <Image
-              src="/images/logo.png"
+              src="/images/express.png"
               width={822}
               height={303}
               alt="Logo"

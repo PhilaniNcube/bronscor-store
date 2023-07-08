@@ -37,7 +37,7 @@ const MobileNav = ({user, categories}:Props) => {
       <div className="w-full flex justify-between items-center">
         <Link href="/">
           <Image
-            src="/images/logo.png"
+            src="/images/bronscor_logo.png"
             width={822}
             height={303}
             alt="logo"

@@ -45,7 +45,7 @@ const signOut = async () => {
     <div className="items-center justify-between hidden md:flex">
       <Link href="/">
         <Image
-          src="/images/logo.png"
+          src="/images/bronscor_logo.png"
           width={822}
           height={303}
           alt="Bronscor"
