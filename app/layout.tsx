@@ -9,6 +9,7 @@ import { Metadata } from "next";
 import Footer from './Footer'
 import CartProvider from '@/components/Providers/CartProvider'
 import { Toaster } from "@/components/ui/toaster";
+import CartSlide from '@/components/Cart/CartSlide'
 
 
 
@@ -42,6 +43,7 @@ const [{data: { user },}, categories] = await Promise.all([userData, categoriesD
         <SupabaseProvider>
           <CartProvider>
             <Navbar user={user} categories={categories} />
+            <CartSlide />
             {children}
             <Footer categories={categories} />
             <Toaster />

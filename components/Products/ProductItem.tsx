@@ -5,9 +5,10 @@ import { Button } from "../ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { Database } from "@/schema";
 import Image from 'next/image'
-import { useAppDispatch } from "@/app/store/store";
+import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import {
   addToCart,
+  openCart,
 } from "@/app/store/features/cartSlice";
 import { ShoppingCartIcon } from "lucide-react";
 
@@ -30,9 +31,10 @@ const ProductItem = ({ product }: ProductProps) => {
               quantity: 1,
             })
           );
+          dispatch(openCart())
         }}
         variant="ghost"
-        className="absolute top-2 right-2  text-black rounded-full group-hover:bg-amber-600 flex items-center justify-center p-2 transition-all duration-150"
+        className="absolute top-2 right-2  text-black rounded-full bg-slate-200 shadow group-hover:bg-amber-600 flex items-center justify-center p-2 transition-all duration-150"
       >
         <ShoppingCartIcon className="w-6 h-6" />
       </Button>

@@ -5,10 +5,12 @@ import { RootState } from "../store";
 
 export interface CartState {
   cartItems: CartItem[];
+  open: boolean;
 }
 
 const initialState: CartState = {
   cartItems: [],
+  open: false,
 }
 
 
@@ -49,7 +51,18 @@ export const cartSlice = createSlice({
 
     clearCart: (state) => {
       state.cartItems = []
+    },
+
+    openCart: (state) => {
+      state.open = true
+      console.log(state.open)
+    },
+
+    closeCart: (state) => {
+      state.open = false
+      console.log(state.open)
     }
+
   }
 })
 
@@ -61,7 +74,7 @@ export const totalPriceSelector = createSelector([cartItems], (cartItems:CartIte
 
 export const productQtySelector = createSelector([cartItems, (cartItems:CartItem[], productId:string) => productId], (cartItems, productId) => cartItems.find(el => el.product.id === productId)?.quantity )
 
-export const { addToCart, removeFromCart, deleteFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, deleteFromCart, clearCart, openCart, closeCart } = cartSlice.actions;
 
 
 
