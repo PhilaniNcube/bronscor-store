@@ -26,7 +26,7 @@ const page = async ({params:{id}}:PageProps) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="w-full">
             <h1 className="text-2xl md:text-4xl font-medium">Order Details</h1>
-            <Separator />
+            <Separator className="my-3" />
 
             <div className="w-full">
               {/* <h2 className="text-2xl md:text-4xl font-medium">Order ID: {order.id}</h2> */}
@@ -49,7 +49,7 @@ const page = async ({params:{id}}:PageProps) => {
               </h2>
             </div>
           </div>
-          <div className="w-full p-4 bg-gray-900 rounded-md">
+          <div className="w-full p-4 bg-amber-600 text-black rounded-md">
             <div className="w-full">
               {/* <h2 className="text-2xl md:text-4xl font-medium">Order ID: {order.id}</h2> */}
               {/* <h2 className="text-2xl md:text-4xl font-medium">Order Date: {order.created_at}</h2> */}
@@ -126,7 +126,7 @@ const page = async ({params:{id}}:PageProps) => {
                   />
                   <Button
                     type="submit"
-                    className="bg-gray-800 mt-8 text-white w-full"
+                    className="bg-black mt-8 text-amber-600 w-full"
                   >
                     Checkout
                   </Button>

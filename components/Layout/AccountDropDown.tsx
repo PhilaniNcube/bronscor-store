@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -10,8 +12,6 @@ import {
 import { UserIcon } from "lucide-react";
 
 const AccountDropDown = async () => {
-
-
 
   return (
     <DropdownMenu>

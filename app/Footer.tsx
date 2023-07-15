@@ -38,7 +38,7 @@ export const links = [
 
 const Footer = ({categories}:Props) => {
   return (
-    <footer className="bg-black text-white">
+    <footer className="bg-black text-amber-600">
       <div className="container py-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Grid One */}
@@ -51,7 +51,7 @@ const Footer = ({categories}:Props) => {
               className="w-full max-w-[190px] object-cover"
             />
 
-            {/* <p className="text-md text-white ">
+            {/* <p className="text-md text-amber-600 ">
               We have the tools and supplies you need to get the job done right.{" "}
             </p> */}
 
@@ -91,7 +91,7 @@ const Footer = ({categories}:Props) => {
                 <Link
                   key={category.id}
                   href={`/categories/${category.slug}`}
-                  className="text-white hover:text-slate-100 text-sm font-medium"
+                  className="text-amber-600 hover:text-slate-100 text-sm font-medium"
                 >
                   {category.name}
                 </Link>
@@ -106,8 +106,8 @@ const Footer = ({categories}:Props) => {
               {links.map((link, idx) => (
                 <Link
                   key={idx}
-                  href={`/${link.href}`}
-                  className="text-white hover:text-slate-100 text-sm font-medium"
+                  href={`${link.href}`}
+                  className="text-amber-600 hover:text-slate-100 text-sm font-medium"
                 >
                   {link.title}
                 </Link>
@@ -119,11 +119,11 @@ const Footer = ({categories}:Props) => {
           <div className="w-full">
             <h3 className="text-xl font-medium">Contact Us</h3>
             <ul className="space-y-2 mt-8 flex flex-col">
-              <li className="text-white flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
                 <a href="tel:+27 11 568 0421">+27 11 568 0421</a>
               </li>
-              <li className="text-white flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
                 <MailIcon className="w-5 h-5 mr-2" />
                 <a href="mailto:sales@bronscor.co.za">sales@bronscor.co.za</a>
               </li>

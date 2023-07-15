@@ -58,10 +58,10 @@ const ProductDetails = ({product}:ComponentProps) => {
       </div>
       <div className="w-full">
         <h1 className="text-2xl font-medium md:text-4xl">{product.name}</h1>
-        <h1 className="my-2 text-3xl font-medium text-white">
+        <h1 className="my-2 text-3xl font-medium text-amber-600">
           {formatCurrency(product.price)}
         </h1>
-        <p className="mt-3 text-md text-white">{product.description}</p>
+        <p className="mt-3 text-md text-amber-600">{product.description}</p>
         <div className="flex items-center justify-between w-full mt-2 space-x-4">
           <Button
             variant="secondary"
@@ -79,7 +79,7 @@ const ProductDetails = ({product}:ComponentProps) => {
           </Button>
           <Button
             type="button"
-            className="w-full text-white bg-gray-900 hover:text-amber-500"
+            className="w-full text-amber-600 bg-gray-900 hover:text-amber-500"
             onClick={() => {
               console.log("add to cart");
               dispatch(
@@ -116,8 +116,8 @@ const ProductDetails = ({product}:ComponentProps) => {
               key={index}
               className="flex items-center justify-between w-full py-2 border-b border-slate-300"
             >
-              <p className="font-medium text-md text-white">{detail.key}</p>
-              <p className="font-medium text-md text-white">{detail.value}</p>
+              <p className="font-medium text-md text-amber-600">{detail.key}</p>
+              <p className="font-medium text-md text-amber-600">{detail.value}</p>
             </div>
           ))}
         </div>
@@ -125,26 +125,26 @@ const ProductDetails = ({product}:ComponentProps) => {
         <p className="mt-6 text-xl font-medium">Dimensions</p>
         <div className="w-full mt-2">
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-white">Width</p>
-            <p className="font-medium text-md text-white">
+            <p className="font-medium text-md text-amber-600">Width</p>
+            <p className="font-medium text-md text-amber-600">
               {product.dimensions?.width}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-white">Height</p>
-            <p className="font-medium text-md text-white">
+            <p className="font-medium text-md text-amber-600">Height</p>
+            <p className="font-medium text-md text-amber-600">
               {product.dimensions?.height}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-white">Depth</p>
-            <p className="font-medium text-md text-white">
+            <p className="font-medium text-md text-amber-600">Depth</p>
+            <p className="font-medium text-md text-amber-600">
               {product.dimensions?.depth}cm
             </p>
           </div>
           <div className="flex items-center justify-between w-full py-2 border-b border-slate-300">
-            <p className="font-medium text-md text-white">Weight</p>
-            <p className="font-medium text-md text-white">
+            <p className="font-medium text-md text-amber-600">Weight</p>
+            <p className="font-medium text-md text-amber-600">
               {product.dimensions?.weight} grams
             </p>
           </div>

@@ -22,14 +22,12 @@ import { useAppDispatch } from "@/app/store/store";
 import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import AccountDropDown from "./AccountDropDown";
 
 type Props = {
   user: User | null;
   categories: Database["public"]["Tables"]["categories"]["Row"][];
 };
-
-
-
 
 const DesktopNav = ({user, categories}:Props) => {
 
@@ -97,6 +95,7 @@ const signOut = async () => {
             <Link href="/account">
               <UserIcon className="border rounded-full text-black border-amber-600 bg-amber-600" />
             </Link>
+
             <Button
               onClick={signOut}
               variant="ghost"

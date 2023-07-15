@@ -28,24 +28,13 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-    const supabase = createServerComponentClient({ cookies });
-
-
-
+const supabase = createServerComponentClient({ cookies });
 
 const userData =  supabase.auth.getUser();
 
-   const categoriesData =  getCategories();
+const categoriesData =  getCategories();
 
-   const [
-     {
-       data: { user },
-     },
-     categories,
-   ] = await Promise.all([userData, categoriesData]);
-
-
-
+const [{data: { user },}, categories] = await Promise.all([userData, categoriesData]);
 
   return (
     <html lang="en">
