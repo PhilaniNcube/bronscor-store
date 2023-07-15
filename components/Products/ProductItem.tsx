@@ -9,6 +9,7 @@ import { useAppDispatch } from "@/app/store/store";
 import {
   addToCart,
 } from "@/app/store/features/cartSlice";
+import { ShoppingCartIcon } from "lucide-react";
 
 type ProductProps = {
   product: Database["public"]["Tables"]["products"]["Row"];
@@ -20,7 +21,21 @@ const ProductItem = ({ product }: ProductProps) => {
 
 
   return (
-    <div className="relative rounded-md text-white overflow-clip bg-zinc-800 shadow-md hover:shadow-lg flex flex-col @container ">
+    <div className="relative rounded-md text-white overflow-clip bg-zinc-800 group shadow-md hover:shadow-lg flex flex-col @container ">
+      <Button
+        onClick={() => {
+          dispatch(
+            addToCart({
+              product: product,
+              quantity: 1,
+            })
+          );
+        }}
+        variant="ghost"
+        className="absolute top-2 right-2  text-black rounded-full group-hover:bg-amber-600 flex items-center justify-center p-2 transition-all duration-150"
+      >
+        <ShoppingCartIcon className="w-6 h-6" />
+      </Button>
       <div className="flex w-full flex-col @sm:flex-row @lg:flex-col">
         <Image
           src={product.image}
@@ -32,16 +47,14 @@ const ProductItem = ({ product }: ProductProps) => {
         <div className=" z-10 flex flex-col @sm:justify-center w-full p-4">
           <h3 className="text-lg font-semibold">{product.name}</h3>
           <p className="text-sm">{formatCurrency(product.price)}</p>
-          <Button type="button" onClick={() => {
-              dispatch(
-                addToCart({
-                  product: product,
-                  quantity: 1,
-                })
-              );
-          }} className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full">
-           Add To Cart
-          </Button>
+          <Link href={`/products/${product.slug}`}>
+            <Button
+              type="button"
+              className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full"
+            >
+              View Product
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

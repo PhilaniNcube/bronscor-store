@@ -5,6 +5,7 @@ import { type } from "os";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import ProductItem from "@/components/Products/ProductItem";
 
 type Props = {
   products: Database["public"]["Tables"]["products"]["Row"][];
@@ -17,7 +18,7 @@ const FeaturedProducts = ({products}:Props) => {
       <Separator className="" />
       <div className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <Product key={product.id} product={product} />
+          <ProductItem key={product.id} product={product} />
         ))
         }
       </div>
