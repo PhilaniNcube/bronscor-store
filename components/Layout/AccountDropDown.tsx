@@ -15,10 +15,10 @@ const AccountDropDown = async () => {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="text-bronscor outline-none">
+      <DropdownMenuTrigger className="text-amber-500 outline-none">
         <UserIcon className="w-6 h-6" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="text-bronscor">
+      <DropdownMenuContent className="text-amber-500">
         <DropdownMenuLabel>User Details</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>

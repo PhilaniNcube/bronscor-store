@@ -34,45 +34,45 @@ const layout = async ({children}:Props) => {
                 className="w-3/4 object-cover"
               />
             </Link>
-            <Separator className="w-full text-bronscor" />
+            <Separator className="w-full text-amber-500" />
             <div className="flex flex-col px-4 items-center justify-center space-y-4 w-full">
               <Link
                 href="/dashboard/products"
-                className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
               >
                 <BoxesIcon className="w-6 h-6" />
                 <span>Products</span>
               </Link>
               <Link
                 href="/dashboard/categories"
-                className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
               >
                 <BoxSelectIcon className="w-6 h-6" />
                 <span>Categories</span>
               </Link>
               <Link
                 href="/dashboard/customers"
-                className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
               >
                 <Users2 className="w-6 h-6" />
                 <span>Customers</span>
               </Link>
               {/* <Link
                 href="/dashboard/brands"
-                className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
               >
                 <LassoSelectIcon className="w-6 h-6" />
                 <span>Brands</span>
               </Link> */}
               <Link
                 href="/dashboard/orders"
-                className="flex space-x-4 text-bronscor px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
               >
                 <LucideShoppingCart className="w-6 h-6" />
                 <span>Orders</span>
               </Link>
             </div>
-            <Separator className="w-full text-bronscor" />
+            <Separator className="w-full text-amber-500" />
             <div className="flex-1 flex  w-full flex-col h-full px-4 items-center justify-end">
               <div className="flex flex-col items-center justify-center space-y-4 w-full">
                 <p className="w-full bg-gray-800 px-3 py-2 rounded text-white">

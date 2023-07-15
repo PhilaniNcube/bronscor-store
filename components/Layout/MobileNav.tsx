@@ -46,7 +46,7 @@ const MobileNav = ({user, categories}:Props) => {
         </Link>
         <div className="flex flex-1 items-center justify-end">
           <Link href="/cart" className="relative">
-            <ShoppingBag className="text-bronscor" />
+            <ShoppingBag className="text-amber-500" />
             {qty > 0 && (
               <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-600 rounded-full -top-2 -right-2">
                 {qty}
@@ -56,7 +56,7 @@ const MobileNav = ({user, categories}:Props) => {
           <Sheet>
             <SheetTrigger asChild>
               <Button className="" variant="ghost">
-                <MenuIcon className="text-bronscor" size={24} />
+                <MenuIcon className="text-amber-500" size={24} />
               </Button>
             </SheetTrigger>
             <SheetContent className="text-gray-900 w-[300px]">
@@ -87,7 +87,7 @@ const MobileNav = ({user, categories}:Props) => {
                           supabase.auth.signOut();
                         }}
 
-                        className="text-gray-900 bg-bronscor"
+                        className="text-gray-900 bg-amber-500"
                       >
                         Logout&nbsp; <UserMinusIcon size={16} />
                       </Button>

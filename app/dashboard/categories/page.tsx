@@ -24,7 +24,7 @@ const page = async () => {
       <Separator className="my-4" />
       <div className="flex w-full justify-between items-center mt-4">
         <Link href="/dashboard/categories/create">
-          <Button className="bg-bronscor hover:bg-bronscor/80 hover:shadow-md">
+          <Button className="bg-amber-500 hover:bg-amber-500/80 hover:shadow-md">
             <PlusIcon /> Create Category
           </Button>
         </Link>
@@ -38,7 +38,7 @@ const page = async () => {
             <CardContent>
               <CardDescription>
                 <Link href={`/dashboard/categories/${category.id}`}>
-                  <Button className="bg-bronscor">
+                  <Button className="bg-amber-500">
                     View
                   </Button>
                 </Link>

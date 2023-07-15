@@ -25,9 +25,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useForm } from "react-hook-form";
-import { FormEvent } from "react";
-import { supabase } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { Database } from "@/schema";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 const FormSchema = z.object({
 
@@ -43,10 +43,12 @@ const SignIn = () => {
     resolver: zodResolver(FormSchema),
   });
 
+  const supabase = createClientComponentClient<Database>();
+
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
-    const { first_name, last_name, password, email } = data;
+    const { password, email } = data;
 
     const { data: user, error } = await supabase.auth.signInWithPassword({
       email,
@@ -64,8 +66,7 @@ const SignIn = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="ghost"
-          className="text-bronscor hover:bg-bronscor hover:text-black"
+          className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black"
         >
           Sign In
         </Button>
@@ -105,11 +106,11 @@ const SignIn = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>password</FormLabel>
+                    <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
-                        placeholder="password"
+                        placeholder="Password"
                         {...field}
                         className="text-gray-900"
                       />
@@ -124,7 +125,7 @@ const SignIn = () => {
             </div>
             <div className="flex flex-col items-start py-4 space-y-2">
               <Button
-                className="w-full text-black bg-bronscor hover:bg-bronscor/80"
+                className="w-full text-black bg-amber-500 hover:bg-amber-500/80"
                 type="submit"
               >
                 Sign In

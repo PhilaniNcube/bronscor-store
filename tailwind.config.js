@@ -2,10 +2,11 @@
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-  ],
+    './pages/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
+    './app/**/*.{ts,tsx}',
+    './src/**/*.{ts,tsx}',
+	],
   theme: {
     container: {
       center: true,
@@ -16,8 +17,6 @@ module.exports = {
     },
     extend: {
       colors: {
-        bronscor: "#dfa45d",
-        dark: "#433f40",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,8 +72,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/container-queries"),
-  ],
-};
+  plugins: [require("tailwindcss-animate")],
+}

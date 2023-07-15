@@ -31,7 +31,7 @@ const page = async () => {
           <h1 className="text-3xl font-semibold">My Account</h1>
           {admin === true && (
             <Link href="/dashboard" className="">
-              <Button type="button" className="bg-bronscor hover:bg-black">
+              <Button type="button" className="bg-amber-600 text-black hover:bg-amber-500">
                 Dashboard
               </Button>
             </Link>
@@ -65,7 +65,7 @@ const page = async () => {
                   ))}
                 </div>
                 <Link href={`/account/orders/${order.id}`} className="mt-6">
-                  <Button className="bg-gray-800" type="button">View Order</Button>
+                  <Button className="bg-amber-600 text-black hover:text-amber-600" type="button">View Order</Button>
                 </Link>
               </div>
             </div>

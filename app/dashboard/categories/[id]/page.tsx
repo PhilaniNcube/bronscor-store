@@ -39,7 +39,7 @@ const page = async ({params: {id}}:{params: {id: number}}) => {
   return (
     <div className="w-full text-gray-900">
       <h1 className="text-3xl font-semibold text-black">{category.name}</h1>
-      <Separator className="w-full my-4 text-bronscor" />
+      <Separator className="w-full my-4 text-amber-500" />
       <form
         action={updateCategory}
         className="w-full lg:w-2/3 mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
@@ -54,7 +54,7 @@ const page = async ({params: {id}}:{params: {id: number}}) => {
           />
         </div>
 
-        <Button className="bg-bronscor hover:bg-bronscor/90 shadow-md hover:shadow-lg mt-4">
+        <Button className="bg-amber-500 hover:bg-amber-500/90 shadow-md hover:shadow-lg mt-4">
           Save
         </Button>
       </form>

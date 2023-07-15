@@ -8,6 +8,8 @@ import { getCategories } from '@/lib/categories'
 import { Metadata } from "next";
 import Footer from './Footer'
 import CartProvider from '@/components/Providers/CartProvider'
+import { Toaster } from "@/components/ui/toaster";
+
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -31,15 +33,16 @@ export default async function RootLayout({
 
 
 
-const UserData =  supabase.auth.getUser();
-
-  //  let { data: admin, error } = await supabase.rpc("is_admin");
+const userData =  supabase.auth.getUser();
 
    const categoriesData =  getCategories();
 
-   const [{
-     data: { user },
-   }, categories] = await Promise.all([ UserData, categoriesData]);
+   const [
+     {
+       data: { user },
+     },
+     categories,
+   ] = await Promise.all([userData, categoriesData]);
 
 
 
@@ -52,6 +55,7 @@ const UserData =  supabase.auth.getUser();
             <Navbar user={user} categories={categories} />
             {children}
             <Footer categories={categories} />
+            <Toaster />
           </CartProvider>
         </SupabaseProvider>
       </body>

@@ -35,6 +35,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState } from "react";
+import SignUp from "@/components/Modals/SignUp";
 
 
 const provinces = [
@@ -66,136 +67,142 @@ const formSchema = z.object({
 });
 
 type ComponentProps = {
-  user: Database["public"]["Tables"]["profiles"]["Row"] | null;
+  userId: string | undefined;
 }
 
-const CartDetails = ({user}:ComponentProps) => {
+const CartDetails = ({ userId }: ComponentProps) => {
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] = useState(false)
-
-
-    const form = useForm<z.infer<typeof formSchema>>({
-      resolver: zodResolver(formSchema),
-      defaultValues: {
-        street_address: "",
-        company: "",
-        type: "business",
-        code: "",
-        local_area: "",
-        city: "",
-        zone: provinces[0],
-        country: "ZA",
-        phone: "",
-        email: "",
-      },
-    });
-
-    const {
-      handleSubmit,
-      register,
-      reset,
-      formState: { errors },
-    } = form
-
-  console.log('Cart Page',{user})
-
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-      setLoading(true)
-      // Do something with the form values.
-      // ✅ This will be type-safe and validated.
-      console.log(values);
-
-      const {data, error} = await supabase.from("orders").insert([{
-         status: "pending",
-         order_items: cartItems,
-         customer_id: user?.id ,
-         sub_total: totalPrice,
-
-         shipping_address: {
-          street_address: values.street_address,
-          company: values.company,
-          type: values.type,
-          local_area: values.local_area,
-          city: values.city,
-          zone: values.zone,
-          country: values.country,
-          code: values.code,
-          phone: values.phone,
-          email: values.email
-         }
-      }]).select('*').single()
-
-      console.log({data, error})
-
-if(error) {
-  console.log(error)
-} else if (data) {
-
-  let items = data.order_items
-
-  let group: any = [];
-  const dimensions = items.map((item) => {
-    let i = 1;
-    while (i <= item.quantity) {
-      group.push({
-        width: item.product.dimensions?.width,
-        height: item.product.dimensions?.height,
-        length: item.product.dimensions?.depth,
-        weight: item.product.dimensions?.weight! / 1000,
-      });
-      i++;
-    }
-
-    return group;
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      street_address: "",
+      company: "",
+      type: "business",
+      code: "",
+      local_area: "",
+      city: "",
+      zone: provinces[0],
+      country: "ZA",
+      phone: "",
+      email: "",
+    },
   });
 
-  const url = new URL(`${process.env.NEXT_PUBLIC_SITE_URL}/api/shipping`);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = form;
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      type: data.shipping_address.type,
-      company: data.shipping_address.company,
-      street_address: data.shipping_address.street_address,
-      city: data.shipping_address.city,
-      zone: data.shipping_address.zone,
-      country: data.shipping_address.country,
-      code: data.shipping_address.code,
-      parcels: dimensions,
-    }),
-  })
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
 
-  const shippingCost = await res.data.rates[0].rate;
 
-  const {data: updatedOrder, error: updatedOrderError} = await supabase
-    .from("orders")
-    .update({
-      shipping_cost: shippingCost.toFixed(2),
-      total_amount: (shippingCost + totalPrice).toFixed(2),
-    })
-    .eq("id", data.id).select('*').single();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setLoading(true);
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
 
-  if (updatedOrderError) {
-    console.log(updatedOrderError.message)
-    alert("There was an error saving the order: " + updatedOrderError.message);
-    setLoading(false);
-  }
+    const { data, error } = await supabase
+      .from("orders")
+      .insert([
+        {
+          status: "pending",
+          order_items: cartItems,
+          customer_id: userId,
+          sub_total: totalPrice,
 
-  if (updatedOrder) {
-    console.log(updatedOrder)
-    alert("Order saved successfully")
-    setLoading(false);
-    router.push(`/account/orders/${updatedOrder.id}`);
-  }
-  setLoading(false)
-}
+          shipping_address: {
+            street_address: values.street_address,
+            company: values.company,
+            type: values.type,
+            local_area: values.local_area,
+            city: values.city,
+            zone: values.zone,
+            country: values.country,
+            code: values.code,
+            phone: values.phone,
+            email: values.email,
+          },
+        },
+      ])
+      .select("*")
+      .single();
 
+    console.log({ data, error });
+
+    if (error) {
+      console.log(error);
+    } else if (data) {
+      let items = data.order_items;
+
+      let group: any = [];
+      const dimensions = items.map((item) => {
+        let i = 1;
+        while (i <= item.quantity) {
+          group.push({
+            width: item.product.dimensions?.width,
+            height: item.product.dimensions?.height,
+            length: item.product.dimensions?.depth,
+            weight: item.product.dimensions?.weight! / 1000,
+          });
+          i++;
+        }
+
+        return group;
+      });
+
+      const url = new URL(`${process.env.NEXT_PUBLIC_SITE_URL}/api/shipping`);
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          type: data.shipping_address.type,
+          company: data.shipping_address.company,
+          street_address: data.shipping_address.street_address,
+          city: data.shipping_address.city,
+          zone: data.shipping_address.zone,
+          country: data.shipping_address.country,
+          code: data.shipping_address.code,
+          parcels: dimensions,
+        }),
+      })
+        .then((res) => res.json())
+        .catch((err) => console.log(err));
+
+      const shippingCost = await res.data.rates[0].rate;
+
+      const { data: updatedOrder, error: updatedOrderError } = await supabase
+        .from("orders")
+        .update({
+          shipping_cost: shippingCost.toFixed(2),
+          total_amount: (shippingCost + totalPrice).toFixed(2),
+        })
+        .eq("id", data.id)
+        .select("*")
+        .single();
+
+      if (updatedOrderError) {
+        console.log(updatedOrderError.message);
+        alert(
+          "There was an error saving the order: " + updatedOrderError.message
+        );
+        setLoading(false);
+      }
+
+      if (updatedOrder) {
+        console.log(updatedOrder);
+        alert("Order saved successfully");
+        setLoading(false);
+        router.push(`/account/orders/${updatedOrder.id}`);
+      }
+      setLoading(false);
     }
+  }
 
   const { supabase } = useSupabase();
   const router = useRouter();
@@ -204,7 +211,6 @@ if(error) {
   const totalPrice = useAppSelector(totalPriceSelector);
 
   const dispatch = useAppDispatch();
-
 
   return (
     <div className="w-full">
@@ -226,7 +232,7 @@ if(error) {
           ) : (
             cartItems.map((item) => (
               <div
-                className="flex items-start w-full pb-4 space-x-3 border-b border-slate-200"
+                className="flex items-start w-full py-2 space-x-3 border-b border-slate-200"
                 key={item.product.id}
               >
                 <Image
@@ -240,6 +246,9 @@ if(error) {
                   <h3 className="font-medium text-md">{item.product.name}</h3>
                   <p className="text-sm font-medium">
                     Quantity: {item.quantity}
+                  </p>
+                  <p className="text-sm font-medium">
+                    Price Per Item: {formatCurrency(item.product.price)}
                   </p>
 
                   <div className="flex items-center justify-start w-full mt-2 space-x-4">
@@ -258,12 +267,8 @@ if(error) {
                       <PlusSquare />
                     </Button>
                   </div>
-
-                  <p className="mt-4 text-xl font-medium">
-                    {formatCurrency(item.quantity * item.product.price)}
-                  </p>
                 </div>
-                <div className="">
+                <div className="flex flex-col justify-between h-full">
                   <Button
                     variant="destructive"
                     type="button"
@@ -271,29 +276,29 @@ if(error) {
                   >
                     <LucideTrash />
                   </Button>
+                  <p className="mt-4 text-xl font-medium">
+                    {formatCurrency(item.quantity * item.product.price)}
+                  </p>
                 </div>
               </div>
             ))
           )}
         </div>
 
-        <div className="w-full">
-          {user === null || typeof user === "undefined" ? (
-            <div className="flex justify-center w-full py-4 rounded-md">
-              <SignIn />
+        <div className="w-full bg-amber-600 text-black">
+          <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md">
+            <h2 className="text-xl font-bold">Order Summary</h2>
+            <div className="flex items-center justify-between w-full">
+              <p className="text-lg font-medium">Cart Total</p>
+              <p className="text-lg font-medium">
+                {formatCurrency(totalPrice)}
+              </p>
             </div>
-          ) : (
-            <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md bg-gray-900">
-              <h2 className="text-xl font-bold">Order Summary</h2>
-              <div className="flex items-center justify-between w-full">
-                <p className="text-lg font-medium">Cart Total</p>
-                <p className="text-lg font-medium">
-                  {formatCurrency(totalPrice)}
-                </p>
-              </div>
-              <Separator className="text-white bg-gray-900" />
+            <Separator className="text-white bg-gray-900" />
+            {userId ? (
               <div className="w-full">
                 <h3 className="text-xl font-medium">Add Delivery Address</h3>
+
                 <Form {...form}>
                   <form
                     onSubmit={handleSubmit(onSubmit)}
@@ -480,14 +485,27 @@ if(error) {
                       </div>
                     </div>
 
-                    <Button type="submit" className="w-full mt-6">
-                      {loading ? 'Loading Please wait...' : 'Save'}
+                    <Button
+                      type="submit"
+                      className="w-full bg-black text-amber-600 mt-6"
+                    >
+                      {loading ? "Loading Please wait..." : "Save"}
                     </Button>
                   </form>
                 </Form>
               </div>
-            </div>
-          )}
+            ) : (
+              <div className="w-full bg-amber-600 flex-col items-center">
+                <p className="mb-4 text-center">
+                  Please Sign In Or Sign Up To Place An Order
+                </p>
+                <div className="w-full bg-amber-600 py-4 space-x-4 flex items-center justify-center">
+                  <SignIn />
+                  <SignUp />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

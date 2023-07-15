@@ -25,8 +25,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FormEvent } from "react";
-import { supabase } from "@/lib/utils";
+import { Database } from "@/schema";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+
+
 
 const FormSchema = z.object({
   first_name: z.string().min(2, "Too Short!").max(50, "Too Long!"),
@@ -41,6 +43,8 @@ const FormSchema = z.object({
 type FormProps = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
+
+  const supabase = createClientComponentClient<Database>();
 
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -67,8 +71,7 @@ const SignUp = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          variant="ghost"
-          className="text-bronscor hover:bg-bronscor hover:text-black"
+          className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black"
         >
           Sign Up
         </Button>
@@ -176,7 +179,7 @@ const SignUp = () => {
             </div>
             <div className="flex flex-col items-start space-y-2 py-4">
               <Button
-                className="w-full bg-bronscor text-black hover:bg-bronscor/80"
+                className="w-full bg-amber-500 text-black hover:bg-amber-500/80"
                 type="submit"
               >
                 Sign Up

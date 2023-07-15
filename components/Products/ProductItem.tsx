@@ -1,16 +1,26 @@
+"use client"
+
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { formatCurrency } from "@/lib/utils";
 import { Database } from "@/schema";
 import Image from 'next/image'
+import { useAppDispatch } from "@/app/store/store";
+import {
+  addToCart,
+} from "@/app/store/features/cartSlice";
 
 type ProductProps = {
   product: Database["public"]["Tables"]["products"]["Row"];
 };
 
 const ProductItem = ({ product }: ProductProps) => {
+
+ const dispatch = useAppDispatch();
+
+
   return (
-    <div className="relative rounded-md text-white overflow-clip bg-dark shadow-md hover:shadow-lg flex flex-col @container ">
+    <div className="relative rounded-md text-white overflow-clip bg-zinc-800 shadow-md hover:shadow-lg flex flex-col @container ">
       <div className="flex w-full flex-col @sm:flex-row @lg:flex-col">
         <Image
           src={product.image}
@@ -22,11 +32,16 @@ const ProductItem = ({ product }: ProductProps) => {
         <div className=" z-10 flex flex-col @sm:justify-center w-full p-4">
           <h3 className="text-lg font-semibold">{product.name}</h3>
           <p className="text-sm">{formatCurrency(product.price)}</p>
-          <Link href={`/products/${product.slug}`}>
-            <Button className="mt-3 bg-bronscor hover:shadow-md hover:bg-gray-700 w-full">
-              View Product
-            </Button>
-          </Link>
+          <Button type="button" onClick={() => {
+              dispatch(
+                addToCart({
+                  product: product,
+                  quantity: 1,
+                })
+              );
+          }} className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full">
+           Add To Cart
+          </Button>
         </div>
       </div>
     </div>

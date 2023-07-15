@@ -14,7 +14,6 @@ import {
 import { ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
 import { useSupabase } from "@/Providers/SupabaseProvider";
-import getUser from "@/lib/getUser";
 import { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
 import SignIn from "../Modals/SignIn";
@@ -22,6 +21,7 @@ import { Database } from "@/schema";
 import { useAppDispatch } from "@/app/store/store";
 import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
 import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 type Props = {
   user: User | null;
@@ -35,10 +35,13 @@ const DesktopNav = ({user, categories}:Props) => {
 
   const qty = useSelector(totalCartItemsSelector);
 
+  const router = useRouter()
+
 const {supabase } = useSupabase();
 const signOut = async () => {
  const data = await supabase.auth.signOut();
- console.log(data)
+ router.push('/')
+//  console.log(data)
 }
 
   return (
@@ -53,22 +56,22 @@ const signOut = async () => {
         />
       </Link>
       <div>
-        <NavigationMenu className="z-[9999]">
+        <NavigationMenu className="">
           <NavigationMenuList>
             {/* <NavigationMenuItem>
               <Link href="/products" legacyBehavior passHref>
-                <NavigationMenuLink className="bg-black text-bronscor">
+                <NavigationMenuLink className="bg-black text-amber-500">
                   Products
                 </NavigationMenuLink>
               </Link>
             </NavigationMenuItem> */}
 
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-black text-bronscor hover:bg-bronscor">
+              <NavigationMenuTrigger className="bg-black text-amber-500 hover:bg-amber-500">
                 Categories
               </NavigationMenuTrigger>
-              <NavigationMenuContent className="z-20">
-                <ul className="w-[600px] grid grid-cols-2 gap-6 p-4">
+              <NavigationMenuContent className="">
+                <ul className="w-[600px] grid grid-cols-2 gap-6 p-4 ">
                   {categories.map((category) => (
                     <li key={category.id}>
                       <Link
@@ -76,7 +79,7 @@ const signOut = async () => {
                         legacyBehavior
                         passHref
                       >
-                        <NavigationMenuLink className="px-3 py-2 text-sm rounded hover:text-bronscor hover:bg-slate-100">
+                        <NavigationMenuLink className="px-3 py-2 text-sm rounded hover:text-amber-500 hover:bg-slate-100">
                           {category.name}
                         </NavigationMenuLink>
                       </Link>
@@ -85,13 +88,6 @@ const signOut = async () => {
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/steel" legacyBehavior passHref>
-                <NavigationMenuLink className="bg-black text-bronscor">
-                  Steel
-                </NavigationMenuLink>
-              </Link>
-            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </div>
@@ -99,18 +95,15 @@ const signOut = async () => {
         {user ? (
           <div className="flex items-center space-x-4">
             <Link href="/account">
-              <UserIcon className="border rounded-full text-bronscor border-bronscor" />
+              <UserIcon className="border rounded-full text-black border-amber-600 bg-amber-600" />
             </Link>
             <Button
-              onClick={() => {
-                supabase.auth.signOut();
-              }}
+              onClick={signOut}
               variant="ghost"
-              className="text-bronscor"
+              className="text-amber-500"
             >
               Logout&nbsp; <UserMinusIcon size={16} />
             </Button>
-
           </div>
         ) : (
           <>
@@ -120,8 +113,12 @@ const signOut = async () => {
         )}
 
         <Link href="/cart" className="relative">
-          <ShoppingBag className="text-bronscor" />
-          {qty > 0 && (<span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-600 rounded-full -top-2 -right-2">{qty}</span>)}
+          <ShoppingBag className="text-amber-500" />
+          {qty > 0 && (
+            <span className="absolute flex items-center justify-center w-4 h-4 text-xs text-white bg-red-600 rounded-full -top-2 -right-2">
+              {qty}
+            </span>
+          )}
         </Link>
       </div>
     </div>

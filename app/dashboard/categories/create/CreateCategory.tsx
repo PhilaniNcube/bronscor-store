@@ -64,7 +64,7 @@ const CreateCategory = () => {
   return (
     <div className="w-full">
       <h1 className="text-3xl font-semibold text-black">Create New Category</h1>
-      <Separator className="w-full my-4 text-bronscor" />
+      <Separator className="w-full my-4 text-amber-500" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -84,7 +84,7 @@ const CreateCategory = () => {
               </FormItem>
             )}
           />
-          <Button disabled={loading} type="submit" className="mt-4 bg-bronscor hover:bg-bronscor/80">{loading ? 'Loading' : 'Save Category'}</Button>
+          <Button disabled={loading} type="submit" className="mt-4 bg-amber-500 hover:bg-amber-500/80">{loading ? 'Loading' : 'Save Category'}</Button>
         </form>
       </Form>
     </div>

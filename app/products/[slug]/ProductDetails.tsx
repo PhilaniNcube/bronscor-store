@@ -79,7 +79,7 @@ const ProductDetails = ({product}:ComponentProps) => {
           </Button>
           <Button
             type="button"
-            className="w-full text-white bg-gray-900 hover:text-bronscor"
+            className="w-full text-white bg-gray-900 hover:text-amber-500"
             onClick={() => {
               console.log("add to cart");
               dispatch(

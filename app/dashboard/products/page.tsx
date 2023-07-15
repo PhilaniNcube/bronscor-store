@@ -30,7 +30,7 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
     <div>
       <div className="flex justify-end w-full">
         <Link href="/dashboard/products/create">
-          <Button className="flex items-center justify-center space-x-3 text-black bg-bronscor hover:shadow-md hover:bg-bronscor/90">
+          <Button className="flex items-center justify-center space-x-3 text-black bg-amber-500 hover:shadow-md hover:bg-amber-500/90">
             <PlusIcon />
             Add Product
           </Button>

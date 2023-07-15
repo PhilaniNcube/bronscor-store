@@ -22,7 +22,7 @@ const page = async ({params: {id}}:{params: {id:string}}) => {
     <div className="w-full">
       <div className="flex justify-start mb-4">
         <Link href="/dashboard/products">
-          <Button className="bg-bronscor text-black hover:bg-bronscor/80">Back to Products</Button>
+          <Button className="bg-amber-500 text-black hover:bg-amber-500/80">Back to Products</Button>
         </Link>
       </div>
       <UpdateProduct categories={categories} brands={brands} product={product} />

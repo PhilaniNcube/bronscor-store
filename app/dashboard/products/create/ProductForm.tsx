@@ -172,7 +172,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         <h1 className="text-3xl font-semibold text-black">
           Create New Product
         </h1>
-        <Separator className="w-full my-4 text-bronscor" />
+        <Separator className="w-full my-4 text-amber-500" />
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
