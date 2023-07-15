@@ -4,12 +4,10 @@ import Image from "next/image"
 import { MenuIcon, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
 import { useSupabase } from "@/Providers/SupabaseProvider";
-import getUser from "@/lib/getUser";
 import { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
 import SignIn from "../Modals/SignIn";
 import { Database } from "@/schema";
-import { useAppDispatch } from "@/app/store/store";
 import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
 import { useSelector } from "react-redux";
 import Link from "next/link"
