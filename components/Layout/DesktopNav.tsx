@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
+import { Heart, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
 import { useSupabase } from "@/Providers/SupabaseProvider";
 import { User } from "@supabase/supabase-js";
@@ -94,6 +94,9 @@ const signOut = async () => {
           <div className="flex items-center space-x-4">
             <Link href="/account">
               <UserIcon className="border rounded-full text-black border-amber-600 bg-amber-600" />
+            </Link>
+            <Link href="/wishlist">
+              <Heart className="border rounded-full text-red-600 border-white bg-white" />
             </Link>
 
             <Button

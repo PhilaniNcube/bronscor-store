@@ -273,6 +273,23 @@ export interface Database {
           last_name?: string
         }
       }
+      wishlist: {
+        Row: {
+          product_id: Database['public']['Tables']['products']['Row']
+          user_id: string
+          created_at: string
+        }
+        Insert: {
+          product_id: string
+          user_id: string
+          created_at?: string
+        }
+        Update: {
+          product_id: string
+          user_id: string
+          created_at?: string
+        }
+      }
       steel: {
         Row: {
           id: string
