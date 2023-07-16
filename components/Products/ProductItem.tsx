@@ -10,13 +10,17 @@ import {
   addToCart,
   openCart,
 } from "@/app/store/features/cartSlice";
-import { ShoppingCartIcon } from "lucide-react";
+import { HeartIcon, ShoppingCartIcon } from "lucide-react";
+import { useSupabase } from "@/Providers/SupabaseProvider";
+import { toast } from "../ui/use-toast";
 
 type ProductProps = {
   product: Database["public"]["Tables"]["products"]["Row"];
 };
 
 const ProductItem = ({ product }: ProductProps) => {
+
+  const {supabase} = useSupabase()
 
  const dispatch = useAppDispatch();
 
@@ -37,6 +41,41 @@ const ProductItem = ({ product }: ProductProps) => {
         className="absolute top-2 right-2  text-black rounded-full bg-slate-200 shadow group-hover:bg-amber-600 flex items-center justify-center p-2 transition-all duration-150"
       >
         <ShoppingCartIcon className="w-6 h-6" />
+      </Button>
+      <Button
+        onClick={async () => {
+          console.log("add to wishlist")
+          const {data: {
+            session
+          }} = await supabase.auth.getSession()
+          console.log(session)
+
+          if(session === null) {
+            toast({
+              title: "You must be logged in to add to wishlist",
+            })
+          } else {
+            const {data, error} = await supabase.from("wishlist").insert({
+              user_id: session.user.id,
+              product_id: product.id
+            })
+            if(error) {
+              console.log("error", error)
+              toast({
+                title: "Error adding to wishlist",
+                description: error.code === "23505" ? "The product is already in your wishlist" : error.message
+              })
+            } else {
+              toast({
+                title: "Added to wishlist",
+              })
+            }
+          }
+        }}
+        variant="ghost"
+        className="absolute top-2 left-2  text-red-500 group-hover:text-white rounded-full bg-slate-200 shadow group-hover:bg-red-600 flex items-center justify-center p-2 transition-all duration-150"
+      >
+        <HeartIcon className="w-6 h-6" />
       </Button>
       <div className="flex w-full flex-col @sm:flex-row @lg:flex-col">
         <Image
