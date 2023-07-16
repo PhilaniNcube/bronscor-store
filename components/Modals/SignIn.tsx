@@ -28,9 +28,10 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Database } from "@/schema";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useState } from "react";
+import { EyeIcon } from "lucide-react";
 
 const FormSchema = z.object({
-
   email: z.string().email("Invalid email address"),
   password: z
     .string()
@@ -42,6 +43,12 @@ const SignIn = () => {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+
+  const [inputType, setInputType] = useState("password");
+
+  const toggleInputType = () => {
+    inputType === "password" ? setInputType("text") : setInputType("password");
+  }
 
   const supabase = createClientComponentClient<Database>();
 
@@ -65,9 +72,7 @@ const SignIn = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black"
-        >
+        <Button className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black">
           Sign In
         </Button>
       </DialogTrigger>
@@ -108,12 +113,15 @@ const SignIn = () => {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                        className="text-gray-900"
-                      />
+                      <div className="relative isolate">
+                        <Input
+                          type={inputType}
+                          placeholder="Password"
+                          {...field}
+                          className="text-gray-900"
+                        />
+                        <EyeIcon className="absolute top-1/2 right-2 transform -translate-y-1/2 w-6 h-6 text-gray-900 cursor-pointer" onClick={toggleInputType} />
+                      </div>
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.

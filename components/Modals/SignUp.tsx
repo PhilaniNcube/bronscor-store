@@ -27,6 +27,8 @@ import { Label } from "@/components/ui/label";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Database } from "@/schema";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { EyeIcon } from "lucide-react";
+import { useState } from "react";
 
 
 
@@ -67,12 +69,18 @@ const SignUp = () => {
       });
     };
 
+      const [inputType, setInputType] = useState("password");
+
+      const toggleInputType = () => {
+        inputType === "password"
+          ? setInputType("text")
+          : setInputType("password");
+      };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black"
-        >
+        <Button className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black">
           Sign Up
         </Button>
       </DialogTrigger>
@@ -160,14 +168,20 @@ const SignUp = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-900">password</FormLabel>
+                    <FormLabel className="text-gray-900">Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="password"
-                        {...field}
-                        className="text-gray-900"
-                      />
+                      <div className="relative isolate">
+                        <Input
+                          type={inputType}
+                          placeholder="Password"
+                          {...field}
+                          className="text-gray-900"
+                        />
+                        <EyeIcon
+                          className="absolute top-1/2 right-2 transform -translate-y-1/2 w-6 h-6 text-gray-900 cursor-pointer"
+                          onClick={toggleInputType}
+                        />
+                      </div>
                     </FormControl>
                     {/* <FormDescription>
                       This is your public display name.
