@@ -16,7 +16,7 @@ const FeaturedProducts = ({products}:Props) => {
     <div className="container">
       <h2 className="text-2xl font-bold mb-4">Featured Products</h2>
       <Separator className="" />
-      <div className="w-full mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="w-full mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {products.map((product) => (
           <ProductItem key={product.id} product={product} />
         ))

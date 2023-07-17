@@ -15,7 +15,7 @@ const CategoriesGrid = ({categories}:Props) => {
             <Link
               href={`/categories/${category.slug}`}
               key={category.id}
-              className="overflow-clip flex items-center justify-center rounded-md p-3 shadow-md hover:shadow-lg bg-zinc-800 hover:bg-gray-800 w-full max-w-[23%]"
+              className="overflow-clip flex items-center justify-center rounded-md p-3 shadow-md hover:shadow-lg bg-zinc-800 hover:bg-gray-800 w-[250px] @sm:w-[300px] @md:w-[450px] @lg:w-[550px] @xl:w-[650px]"
             >
               <h3 className="text-lg font-semibold ">
                 {category.name}
