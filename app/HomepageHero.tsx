@@ -16,7 +16,7 @@ const HomepageHero = () => {
         <div className="container flex flex-col justify-center items-center">
           <div className="flex items-center justify-center space-x-4  p-6">
             <Image
-              src="/images/logo_transparent.png"
+              src="/images/express-transparent.png"
               width={1920}
               height={620}
               alt="Hero Image"
