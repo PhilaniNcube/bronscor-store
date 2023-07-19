@@ -124,7 +124,7 @@ const CartSlide = () => {
                         <Link href="/cart">
                           <Button
                             type="button"
-                            className="w-full bg-amber-600 text-black hover:bg-amber-500"
+                            className="w-full text-xs bg-amber-600 text-black hover:bg-amber-500"
                             onClick={() => dispatch(closeCart())}
                           >
                             Got to cart
