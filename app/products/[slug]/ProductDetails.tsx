@@ -11,6 +11,8 @@ import {
   totalPriceSelector,
   addToCart,
   removeFromCart,
+  openCart,
+  closeCart,
   deleteFromCart,
   productQtySelector,
 } from "@/app/store/features/cartSlice";
@@ -88,6 +90,7 @@ const ProductDetails = ({product}:ComponentProps) => {
                   quantity: 1,
                 })
               );
+              dispatch(openCart());
             }}
           >
             Add To Cart
