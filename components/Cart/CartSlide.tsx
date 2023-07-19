@@ -122,16 +122,16 @@ const CartSlide = () => {
                               <PlusSquare />
                             </Button>
                           </div>
+                          <Link href="/cart">
+                            <Button
+                              type="button"
+                              className="w-full text-xs bg-amber-600 text-black hover:bg-amber-500"
+                              onClick={() => dispatch(closeCart())}
+                            >
+                              View cart
+                            </Button>
+                          </Link>
                         </div>
-                        <Link href="/cart">
-                          <Button
-                            type="button"
-                            className="w-full text-xs bg-amber-600 text-black hover:bg-amber-500"
-                            onClick={() => dispatch(closeCart())}
-                          >
-                            View cart
-                          </Button>
-                        </Link>
                       </div>
                     </div>
                   </div>
