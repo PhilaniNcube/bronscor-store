@@ -30,6 +30,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { EyeIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
+import { useRouter } from "next/navigation";
 
 
 
@@ -48,6 +49,8 @@ type FormProps = z.infer<typeof FormSchema>;
 const SignUp = () => {
 
   const supabase = createClientComponentClient<Database>();
+
+  const router  = useRouter()
 
 
     const form = useForm<z.infer<typeof FormSchema>>({
@@ -76,13 +79,18 @@ const SignUp = () => {
           title: "There was an error signing up",
           description: error.message,
         })
-        return
+        router.refresh();
       } else if (user) {
         toast({
           title: "Sign up successful",
           description: "Please check your email for the confirmation link",
         })
-        return
+        router.refresh()
+      } else {
+        toast({
+          title: "There was an error, please try again later",
+        })
+        router.refresh()
       }
     };
 
