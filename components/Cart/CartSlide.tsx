@@ -105,21 +105,23 @@ const CartSlide = () => {
                           Subtotal{" "}
                           {formatCurrency(item.quantity * item.product.price)}
                         </p>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="secondary"
-                            type="button"
-                            onClick={() => dispatch(removeFromCart(item))}
-                          >
-                            <MinusSquare />
-                          </Button>
-                          <Button
-                            variant="secondary"
-                            type="button"
-                            onClick={() => dispatch(addToCart(item))}
-                          >
-                            <PlusSquare />
-                          </Button>
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="flex items-center gap-2">
+                            <Button
+                              variant="secondary"
+                              type="button"
+                              onClick={() => dispatch(removeFromCart(item))}
+                            >
+                              <MinusSquare />
+                            </Button>
+                            <Button
+                              variant="secondary"
+                              type="button"
+                              onClick={() => dispatch(addToCart(item))}
+                            >
+                              <PlusSquare />
+                            </Button>
+                          </div>
                         </div>
                         <Link href="/cart">
                           <Button
@@ -127,7 +129,7 @@ const CartSlide = () => {
                             className="w-full text-xs bg-amber-600 text-black hover:bg-amber-500"
                             onClick={() => dispatch(closeCart())}
                           >
-                            Got to cart
+                            View cart
                           </Button>
                         </Link>
                       </div>
