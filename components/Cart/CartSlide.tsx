@@ -67,7 +67,7 @@ const CartSlide = () => {
           )}
         </Button>
       </SheetTrigger> */}
-      <SheetContent>
+      <SheetContent size="content" >
         <SheetHeader>
           <SheetTitle>Cart</SheetTitle>
           <SheetDescription>See the items in your cart</SheetDescription>
