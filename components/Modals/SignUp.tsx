@@ -61,6 +61,7 @@ const SignUp = () => {
         email,
         password,
         options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
           data: {
             first_name,
             last_name,
