@@ -29,6 +29,7 @@ import { Database } from "@/schema";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { EyeIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "../ui/use-toast";
 
 
 
@@ -68,6 +69,21 @@ const SignUp = () => {
           },
         },
       });
+
+      if (error) {
+        console.log(error);
+        toast({
+          title: "There was an error signing up",
+          description: error.message,
+        })
+        return
+      } else if (user) {
+        toast({
+          title: "Sign up successful",
+          description: "Please check your email for the confirmation link",
+        })
+        return
+      }
     };
 
       const [inputType, setInputType] = useState("password");
