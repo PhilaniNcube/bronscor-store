@@ -121,7 +121,19 @@ const Footer = ({categories}:Props) => {
             <ul className="space-y-2 mt-8 flex flex-col">
               <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
-                <a href="tel:+27 11 568 0421">+27 11 568 0421</a>
+                <a href="tel:+27822095367">+27 82 209 5367 (Whatsapp Only)</a>
+              </li>
+              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+                <PhoneCallIcon className="w-5 h-5 mr-2" />
+                <a href="tel:+27414531530">+27 41 453 1530 (PE)</a>
+              </li>
+              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+                <PhoneCallIcon className="w-5 h-5 mr-2" />
+                <a href="tel:+27217730908">+27 21 773 0908 (CPT)</a>
+              </li>
+              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+                <PhoneCallIcon className="w-5 h-5 mr-2" />
+                <a href="tel:+27106300501">+27 10 630 0501 (JHB)</a>
               </li>
               <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
                 <MailIcon className="w-5 h-5 mr-2" />

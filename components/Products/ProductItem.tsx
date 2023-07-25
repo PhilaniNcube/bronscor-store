@@ -96,7 +96,7 @@ const ProductItem = ({ product }: ProductProps) => {
           <Link href={`/products/${product.slug}`}>
             <Button
               type="button"
-              className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full text-xs"
+              className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full text-xs md:text-sm font-medium text-black hover:text-amber-500"
               onClick={() => {
                 dispatch(
                   addToCart({
