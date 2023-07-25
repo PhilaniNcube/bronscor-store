@@ -1,6 +1,8 @@
 import ProductItem from "@/components/Products/ProductItem";
 import {  getProducts } from "@/lib/products";
 
+export const dynamic = "force-dynamic";
+
 const page = async () => {
 
   const productsData = getProducts(1, 12);

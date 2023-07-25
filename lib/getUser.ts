@@ -8,7 +8,12 @@ import { Database } from "@/schema"
   export const getAdmin = async () => {
      const supabase = createServerComponentClient<Database>({cookies})
 
-     const {data:is_admin} = await supabase.rpc("is_admin").single()
+     const {data:is_admin, error} = await supabase.rpc("is_admin").single()
+
+     if(error) {
+        console.error(error)
+        return false
+     }
 
       return is_admin
 
@@ -31,17 +36,17 @@ import { Database } from "@/schema"
   }
 
 
-    export const getSession = async () => {
+  //   export const getSession = async () => {
 
-   const supabase = createServerComponentClient<Database>({cookies})
+  //  const supabase = createServerComponentClient<Database>({cookies})
 
-    const session = await supabase.auth.getSession()
+  //   const session = await supabase.auth.getSession()
 
 
 
-    return session
+  //   return session
 
-  }
+  // }
 
 
   export const getProfiles = async (page = 1, page_size = 8) => {
