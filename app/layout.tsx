@@ -15,7 +15,7 @@ import CartSlide from '@/components/Cart/CartSlide'
 
 const inter = Inter({ subsets: ['latin'] })
 
-
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Bronscor",
