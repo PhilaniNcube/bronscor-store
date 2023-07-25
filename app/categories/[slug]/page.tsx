@@ -17,8 +17,6 @@ const {data:category, error:category_error} = await supabase.from("categories").
 const {data:products, error:products_error} = await supabase.from("products").select("*").eq("category_id.slug", slug );
 
 
-const productsData =  getProductsByCategoryBySlug(slug);
-
 
 
   return (
