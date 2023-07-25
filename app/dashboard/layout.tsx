@@ -7,6 +7,9 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies, headers } from "next/headers";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+
+export const dynamic = "force-dynamic";
+
 type Props ={
   children: ReactNode
 }
