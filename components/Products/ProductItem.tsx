@@ -92,7 +92,7 @@ const ProductItem = ({ product }: ProductProps) => {
         </Link>
         <div className=" z-10 flex flex-col @sm:justify-center w-full p-4">
           <h3 className="text-xs @sm:text-md @md:text-lg font-semibold line-clamp-1">{product.name}</h3>
-          <p className="text-xs @sm:text-sm">{formatCurrency(product.price)}</p>
+          <p className="text-xs @sm:text-lg @md:text-lg">{formatCurrency(product.price)}</p>
           <Link href={`/products/${product.slug}`}>
             <Button
               type="button"

@@ -82,6 +82,23 @@ export const getProductsByCategoryBySlug = async (slug:string) => {
 }
 
 
+export const getProductsByCategoryId = async (id:number) => {
+
+    const supabase = createServerComponentClient<Database>({cookies})
+
+    const {data:products, error} = await supabase.from("products").select('*, brand_id(*), category_id(*)').eq('category_id', `${id}`)
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    return products
+
+}
+
+
+
+
 export const getSteelProducts = async () => {
   const supabase = createServerComponentClient<Database>({cookies})
 
