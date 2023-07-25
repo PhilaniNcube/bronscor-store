@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/getUser";
 import { getOrderById } from "@/lib/orders";
 import { formatCurrency } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
 
 type PageProps = {
   params: {
