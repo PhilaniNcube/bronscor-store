@@ -1,8 +1,6 @@
 import ProductItem from "@/components/Products/ProductItem";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { getCategoryBySlug } from "@/lib/categories";
-import { getProductsByCategoryBySlug } from "@/lib/products";
 import { Database } from "@/schema";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";

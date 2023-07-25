@@ -3,8 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { getProfile } from "@/lib/getUser";
 import { getOrderById } from "@/lib/orders";
 import { formatCurrency } from "@/lib/utils";
-import { Database } from "@/schema";
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+
 
 type PageProps = {
   params: {

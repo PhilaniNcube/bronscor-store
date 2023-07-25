@@ -17,8 +17,8 @@ const layout = async ({children}:Props) => {
 
 
    const {
-     data: { user },
-   } = await supabase.auth.getUser();
+     data: { session },
+   } = await supabase.auth.getSession();
 
   return (
     <div className="flex flex-nowrap">
@@ -76,7 +76,7 @@ const layout = async ({children}:Props) => {
             <div className="flex-1 flex  w-full flex-col h-full px-4 items-center justify-end">
               <div className="flex flex-col items-center justify-center space-y-4 w-full">
                 <p className="w-full bg-gray-800 px-3 py-2 rounded text-white">
-                  {user?.email}
+                  {session?.user.email}
                 </p>
               </div>
             </div>

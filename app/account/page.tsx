@@ -12,13 +12,11 @@ const page = async () => {
 
   const supabase = createServerComponentClient<Database>({ cookies });
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const {data: {session}} = await supabase.auth.getSession();
 
   // console.log('user', user?.id);
 
-  const {data:profile, error} = await supabase.from('profiles').select('*').eq('id', user?.id).single();
+  const {data:profile, error} = await supabase.from('profiles').select('*').eq('id', session?.user.id).single();
 
   const {data:admin, error:adminError} = await supabase.rpc('is_admin').single();
 
