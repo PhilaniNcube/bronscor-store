@@ -8,13 +8,13 @@ import { format } from "date-fns";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 const page = async () => {
 
   const supabase = createServerComponentClient<Database>({ cookies });
 
   const {data: {session}} = await supabase.auth.getSession();
-
-  // console.log('user', user?.id);
 
   const {data:profile, error} = await supabase.from('profiles').select('*').eq('id', session?.user.id).single();
 
