@@ -5,6 +5,7 @@ import { MailIcon, PhoneCallIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
+
 type Props = {
   categories: Database["public"]["Tables"]["categories"]["Row"][];
 }
