@@ -139,7 +139,7 @@ const Footer = ({categories}:Props) => {
               <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
                 <MailIcon className="w-5 h-5 mr-2" />
                 <a href="mailto:onlinestore@bronscorcc.co.za">
-                  onlinestore@bronscorcc.co.za
+                  vimal@bronscorcc.co.za
                 </a>
               </li>
             </ul>
