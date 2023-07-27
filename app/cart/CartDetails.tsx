@@ -178,7 +178,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
 
         if(res.data.error) {
           console.log(res.details + `${JSON.stringify(res.error)}`);
-          alert("There was an error saving the order: " + res.details + `${JSON.stringify(res.error)}`);
+          alert(`${res.data.details}`);
           setLoading(false);
           return
         }
