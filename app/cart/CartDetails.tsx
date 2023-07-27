@@ -178,12 +178,13 @@ const CartDetails = ({ userId }: ComponentProps) => {
 
         if(res.data.error) {
           console.log(res.details + `${JSON.stringify(res.error)}`);
-          setLoading(false);
           alert("There was an error saving the order: " + res.details + `${JSON.stringify(res.error)}`);
+          setLoading(false);
           return
         }
 
       const shippingCost = await res.data.rates[0].rate;
+
 
       const { data: updatedOrder, error: updatedOrderError } = await supabase
         .from("orders")
