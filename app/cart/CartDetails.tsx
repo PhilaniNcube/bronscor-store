@@ -174,8 +174,6 @@ const CartDetails = ({ userId }: ComponentProps) => {
         .then((res) => res.json())
         .catch((err) => console.log(err));
 
-        console.log(res);
-
         if(res.data.error) {
           console.log(res.details + `${JSON.stringify(res.error)}`);
           alert(`${res.data.details}`);
@@ -197,7 +195,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
         .single();
 
       if (updatedOrderError) {
-        console.log(updatedOrderError.message);
+
         alert(
           "There was an error saving the order: " + updatedOrderError.message
         );
