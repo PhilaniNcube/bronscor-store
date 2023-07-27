@@ -3,6 +3,8 @@ import { Separator } from "@/components/ui/separator";
 import { getProfile } from "@/lib/getUser";
 import { getOrderById } from "@/lib/orders";
 import { formatCurrency } from "@/lib/utils";
+import { Database } from "@/schema";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +16,8 @@ type PageProps = {
 
 const page = async ({params:{id}}:PageProps) => {
 
- const profile = await getProfile();
+  const supabase = createClientComponentClient<Database>();
+
 
   const order = await getOrderById(id)
 
@@ -23,48 +26,48 @@ const page = async ({params:{id}}:PageProps) => {
   return (
     <div className="my-6">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="w-full">
-            <h1 className="text-2xl md:text-4xl font-medium">Order Details</h1>
+            <h1 className="text-2xl font-medium md:text-4xl">Order Details</h1>
             <Separator className="my-3" />
 
             <div className="w-full">
-              {/* <h2 className="text-2xl md:text-4xl font-medium">Order ID: {order.id}</h2> */}
-              {/* <h2 className="text-2xl md:text-4xl font-medium">Order Date: {order.created_at}</h2> */}
-              <h2 className="text-xl mb-1 mt-4">
+              {/* <h2 className="text-2xl font-medium md:text-4xl">Order ID: {order.id}</h2> */}
+              {/* <h2 className="text-2xl font-medium md:text-4xl">Order Date: {order.created_at}</h2> */}
+              <h2 className="mt-4 mb-1 text-xl">
                 {order.customer_id.first_name} {order.customer_id.last_name}
               </h2>
-              <h2 className="text-xl my-1 ">{order.shipping_address.phone}</h2>
-              <h2 className="text-xl my-1 ">
+              <h2 className="my-1 text-xl ">{order.shipping_address.phone}</h2>
+              <h2 className="my-1 text-xl ">
                 {order.shipping_address.street_address}
               </h2>
-              <h2 className="text-xl my-1 ">
+              <h2 className="my-1 text-xl ">
                 {order.shipping_address.local_area}
               </h2>
-              <h2 className="text-xl my-1 ">{order.shipping_address.city}</h2>
-              <h2 className="text-xl my-1 ">{order.shipping_address.zone}</h2>
-              <h2 className="text-xl my-1 ">{order.shipping_address.code}</h2>
-              <h2 className="text-xl my-1 ">
+              <h2 className="my-1 text-xl ">{order.shipping_address.city}</h2>
+              <h2 className="my-1 text-xl ">{order.shipping_address.zone}</h2>
+              <h2 className="my-1 text-xl ">{order.shipping_address.code}</h2>
+              <h2 className="my-1 text-xl ">
                 {order.shipping_address.country}
               </h2>
             </div>
           </div>
-          <div className="w-full p-4 bg-amber-600 text-black rounded-md">
+          <div className="w-full p-4 text-black rounded-md bg-amber-600">
             <div className="w-full">
-              {/* <h2 className="text-2xl md:text-4xl font-medium">Order ID: {order.id}</h2> */}
-              {/* <h2 className="text-2xl md:text-4xl font-medium">Order Date: {order.created_at}</h2> */}
-              <h2 className="text-lg my-2 font-medium ">
+              {/* <h2 className="text-2xl font-medium md:text-4xl">Order ID: {order.id}</h2> */}
+              {/* <h2 className="text-2xl font-medium md:text-4xl">Order Date: {order.created_at}</h2> */}
+              <h2 className="my-2 text-lg font-medium ">
                 Order Status: <span className="uppercase">{order.status}</span>
               </h2>
-              {/* <h2 className="text-lg my-2 font-medium">Order Items</h2> */}
-              <h2 className="text-lg my-2 font-medium">
+              {/* <h2 className="my-2 text-lg font-medium">Order Items</h2> */}
+              <h2 className="my-2 text-lg font-medium">
                 Order Sub Total: {formatCurrency(order.sub_total)}
               </h2>
-              <h2 className="text-lg my-2 font-medium">
+              <h2 className="my-2 text-lg font-medium">
                 Order Shipping: {formatCurrency(order.shipping_cost)}
               </h2>
               <Separator />
-              <h2 className="text-lg my-2 font-medium">
+              <h2 className="my-2 text-lg font-medium">
                 Order Total: {formatCurrency(order.total_amount)}
               </h2>
 
@@ -107,12 +110,12 @@ const page = async ({params:{id}}:PageProps) => {
                   <input
                     type="hidden"
                     name="name_first"
-                    value={profile?.first_name}
+                    value={order.customer_id.first_name}
                   />
                   <input
                     type="hidden"
                     name="name_last"
-                    value={profile?.last_name}
+                    value={order.customer_id.last_name}
                   />
                   <input
                     type="hidden"
@@ -126,7 +129,7 @@ const page = async ({params:{id}}:PageProps) => {
                   />
                   <Button
                     type="submit"
-                    className="bg-black mt-8 text-amber-600 w-full"
+                    className="w-full mt-8 bg-black text-amber-600"
                   >
                     Checkout
                   </Button>

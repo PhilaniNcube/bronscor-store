@@ -10,6 +10,7 @@ import Footer from './Footer'
 import CartProvider from '@/components/Providers/CartProvider'
 import { Toaster } from "@/components/ui/toaster";
 import CartSlide from '@/components/Cart/CartSlide'
+import { Database } from '@/schema'
 
 
 
@@ -30,7 +31,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-const supabase = createServerComponentClient({ cookies });
+const supabase = createServerComponentClient<Database>({ cookies });
 
 const userData =  supabase.auth.getUser();
 

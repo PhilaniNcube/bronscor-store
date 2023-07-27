@@ -8,7 +8,7 @@ import { Database } from './schema'
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next()
   const supabase = createMiddlewareClient<Database>({ req, res })
-  const session = await supabase.auth.getSession()
+  const {data: {session}} = await supabase.auth.getSession()
 
    const {data:is_admin} = await supabase.rpc("is_admin").single()
 

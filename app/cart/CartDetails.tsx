@@ -1,7 +1,6 @@
 "use client";
 
 import { useSupabase } from "@/Providers/SupabaseProvider";
-import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { totalPriceSelector, addToCart, removeFromCart, deleteFromCart } from "../store/features/cartSlice";
@@ -36,6 +35,7 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import SignUp from "@/components/Modals/SignUp";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 
 const provinces = [
@@ -96,7 +96,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
     formState: { errors },
   } = form;
 
-
+ const supabase = createClientComponentClient<Database>();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -130,10 +130,10 @@ const CartDetails = ({ userId }: ComponentProps) => {
       .select("*")
       .single();
 
-    console.log({ data, error });
+    console.log("Create Order", { data, error });
 
     if (error) {
-      console.log(error);
+      console.log("Order Creation Error", error);
     } else if (data) {
       let items = data.order_items;
 
@@ -210,7 +210,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
     }
   }
 
-  const { supabase } = useSupabase();
+
   const router = useRouter();
 
   const cartItems = useAppSelector((state) => state.cart.cartItems);

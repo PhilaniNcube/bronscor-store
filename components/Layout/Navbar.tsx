@@ -11,7 +11,7 @@ type Props = {
 
 const Navbar = ({user, categories}:Props) => {
 
-  console.log({user})
+  // console.log("Getting User", {user})
 
   return (
     <nav className="bg-black ">

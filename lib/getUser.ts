@@ -20,14 +20,16 @@ import { Database } from "@/schema"
   }
 
 
-  export const getProfile = async () => {
+  export const getProfile = async (id:string) => {
+
+    console.log(id)
 
    const supabase = createServerComponentClient<Database>({cookies})
 
-    const {data:profile, error} = await supabase.from("profiles").select('*').single()
+    const {data:profile, error} = await supabase.from("profiles").select('*').eq('id', id).single()
 
     if (error) {
-     console.error(error)
+     console.error("What",error)
      return null
     }
 
