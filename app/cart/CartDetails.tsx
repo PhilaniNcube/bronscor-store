@@ -181,7 +181,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
         console.log(res);
 
         if(res.error) {
-          alert(res.details + `${JSON.stringify(res.error)}`);
+          console.log(res.details + `${JSON.stringify(res.error)}`);
           setLoading(false);
         }
 
