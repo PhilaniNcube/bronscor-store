@@ -199,8 +199,8 @@ const CartDetails = ({ userId }: ComponentProps) => {
         alert("Order saved successfully");
         setLoading(false);
         router.push(`/account/orders/${updatedOrder.id}`);
+        setLoading(false);
       }
-      setLoading(false);
     }
   }
 
@@ -285,8 +285,8 @@ const CartDetails = ({ userId }: ComponentProps) => {
           )}
         </div>
 
-        <div className="w-full bg-amber-600 text-black">
-          <div className="flex flex-col items-start w-full space-y-4 p-3 rounded-md">
+        <div className="w-full text-black bg-amber-600">
+          <div className="flex flex-col items-start w-full p-3 space-y-4 rounded-md">
             <h2 className="text-xl font-bold">Order Summary</h2>
             <div className="flex items-center justify-between w-full">
               <p className="text-lg font-medium">Cart Total</p>
@@ -304,87 +304,87 @@ const CartDetails = ({ userId }: ComponentProps) => {
                     onSubmit={handleSubmit(onSubmit)}
                     className="w-full mt-3"
                   >
-                    <div className="flex flex-col space-y-2 w-full">
+                    <div className="flex flex-col w-full space-y-2">
                       <Label htmlFor="street_address">Street Address</Label>
                       <Input
                         {...register("street_address")}
                         type="text"
                         id="street_address"
                         name="street_address"
-                        className="bg-white text-gray-900"
+                        className="text-gray-900 bg-white"
                         required
                       />
                     </div>
-                    <div className="flex flex-col space-y-2 w-full mt-2">
+                    <div className="flex flex-col w-full mt-2 space-y-2">
                       <Label htmlFor="email">Email</Label>
                       <Input
                         {...register("email")}
                         type="text"
                         id="email"
                         name="email"
-                        className="bg-white text-gray-900"
+                        className="text-gray-900 bg-white"
                         required
                       />
                     </div>
-                    <div className="flex flex-col space-y-2 w-full mt-2">
+                    <div className="flex flex-col w-full mt-2 space-y-2">
                       <Label htmlFor="company">Company</Label>
                       <Input
                         {...register("company")}
                         type="text"
                         id="company"
                         name="company"
-                        className="bg-white text-gray-900"
+                        className="text-gray-900 bg-white"
                       />
                     </div>
 
                     <div className="flex items-center justify-between w-full gap-4 mt-3">
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <Label htmlFor="local_area">Suburb</Label>
                         <Input
                           {...register("local_area")}
                           type="text"
                           id="local_area"
                           name="local_area"
-                          className="bg-white text-gray-900"
+                          className="text-gray-900 bg-white"
                         />
                       </div>
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <Label htmlFor="city">City</Label>
                         <Input
                           {...register("city")}
                           type="text"
                           id="city"
                           name="city"
-                          className="bg-white text-gray-900"
+                          className="text-gray-900 bg-white"
                         />
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between w-full gap-4 mt-3">
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <Label htmlFor="phone">Phone Number</Label>
                         <Input
                           {...register("phone")}
                           type="tel"
                           id="phone"
                           name="phone"
-                          className="bg-white text-gray-900"
+                          className="text-gray-900 bg-white"
                         />
                       </div>
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <Label htmlFor="code">Postal Code</Label>
                         <Input
                           {...register("code")}
                           type="text"
                           id="code"
                           name="code"
-                          className="bg-white text-gray-900"
+                          className="text-gray-900 bg-white"
                         />
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between w-full gap-4 mt-3">
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <FormField
                           control={form.control}
                           name="type"
@@ -419,26 +419,26 @@ const CartDetails = ({ userId }: ComponentProps) => {
                         {/* <Label htmlFor="type">Select Address Type</Label>
                         <select {...register("type")}>
                           <option
-                            className="text-lg p-2 hover:bg-slate-100"
+                            className="p-2 text-lg hover:bg-slate-100"
                             value="business"
                           >
                             Business
                           </option>
                           <option
                             value="residential"
-                            className="text-lg p-2 hover:bg-slate-100"
+                            className="p-2 text-lg hover:bg-slate-100"
                           >
                             Residential
                           </option>
                           <option
-                            className="text-lg p-2 hover:bg-slate-100"
+                            className="p-2 text-lg hover:bg-slate-100"
                             value="school"
                           >
                             School
                           </option>
                         </select> */}
                       </div>
-                      <div className="w-full flex flex-col space-y-2">
+                      <div className="flex flex-col w-full space-y-2">
                         <FormField
                           control={form.control}
                           name="zone"
@@ -487,7 +487,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
 
                     <Button
                       type="submit"
-                      className="w-full bg-black text-amber-600 mt-6"
+                      className="w-full mt-6 bg-black text-amber-600"
                     >
                       {loading ? "Loading Please wait..." : "Save"}
                     </Button>
@@ -495,11 +495,11 @@ const CartDetails = ({ userId }: ComponentProps) => {
                 </Form>
               </div>
             ) : (
-              <div className="w-full bg-amber-600 flex-col items-center">
+              <div className="flex-col items-center w-full bg-amber-600">
                 <p className="mb-4 text-center">
                   Please Sign In Or Sign Up To Place An Order
                 </p>
-                <div className="w-full bg-amber-600 py-4 space-x-4 flex items-center justify-center">
+                <div className="flex items-center justify-center w-full py-4 space-x-4 bg-amber-600">
                   <SignIn />
                   <SignUp />
                 </div>
