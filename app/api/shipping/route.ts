@@ -40,9 +40,9 @@ export async function POST(request: Request) {
     },
     parcels: newParcels,
   }),
- })
+ }).then((res) => res.json()).catch((err) => console.log(err))
 
- const result = await req.json()
+ const result = await req
 
  console.log(result)
 
