@@ -178,6 +178,8 @@ const CartDetails = ({ userId }: ComponentProps) => {
           setLoading(false);
         });
 
+        console.log(res);
+
       const shippingCost = await res.data.rates[0].rate;
 
       const { data: updatedOrder, error: updatedOrderError } = await supabase
