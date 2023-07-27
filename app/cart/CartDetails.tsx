@@ -172,17 +172,15 @@ const CartDetails = ({ userId }: ComponentProps) => {
         }),
       })
         .then((res) => res.json())
-        .catch((err) => {
-          console.log(err);
-          alert("There was an error calculating shipping costs");
-          setLoading(false);
-        });
+        .catch((err) => console.log(err));
 
         console.log(res);
 
-        if(res.error) {
+        if(res.data.error) {
           console.log(res.details + `${JSON.stringify(res.error)}`);
           setLoading(false);
+          alert("There was an error saving the order: " + res.details + `${JSON.stringify(res.error)}`);
+          return
         }
 
       const shippingCost = await res.data.rates[0].rate;
