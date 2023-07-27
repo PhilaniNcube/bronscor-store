@@ -180,6 +180,11 @@ const CartDetails = ({ userId }: ComponentProps) => {
 
         console.log(res);
 
+        if(res.error) {
+          alert(res.details + `${JSON.stringify(res.error)}`);
+          setLoading(false);
+        }
+
       const shippingCost = await res.data.rates[0].rate;
 
       const { data: updatedOrder, error: updatedOrderError } = await supabase

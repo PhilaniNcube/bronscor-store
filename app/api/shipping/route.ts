@@ -40,7 +40,13 @@ export async function POST(request: Request) {
     },
     parcels: newParcels,
   }),
- }).then((res) => res.json()).catch((err) => console.log(err))
+ }).then((res) => res.json()).catch((err) => {
+  console.log(err)
+  return {
+    error: err,
+      details: "There was an error with the shipping rates request"
+  }
+})
 
  const result = await req
 
