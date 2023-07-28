@@ -104,7 +104,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
     // ✅ This will be type-safe and validated.
     console.log(values);
 
-    const { data, error } = await supabase
+    const { data:order, error:order_error } = await supabase
       .from("orders")
       .insert([
         {
@@ -130,12 +130,12 @@ const CartDetails = ({ userId }: ComponentProps) => {
       .select("*")
       .single();
 
-    console.log("Create Order", { data, error });
+    console.log("Create Order", { order, order_error });
 
-    if (error) {
-      console.log("Order Creation Error", error);
-    } else if (data) {
-      let items = data.order_items;
+    if (order_error) {
+      console.log("Order Creation Error", order_error);
+    } else if (order) {
+      let items = order.order_items;
 
       let group: any = [];
       const dimensions = items.map((item) => {
@@ -161,28 +161,27 @@ const CartDetails = ({ userId }: ComponentProps) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          type: data.shipping_address.type,
-          company: data.shipping_address.company,
-          street_address: data.shipping_address.street_address,
-          city: data.shipping_address.city,
-          zone: data.shipping_address.zone,
-          country: data.shipping_address.country,
-          code: data.shipping_address.code,
+          type: order.shipping_address.type,
+          company: order.shipping_address.company,
+          street_address: order.shipping_address.street_address,
+          city: order.shipping_address.city,
+          zone: order.shipping_address.zone,
+          country: order.shipping_address.country,
+          code: order.shipping_address.code,
           parcels: dimensions,
         }),
       })
         .then((res) => res.json())
         .catch((err) => console.log(err));
 
-        if(res.data.error) {
-          console.log(res.details + `${JSON.stringify(res.error)}`);
-          alert(`${res.data.details}`);
-          setLoading(false);
-          return
-        }
+      if (res.data.error) {
+        console.log(res.details + `${JSON.stringify(res.error)}`);
+        alert(`${res.data.details}`);
+        setLoading(false);
+        return;
+      }
 
       const shippingCost = await res.data.rates[0].rate;
-
 
       const { data: updatedOrder, error: updatedOrderError } = await supabase
         .from("orders")
@@ -190,12 +189,11 @@ const CartDetails = ({ userId }: ComponentProps) => {
           shipping_cost: shippingCost.toFixed(2),
           total_amount: (shippingCost + totalPrice).toFixed(2),
         })
-        .eq("id", data.id)
+        .eq("id", order.id)
         .select("*")
         .single();
 
       if (updatedOrderError) {
-
         alert(
           "There was an error saving the order: " + updatedOrderError.message
         );
