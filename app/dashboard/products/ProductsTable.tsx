@@ -1,6 +1,6 @@
 "use client";
 
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import {
   Table,
   TableBody,
@@ -13,10 +13,10 @@ import {
 import Link from "next/link";
 import { EyeIcon } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
-import { useSupabase } from "@/Providers/SupabaseProvider";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/utils";
+import { createClient } from "@/utils/supabase/client";
 
 type ProductsTableProps = {
   products: Database['public']['Tables']['products']['Row'][]
@@ -69,7 +69,7 @@ const Toggle = ({ checked, id, attr }:{checked:boolean, id:string, attr:string})
 
   const router = useRouter();
 
-const {supabase} = useSupabase();
+const supabase = createClient();
 
 const [isChecked, setIsChecked] = useState(checked);
 

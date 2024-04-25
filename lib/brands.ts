@@ -1,10 +1,8 @@
-import { cookies } from 'next/headers'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/schema'
+import { createClient } from '@/utils/supabase/server'
 
 export const getBrands = async () => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     const {data:brands, error} = await supabase.from("brands").select('*')
 
@@ -19,7 +17,7 @@ export const getBrands = async () => {
 
 export const getBrand = async (slug:string) => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     const {data:brands, error} = await supabase.from("brands").select('*').eq('slug', slug).single()
 

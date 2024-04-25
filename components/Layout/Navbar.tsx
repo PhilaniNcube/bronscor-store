@@ -1,7 +1,9 @@
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import DesktopNav from "./DesktopNav";
-import { User } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 import MobileNav from "./MobileNav";
+import { createClient } from "@/utils/supabase/server";
+import { getCategories } from "@/lib/categories";
 
 type Props = {
   user:User | null
@@ -9,17 +11,28 @@ type Props = {
 
 }
 
-const Navbar = ({user, categories}:Props) => {
+const Navbar = async () => {
 
-  // console.log("Getting User", {user})
+  const supabase = createClient()
 
-  return (
-    <nav className="bg-black ">
-      <div className="container">
-        <DesktopNav user={user} categories={categories}  />
-        <MobileNav user={user} categories={categories}  />
-      </div>
-    </nav>
-  );
+ const userData = supabase.auth.getUser();
+
+	const categoriesData = getCategories();
+
+	const [
+		{
+			data: { user },
+		},
+		categories,
+	] = await Promise.all([userData, categoriesData]);
+
+	return (
+		<nav className="bg-black ">
+			<div className="container">
+				<DesktopNav user={user} categories={categories} />
+				<MobileNav user={user} categories={categories} />
+			</div>
+		</nav>
+	);
 };
 export default Navbar;

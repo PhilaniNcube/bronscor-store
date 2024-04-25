@@ -1,10 +1,9 @@
-import { cookies } from 'next/headers'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/schema'
+
+import { createClient } from '@/utils/supabase/server'
 
 export const getCategories = async () => {
 
-      const supabase = createServerComponentClient<Database>({cookies})
+      const supabase = createClient()
 
       const {data:categories, error} = await supabase.from("categories").select('*').order("name", { ascending: true })
 
@@ -19,7 +18,7 @@ export const getCategories = async () => {
 
 export const getCategory = async (id:number) => {
 
-        const supabase = createServerComponentClient<Database>({cookies})
+        const supabase = createClient()
 
         const {data:categories, error} = await supabase.from("categories").select('*').eq('id', id).single()
 
@@ -33,7 +32,7 @@ export const getCategory = async (id:number) => {
 
 export const getCategoryBySlug = async (slug:string) => {
 
-        const supabase = createServerComponentClient<Database>({cookies})
+        const supabase = createClient()
 
         const {data:categories, error} = await supabase.from("categories").select('*').eq('slug', slug).single()
 

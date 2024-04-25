@@ -17,10 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useForm } from "react-hook-form";
-import { useSupabase } from "@/Providers/SupabaseProvider";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/utils/supabase/client";
 
 const formSchema = z.object({
   name: z.string().nonempty("Please enter a name"),
@@ -31,7 +31,7 @@ const CreateCategory = () => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const {supabase} = useSupabase();
+   const supabase = createClient()
 
     const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -68,7 +68,7 @@ const CreateCategory = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full lg:w-2/3 mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
+          className="w-full px-3 py-4 mt-4 border rounded-md lg:w-2/3 border-neutral-300 bg-neutral-100"
         >
           <FormField
             control={form.control}
@@ -77,7 +77,7 @@ const CreateCategory = () => {
               <FormItem>
                 <FormLabel>Category Name</FormLabel>
                 <FormControl>
-                  <Input className="bg-white text-gray-900" placeholder="Name" {...field} />
+                  <Input className="text-gray-900 bg-white" placeholder="Name" {...field} />
                 </FormControl>
                 <FormDescription>This is category name.</FormDescription>
                 <FormMessage />

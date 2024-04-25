@@ -1,16 +1,12 @@
 import Navbar from '@/components/Layout/Navbar'
 import './globals.css'
 import { Inter } from 'next/font/google'
-import SupabaseProvider from '@/Providers/SupabaseProvider'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
-import { getCategories } from '@/lib/categories'
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Footer from './Footer'
 import CartProvider from '@/components/Providers/CartProvider'
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import CartSlide from '@/components/Cart/CartSlide'
-import { Database } from '@/schema'
+
 
 
 
@@ -31,26 +27,22 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
 
-const supabase = createServerComponentClient<Database>({ cookies });
 
-const userData =  supabase.auth.getUser();
 
-const categoriesData =  getCategories();
 
-const [{data: { user },}, categories] = await Promise.all([userData, categoriesData]);
 
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SupabaseProvider>
+
           <CartProvider>
-            <Navbar user={user} categories={categories} />
+            <Navbar  />
             <CartSlide />
             {children}
-            <Footer categories={categories} />
+            <Footer  />
             <Toaster />
           </CartProvider>
-        </SupabaseProvider>
+
       </body>
     </html>
   );

@@ -13,16 +13,16 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Heart, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
-import { useSupabase } from "@/Providers/SupabaseProvider";
-import { User } from "@supabase/supabase-js";
+import type { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
 import SignIn from "../Modals/SignIn";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { useAppDispatch } from "@/app/store/store";
 import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import AccountDropDown from "./AccountDropDown";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = {
   user: User | null;
@@ -35,7 +35,8 @@ const DesktopNav = ({user, categories}:Props) => {
 
   const router = useRouter()
 
-const {supabase } = useSupabase();
+const supabase = createClient()
+
 const signOut = async () => {
  const data = await supabase.auth.signOut();
  router.push('/')
@@ -93,10 +94,10 @@ const signOut = async () => {
         {user ? (
           <div className="flex items-center space-x-4">
             <Link href="/account">
-              <UserIcon className="border rounded-full text-black border-amber-600 bg-amber-600" />
+              <UserIcon className="text-black border rounded-full border-amber-600 bg-amber-600" />
             </Link>
             <Link href="/wishlist">
-              <Heart className="border rounded-full text-red-600 border-white bg-white" />
+              <Heart className="text-red-600 bg-white border border-white rounded-full" />
             </Link>
 
             <Button

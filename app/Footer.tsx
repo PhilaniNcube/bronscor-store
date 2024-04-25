@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { Separator } from "@/components/ui/separator";
-import { Database } from "@/schema";
+import { getCategories } from "@/lib/categories";
+import type { Database } from "@/schema";
 import { MailIcon, PhoneCallIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,11 +38,14 @@ export const links = [
   }
 ]
 
-const Footer = ({categories}:Props) => {
+const Footer = async () => {
+
+  const categories = await getCategories();
+
   return (
     <footer className="bg-black text-amber-600">
       <div className="container py-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {/* Grid One */}
           <div className="flex flex-col">
             <Image
@@ -58,26 +62,26 @@ const Footer = ({categories}:Props) => {
 
             <div className="w-full mt-4">
               <p className="text-xl font-medium">Accepted Payment Methods</p>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                 <div className="flex items-center justify-between">
                   <img
                     src="/images/visa_logo.svg"
                     alt="Visa"
-                    className="w-full object-cover"
+                    className="object-cover w-full"
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <img
                     src="/images/mc.svg"
                     alt="Visa"
-                    className="w-full object-cover"
+                    className="object-cover w-full"
                   />
                 </div>
                 <div className="flex items-center justify-between">
                   <img
                     src="/images/payfast_white.svg"
                     alt="Payfast"
-                    className="w-full object-cover"
+                    className="object-cover w-full"
                   />
                 </div>
               </div>
@@ -87,12 +91,12 @@ const Footer = ({categories}:Props) => {
           <div className="w-full">
             <h3 className="text-xl font-medium">Categories</h3>
 
-            <ul className="space-y-2 mt-8 flex flex-col">
+            <ul className="flex flex-col mt-8 space-y-2">
               {categories.map((category) => (
                 <Link
                   key={category.id}
                   href={`/categories/${category.slug}`}
-                  className="text-amber-600 hover:text-slate-100 text-sm font-medium"
+                  className="text-sm font-medium text-amber-600 hover:text-slate-100"
                 >
                   {category.name}
                 </Link>
@@ -103,12 +107,12 @@ const Footer = ({categories}:Props) => {
           {/* Grid Three */}
           <div className="w-full">
             <h3 className="text-xl font-medium">Information</h3>
-            <ul className="space-y-2 mt-8 flex flex-col">
+            <ul className="flex flex-col mt-8 space-y-2">
               {links.map((link, idx) => (
                 <Link
-                  key={idx}
+                  key={link.title}
                   href={`${link.href}`}
-                  className="text-amber-600 hover:text-slate-100 text-sm font-medium"
+                  className="text-sm font-medium text-amber-600 hover:text-slate-100"
                 >
                   {link.title}
                 </Link>
@@ -119,24 +123,24 @@ const Footer = ({categories}:Props) => {
           {/* Grid Four */}
           <div className="w-full">
             <h3 className="text-xl font-medium">Contact Us</h3>
-            <ul className="space-y-2 mt-8 flex flex-col">
-              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+            <ul className="flex flex-col mt-8 space-y-2">
+              <li className="flex items-center justify-start space-x-4 text-sm font-medium text-amber-600 hover:text-slate-100">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
                 <a href="tel:+27822095367">+27 82 209 5367 (Whatsapp Only)</a>
               </li>
-              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="flex items-center justify-start space-x-4 text-sm font-medium text-amber-600 hover:text-slate-100">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
                 <a href="tel:+27414531530">+27 41 453 1530 (PE)</a>
               </li>
-              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="flex items-center justify-start space-x-4 text-sm font-medium text-amber-600 hover:text-slate-100">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
                 <a href="tel:+27217730908">+27 21 773 0908 (CPT)</a>
               </li>
-              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="flex items-center justify-start space-x-4 text-sm font-medium text-amber-600 hover:text-slate-100">
                 <PhoneCallIcon className="w-5 h-5 mr-2" />
                 <a href="tel:+27106300501">+27 10 630 0501 (JHB)</a>
               </li>
-              <li className="text-amber-600 flex items-center justify-start space-x-4 hover:text-slate-100 text-sm font-medium">
+              <li className="flex items-center justify-start space-x-4 text-sm font-medium text-amber-600 hover:text-slate-100">
                 <MailIcon className="w-5 h-5 mr-2" />
                 <a href="mailto:onlinestore@bronscorcc.co.za">
                   vimal@bronscorcc.co.za

@@ -1,12 +1,11 @@
-import { cookies } from "next/headers"
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from "@/schema"
+
+import { createClient } from "@/utils/supabase/server"
 
 
 
 
   export const getAdmin = async () => {
-     const supabase = createServerComponentClient<Database>({cookies})
+     const supabase = createClient()
 
      const {data:is_admin, error} = await supabase.rpc("is_admin").single()
 
@@ -24,7 +23,7 @@ import { Database } from "@/schema"
 
     console.log(id)
 
-   const supabase = createServerComponentClient<Database>({cookies})
+   const supabase = createClient()
 
     const {data:profile, error} = await supabase.from("profiles").select('*').eq('id', id).single()
 
@@ -40,7 +39,7 @@ import { Database } from "@/schema"
 
   //   export const getSession = async () => {
 
-  //  const supabase = createServerComponentClient<Database>({cookies})
+  //  const supabase = createClient()
 
   //   const session = await supabase.auth.getSession()
 
@@ -56,7 +55,7 @@ import { Database } from "@/schema"
       const start = (page - 1) * page_size;
   const end = page * page_size - 1
 
-  const supabase = createServerComponentClient<Database>({cookies})
+  const supabase = createClient()
 
   const {data:profiles, error, count} = await supabase.from("profiles").select('*', {count: "exact"}).range(start, end).order('first_name', {ascending: true})
 

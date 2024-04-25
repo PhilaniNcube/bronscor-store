@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { formatCurrency } from "@/lib/utils";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import Image from 'next/image'
 import { useAppDispatch, useAppSelector } from "@/app/store/store";
 import {
@@ -11,8 +11,8 @@ import {
   openCart,
 } from "@/app/store/features/cartSlice";
 import { HeartIcon, ShoppingCartIcon } from "lucide-react";
-import { useSupabase } from "@/Providers/SupabaseProvider";
 import { toast } from "../ui/use-toast";
+import { createClient } from "@/utils/supabase/client";
 
 type ProductProps = {
   product: Database["public"]["Tables"]["products"]["Row"];
@@ -20,7 +20,7 @@ type ProductProps = {
 
 const ProductItem = ({ product }: ProductProps) => {
 
-  const {supabase} = useSupabase()
+  const supabase = createClient()
 
  const dispatch = useAppDispatch();
 
@@ -38,7 +38,7 @@ const ProductItem = ({ product }: ProductProps) => {
           dispatch(openCart());
         }}
         variant="ghost"
-        className="absolute top-2 right-2  text-black rounded-full bg-slate-200 shadow group-hover:bg-amber-600 flex items-center justify-center p-2 transition-all duration-150"
+        className="absolute flex items-center justify-center p-2 text-black transition-all duration-150 rounded-full shadow top-2 right-2 bg-slate-200 group-hover:bg-amber-600"
       >
         <ShoppingCartIcon className="w-6 h-6" />
       </Button>
@@ -76,7 +76,7 @@ const ProductItem = ({ product }: ProductProps) => {
           }
         }}
         variant="ghost"
-        className="absolute top-2 left-2  text-red-500 group-hover:text-white rounded-full bg-slate-200 shadow group-hover:bg-red-600 flex items-center justify-center p-2 transition-all duration-150"
+        className="absolute flex items-center justify-center p-2 text-red-500 transition-all duration-150 rounded-full shadow top-2 left-2 group-hover:text-white bg-slate-200 group-hover:bg-red-600"
       >
         <HeartIcon className="w-6 h-6" />
       </Button>
@@ -96,7 +96,7 @@ const ProductItem = ({ product }: ProductProps) => {
           <Link href={`/products/${product.slug}`}>
             <Button
               type="button"
-              className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-700 w-full text-xs md:text-sm font-medium text-black hover:text-amber-500"
+              className="w-full mt-3 text-xs font-medium text-black bg-amber-500 hover:shadow-md hover:bg-gray-700 md:text-sm hover:text-amber-500"
               onClick={() => {
                 dispatch(
                   addToCart({

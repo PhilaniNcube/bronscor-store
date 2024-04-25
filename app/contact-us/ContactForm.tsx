@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/components/ui/use-toast";
@@ -57,12 +57,12 @@ const ContactForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid grid-cols-5 gap-4"
         >
-          <div className="col-span-5 md:col-span-2 lg:col-span-2 bg-amber-600 text-black p-8">
+          <div className="col-span-5 p-8 text-black md:col-span-2 lg:col-span-2 bg-amber-600">
             <h1 className="text-3xl font-bold">Contact Us</h1>
             <Separator className="my-4 text-black bg-black" />
           </div>
-          <div className="col-span-5 md:col-span-2 lg:col-span-3 p-4 text-amber-600">
-            <div className="w-full flex space-x-3">
+          <div className="col-span-5 p-4 md:col-span-2 lg:col-span-3 text-amber-600">
+            <div className="flex w-full space-x-3">
               <FormField
                 control={form.control}
                 name="name"
@@ -71,7 +71,7 @@ const ContactForm = () => {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        className="border-amber-600 bg-white"
+                        className="bg-white border-amber-600"
                         placeholder="Your Name"
                         {...field}
                       />
@@ -89,7 +89,7 @@ const ContactForm = () => {
                     <FormControl>
                       <Input
                         type="email"
-                        className="border-amber-600 bg-white"
+                        className="bg-white border-amber-600"
                         placeholder="you@example.com"
                         {...field}
                       />
@@ -107,7 +107,7 @@ const ContactForm = () => {
                     <FormControl>
                       <Input
                         type="tel"
-                        className="border-amber-600 bg-white"
+                        className="bg-white border-amber-600"
                         {...field}
                       />
                     </FormControl>
@@ -127,7 +127,7 @@ const ContactForm = () => {
                       <Textarea
                       placeholder="Enter your message"
                       rows={5}
-                        className="border-amber-600 bg-white"
+                        className="bg-white border-amber-600"
                         {...field}
                       />
                     </FormControl>
@@ -136,7 +136,7 @@ const ContactForm = () => {
                 )}
               />
             </div>
-            <Button type="submit" className="mt-5 bg-amber-600 text-black max-w-sm w-full">Save</Button>
+            <Button type="submit" className="w-full max-w-sm mt-5 text-black bg-amber-600">Save</Button>
           </div>
         </form>
       </Form>

@@ -26,23 +26,31 @@ import { Label } from "@/components/ui/label";
 
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
 import { EyeIcon } from "lucide-react";
 
-const FormSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z
-    .string()
-    .min(8, "Password is too short! It must be more than 8 characters")
-    .max(50, "Too Long!"),
+const formSchema = z.object({
+	email: z.string().email("Invalid email address"),
+	password: z
+		.string()
+		.min(8, "Password is too short! It must be more than 8 characters")
+		.max(50, "Too Long!"),
 });
 
 const SignIn = () => {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-  });
+
+   const [isOpen, setIsOpen] = useState(false);
+
+
+   const form = useForm<z.infer<typeof formSchema>>({
+				resolver: zodResolver(formSchema),
+				defaultValues: {
+					email: "",
+					password: "",
+				},
+			});
 
   const [inputType, setInputType] = useState("password");
 
@@ -54,25 +62,25 @@ const SignIn = () => {
 
   const router = useRouter();
 
-  const onSubmit = async (data: any) => {
-    const { password, email } = data;
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+			const { password, email } = data;
 
-    const { data: user, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+			const { data: user, error } = await supabase.auth.signInWithPassword({
+				email,
+				password,
+			});
 
-    if (error) {
-      alert(`Error login in: ${error.message}`);
-    }
+			if (error) {
+				alert(`Error login in: ${error.message}`);
+			}
 
-    router.refresh()
-  };
+			router.refresh();
+		};
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black">
+        <Button className="bg-black text-amber-500 hover:bg-amber-600 hover:text-black">
           Sign In
         </Button>
       </DialogTrigger>
@@ -120,7 +128,7 @@ const SignIn = () => {
                           {...field}
                           className="text-gray-900"
                         />
-                        <EyeIcon className="absolute top-1/2 right-2 transform -translate-y-1/2 w-6 h-6 text-gray-900 cursor-pointer" onClick={toggleInputType} />
+                        <EyeIcon className="absolute w-6 h-6 text-gray-900 transform -translate-y-1/2 cursor-pointer top-1/2 right-2" onClick={toggleInputType} />
                       </div>
                     </FormControl>
                     {/* <FormDescription>

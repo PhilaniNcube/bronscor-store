@@ -3,11 +3,11 @@ import { useState } from "react"
 import Image from "next/image"
 import { MenuIcon, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
-import { useSupabase } from "@/Providers/SupabaseProvider";
-import { User } from "@supabase/supabase-js";
+
+import type { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
 import SignIn from "../Modals/SignIn";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { totalCartItemsSelector } from "@/app/store/features/cartSlice";
 import { useSelector } from "react-redux";
 import Link from "next/link"
@@ -20,6 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { createClient } from "@/utils/supabase/client";
 
 type Props = {
   user: User | null;
@@ -27,22 +28,22 @@ type Props = {
 };
 
 const MobileNav = ({user, categories}:Props) => {
-  const { supabase } = useSupabase();
+  const supabase = createClient()
   const [open, setOpen] = useState(false)
  const qty = useSelector(totalCartItemsSelector);
   return (
     <nav className="flex py-2 justify-center items-center md:hidden bg-black z-[9999]">
-      <div className="w-full flex justify-between items-center">
+      <div className="flex items-center justify-between w-full">
         <Link href="/">
           <Image
             src="/images/express-transparent.png"
             width={822}
             height={303}
             alt="logo"
-            className="w-24 object-cover"
+            className="object-cover w-24"
           />
         </Link>
-        <div className="flex flex-1 items-center justify-end">
+        <div className="flex items-center justify-end flex-1">
           <Link href="/cart" className="relative">
             <ShoppingBag className="text-amber-500" />
             {qty > 0 && (
@@ -61,7 +62,7 @@ const MobileNav = ({user, categories}:Props) => {
               <SheetHeader>
                 <SheetTitle>Menu</SheetTitle>
               </SheetHeader>
-              <div className="w-full p-3 flex flex-col space-y-4">
+              <div className="flex flex-col w-full p-3 space-y-4">
                 {categories.map((category) => (
                   <Link key={category.id} href={`/categories/${category.slug}`}>
                     {category.name}
@@ -77,7 +78,7 @@ const MobileNav = ({user, categories}:Props) => {
                   ) : (
                     <div className="flex flex-col space-y-4">
                       <Link href="/account" className="flex space-x-2">
-                        <UserIcon className="border rounded-full text-gray-900 border-gray-900" />
+                        <UserIcon className="text-gray-900 border border-gray-900 rounded-full" />
                         <span>My Account</span>
                       </Link>
                       <Button

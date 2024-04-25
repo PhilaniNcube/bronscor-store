@@ -1,6 +1,5 @@
 "use client";
 
-import { useSupabase } from "@/Providers/SupabaseProvider";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { totalPriceSelector, addToCart, removeFromCart, deleteFromCart } from "../store/features/cartSlice";
@@ -11,7 +10,7 @@ import { ArrowLeft, MinusSquare, PlusSquare } from "lucide-react";
 import { LucideTrash } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
 import SignIn from "@/components/Modals/SignIn";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as z from "zod"
@@ -36,6 +35,7 @@ import {
 import { useState } from "react";
 import SignUp from "@/components/Modals/SignUp";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/client";
 
 
 const provinces = [
@@ -70,6 +70,13 @@ type ComponentProps = {
   userId: string | undefined;
 }
 
+type Group = {
+	width?: number ;
+	height?: number ;
+	length?: number ;
+	weight?: number ;
+}[];
+
 const CartDetails = ({ userId }: ComponentProps) => {
   const [loading, setLoading] = useState(false);
 
@@ -96,7 +103,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
     formState: { errors },
   } = form;
 
- const supabase = createClientComponentClient<Database>();
+ const supabase = createClient();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
@@ -135,9 +142,9 @@ const CartDetails = ({ userId }: ComponentProps) => {
     if (order_error) {
       console.log("Order Creation Error", order_error);
     } else if (order) {
-      let items = order.order_items;
+      const items = order.order_items;
 
-      let group: any = [];
+      const group: Group = [];
       const dimensions = items.map((item) => {
         let i = 1;
         while (i <= item.quantity) {
@@ -145,7 +152,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
             width: item.product.dimensions?.width,
             height: item.product.dimensions?.height,
             length: item.product.dimensions?.depth,
-            weight: item.product.dimensions?.weight! / 1000,
+            weight: item.product.dimensions?.weight ? item.product.dimensions?.weight / 1000 : 0,
           });
           i++;
         }
@@ -175,7 +182,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
         .catch((err) => console.log(err));
 
       if (res.data.error) {
-        console.log(res.details + `${JSON.stringify(res.error)}`);
+        console.log(`${res.details} ${JSON.stringify(res.error)}`);
         alert(`${res.data.details}`);
         setLoading(false);
         return;
@@ -195,7 +202,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
 
       if (updatedOrderError) {
         alert(
-          "There was an error saving the order: " + updatedOrderError.message
+          `There was an error saving the order: ${updatedOrderError.message}`
         );
         setLoading(false);
       }

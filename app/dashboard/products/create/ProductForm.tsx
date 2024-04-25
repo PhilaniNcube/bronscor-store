@@ -1,21 +1,22 @@
 "use client"
-import { useSupabase } from "@/Providers/SupabaseProvider";
+
 import Image from 'next/image'
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import {  useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { Trash2Icon } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { cn } from "@/lib/utils";
 import slugify from "slugify";
+import { createClient } from '@/utils/supabase/client';
 
 
 const ProductSchema = z.object({
@@ -67,32 +68,30 @@ const [image, setImage] = useState('/images/placeholder-image.png')
 
 const [loading, setLoading] = useState(false)
 
-const {supabase} = useSupabase()
+const supabase = createClient()
 
 
 const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  setLoading(true)
+  setLoading(true);
 
-  if(!e.target.files) {
-    alert('Please select an image to upload')
-    return
-  }
-  const file = e.target.files[0]
+		if (!e.target.files) {
+			alert("Please select an image to upload");
+			return;
+		}
+		const file = e.target.files[0];
 
-  const { data, error } = await supabase.storage
-    .from("products")
-    .upload(uuidv4(), file);
+		const { data, error } = await supabase.storage
+			.from("products")
+			.upload(uuidv4(), file);
 
-  if(error) {
-    alert('Error uploading image' + error.message);
-     setLoading(false);
-    return
-  } else {
-    setImage(`${STORAGE_URL}${data.path}`);
-     setLoading(false);
-  }
+		if (error) {
+			alert(`Error uploading image ${error.message}`);
+			setLoading(false);
+			return;
+		}
 
-  setLoading(false);
+		setImage(`${STORAGE_URL}${data.path}`);
+		setLoading(false);
 
 };
 
@@ -126,79 +125,103 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const onSubmit: SubmitHandler<FormProps> = async (data) => {
 
 
-    console.log(data)
+    console.log(data);
 
+				const {
+					name,
+					description,
+					item_id,
+					price,
+					short_description,
+					dimensions,
+					brand_id,
+					category_id,
+					details,
+				} = data;
 
-    const {name, description, item_id, price, short_description, dimensions, brand_id, category_id,  details  } = data
+				console.log({
+					name,
+					description,
+					item_id,
+					price,
+					short_description,
+					dimensions,
+					brand_id,
+					category_id,
+					details,
+				});
 
-    console.log({name, description, item_id, price, short_description, dimensions, brand_id, category_id, details  })
+				const slug = slugify(name.toLowerCase(), { remove: /[*+~.()'"!:@]/g });
 
-    const slug = slugify(name.toLowerCase(), {remove: /[*+~.()'"!:@]/g})
+				const { data: product, error } = await supabase
+					.from("products")
+					.insert([
+						{
+							name,
+							slug,
+							description,
+							item_id,
+							price: +price,
+							short_description,
+							dimensions: {
+								width: +dimensions.width,
+								height: +dimensions.height,
+								depth: +dimensions.depth,
+								weight: +dimensions.weight,
+							},
+							brand_id: +brand_id,
+							category_id: +category_id,
+							details,
+							image,
+						},
+					])
+					.select("*")
+					.single();
 
-    const { data: product, error } = await supabase.from("products").insert([{
-    name,
-    slug,
-    description,
-    item_id,
-    price: +price,
-    short_description,
-    dimensions: {
-      width: +dimensions.width,
-      height: +dimensions.height,
-      depth: +dimensions.depth,
-      weight: +dimensions.weight
-    },
-    brand_id: +brand_id,
-    category_id:+category_id,
-    details,
-    image
-    }]).select('*').single()
+				if (error) {
+					alert("Error creating product");
+					return;
+				}
 
-
-    if(error) {
-      alert('Error creating product')
-      return
-    } else {
-      alert('Product created successfully')
-      console.log(product)
-      router.push(`/dashboard/products/${product?.id}`)
-    }
+				alert("Product created successfully");
+				console.log(product);
+				router.push(`/dashboard/products/${product?.id}`);
 
   }
 
   return (
-    <div className="w-full flex gap-6 justify-between text-gray-900">
-      <div className="w-full p-4 bg-slate-300 rounded-lg">
+    <div className="flex justify-between w-full gap-6 text-gray-900">
+      <div className="w-full p-4 rounded-lg bg-slate-300">
         <h1 className="text-3xl font-semibold text-black">
           Create New Product
         </h1>
         <Separator className="w-full my-4 text-amber-500" />
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full mt-4 border border-neutral-300 bg-neutral-100 py-4 px-3 rounded-md"
+          className="w-full px-3 py-4 mt-4 border rounded-md border-neutral-300 bg-neutral-100"
         >
-          <div className="w-full flex space-x-4">
-            <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
+          <div className="flex w-full space-x-4">
+            <div className="relative flex flex-col w-full space-y-1 lg:w-2/3">
               <Label htmlFor="name">Product Name</Label>
               <Input
                 type="text"
                 id="name"
                 {...register("name")}
                 placeholder="Enter product name"
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
               {errors.name && (
                 <p className="text-xs text-red-600 ">{errors.name.message}</p>
               )}
             </div>{" "}
-            <div className="w-full lg:w-2/3 flex flex-col  space-y-1 relative">
+            <div className="relative flex flex-col w-full space-y-1 lg:w-2/3">
               <Label htmlFor="item_id">Product ID/SKU</Label>
               <Input
                 type="text"
                 id="item_id"
                 {...register("item_id")}
                 placeholder="Enter product id or sku"
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
               {errors.item_id && (
                 <p className="text-xs text-red-600 ">
@@ -207,27 +230,27 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               )}
             </div>
           </div>
-          <div className="w-full flex flex-col  space-y-1 relative mt-4">
+          <div className="relative flex flex-col w-full mt-4 space-y-1">
             <Label htmlFor="price">Price</Label>
             <Input
               type="number"
               id="price"
               step="any"
               {...register("price")}
-              className="border border-neutral-300 bg-white"
+              className="bg-white border border-neutral-300"
             />
             {errors.price && (
               <p className="text-xs text-red-600 ">{errors.price.message}</p>
             )}
           </div>
-          <div className="w-full flex flex-col  space-y-1 relative mt-4">
+          <div className="relative flex flex-col w-full mt-4 space-y-1">
             <Label htmlFor="short_description">Short Description</Label>
             <Input
               type="text"
               id="short_description"
               {...register("short_description")}
               placeholder="Enter short description"
-              className="border border-neutral-300 bg-white"
+              className="bg-white border border-neutral-300"
             />
             {errors.short_description && (
               <p className="text-xs text-red-600 ">
@@ -235,13 +258,13 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               </p>
             )}
           </div>
-          <div className="w-full flex flex-col  space-y-1 relative mt-4">
+          <div className="relative flex flex-col w-full mt-4 space-y-1">
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
               {...register("description")}
               placeholder="Enter product description"
-              className="border border-neutral-300 bg-white"
+              className="bg-white border border-neutral-300"
             />
             {errors.description && (
               <p className="text-xs text-red-600 ">
@@ -249,7 +272,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               </p>
             )}
           </div>
-          <div className="w-full gap-3 flex relative mt-4">
+          <div className="relative flex w-full gap-3 mt-4">
             <div className="w-1/4">
               <Label htmlFor="width" className="text-xs">
                 Width(cm)
@@ -258,7 +281,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 type="number"
                 id="width"
                 {...register("dimensions.width")}
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
             </div>
             <div className="w-1/4">
@@ -269,7 +292,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 type="number"
                 id="height"
                 {...register("dimensions.height")}
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
             </div>
             <div className="w-1/4">
@@ -280,7 +303,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 type="number"
                 id="depth"
                 {...register("dimensions.depth")}
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
             </div>
             <div className="w-1/4">
@@ -291,16 +314,16 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                 type="number"
                 id="weight"
                 {...register("dimensions.weight")}
-                className="border border-neutral-300 bg-white"
+                className="bg-white border border-neutral-300"
               />
             </div>
           </div>{" "}
           {errors.dimensions && (
             <p className="text-xs text-red-600 ">{errors.dimensions.message}</p>
           )}
-          <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
-          <div className="w-full flex flex-col space-y-3 my-4">
-            <h3 className="my-3 text-neutral-800 font-medium">
+          <Separator className="mt-5 border text-neutral-700 border-neutral-300" />
+          <div className="flex flex-col w-full my-4 space-y-3">
+            <h3 className="my-3 font-medium text-neutral-800">
               Add Product Attributes
             </h3>
 
@@ -313,13 +336,13 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
                       type="text"
                       {...register(`details.${index}.key`)}
                       placeholder="Enter detail name e.g. Colour"
-                      className="border border-neutral-300 bg-white"
+                      className="bg-white border border-neutral-300"
                     />
                     <Input
                       type="text"
                       {...register(`details.${index}.value`)}
                       placeholder="Enter detail value e.g. Black"
-                      className="border border-neutral-300 bg-white"
+                      className="bg-white border border-neutral-300"
                     />
                     <Button
                       type="button"
@@ -340,17 +363,17 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               <Button
                 type="button"
                 onClick={() => append({ key: "", value: "" })}
-                className="mt-4 w-fit px-4"
+                className="px-4 mt-4 w-fit"
               >
                 Add Detail
               </Button>
             </div>
           </div>
-          <Separator className="mt-5 text-neutral-700 border border-neutral-300" />
-          <div className="mt-4 w-full ">
-            <fieldset className="my-3 relative" {...register("brand_id")}>
+          <Separator className="mt-5 border text-neutral-700 border-neutral-300" />
+          <div className="w-full mt-4 ">
+            <fieldset className="relative my-3" {...register("brand_id")}>
               <Label className="text-lg">Select A Brand</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                 {brands.map((brand) => (
                   <div key={brand.id} className="flex items-center space-x-2">
                     <input
@@ -372,11 +395,11 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               )}
             </fieldset>
           </div>
-          <Separator className="mt-2 text-neutral-700 border border-neutral-300" />
-          <div className="mt-4 w-full ">
-            <fieldset className="my-3 relative" {...register("category_id")}>
+          <Separator className="mt-2 border text-neutral-700 border-neutral-300" />
+          <div className="w-full mt-4 ">
+            <fieldset className="relative my-3" {...register("category_id")}>
               <Label className="text-lg">Select A Category</Label>
-              <div className="grid grid-cols-2 md:grid-cols-3  gap-4">
+              <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
                 {categories.map((category) => (
                   <div
                     key={category.id}
@@ -401,18 +424,18 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
               )}
             </fieldset>
           </div>
-          <Separator className="my-4 text-neutral-700 border border-neutral-300" />
-          <Separator className="my-4 text-neutral-700 border border-neutral-300" />
+          <Separator className="my-4 border text-neutral-700 border-neutral-300" />
+          <Separator className="my-4 border text-neutral-700 border-neutral-300" />
           <Button type="submit" className="flex w-full">
             Save Product
           </Button>
         </form>
       </div>
-      <div className="w-1/3 bg-slate-100 border border-slate-400 rounded-lg">
+      <div className="w-1/3 border rounded-lg bg-slate-100 border-slate-400">
         <div className="p-4 mb-5">
           <Label
             htmlFor="image"
-            className="text-neutral-800 text-lg font-medium"
+            className="text-lg font-medium text-neutral-800"
           >
             Upload Product Image
           </Label>
@@ -423,7 +446,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
             className="bg-white"
           />
         </div>
-        <div className="flex flex-col items-center justify-center space-y-3 px-3">
+        <div className="flex flex-col items-center justify-center px-3 space-y-3">
           <Image
             src={image}
             width="500"

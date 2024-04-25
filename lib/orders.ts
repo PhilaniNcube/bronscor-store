@@ -1,10 +1,10 @@
-import { cookies } from 'next/headers'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { Database } from '@/schema'
+
+import type { Database } from '@/schema';
+import { createClient } from '@/utils/supabase/server'
 
 export const getOrders = async () => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     const {data:orders, error} = await supabase.from("orders").select('*')
 
@@ -18,7 +18,7 @@ export const getOrders = async () => {
 
 export const getOrderById = async (id:string) => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     const {data:order, error} = await supabase.from("orders").select('*, customer_id(*)').eq('id', id).single()
 
@@ -32,13 +32,13 @@ export const getOrderById = async (id:string) => {
 
 export const updateOrderStatus = async (order:Database["public"]['Tables']['orders']['Row']) => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     if(order.status === "paid") {
       return order
-    } else if (order.status === "pending"){
+    }
 
-    const {data:updatedOrder, error} = await supabase.from("orders").update({
+        const {data:updatedOrder, error} = await supabase.from("orders").update({
       status: 'paid',
     }).eq('id', order.id).single()
 
@@ -50,16 +50,12 @@ export const updateOrderStatus = async (order:Database["public"]['Tables']['orde
 
      return updatedOrder
 
-    } else {
-      return order
-    }
-
 }
 
 
 export const getMyOrders = async (customerId:string) => {
 
-    const supabase = createServerComponentClient<Database>({cookies})
+    const supabase = createClient()
 
     const {data:order, error} = await supabase.from("orders").select('*, customer_id(*)').eq('customer_id', customerId)
 
@@ -73,7 +69,7 @@ export const getMyOrders = async (customerId:string) => {
 
 
 export const getPaidOrders = async () => {
-  const supabase = createServerComponentClient<Database>({cookies})
+  const supabase = createClient()
 
   const {data:orders, error, count} = await supabase.from("orders").select('*', {count: "exact"}).eq('status', 'paid')
 
@@ -93,7 +89,7 @@ export const getAllOrders = async (page = 1, page_size = 8) => {
   const start = (page - 1) * page_size;
   const end = page * page_size - 1
 
-  const supabase = createServerComponentClient<Database>({cookies})
+  const supabase = createClient()
 
     const {data:orders, error, count} = await supabase.from("orders").select('*, customer_id(first_name, last_name)', {count: "exact"}).range(start, end).order('created_at', {ascending: true})
 
