@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { type } from "os";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

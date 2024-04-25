@@ -27,7 +27,7 @@ import { Label } from "@/components/ui/label";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import type { Database } from "@/schema";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/client";
 import { useState } from "react";
 import { EyeIcon } from "lucide-react";
 
@@ -58,7 +58,7 @@ const SignIn = () => {
     inputType === "password" ? setInputType("text") : setInputType("password");
   }
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   const router = useRouter();
 

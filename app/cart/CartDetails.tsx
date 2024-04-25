@@ -34,8 +34,8 @@ import {
 } from "@/components/ui/form";
 import { useState } from "react";
 import SignUp from "@/components/Modals/SignUp";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { createClient } from "@/utils/supabase/client";
+
 
 
 const provinces = [

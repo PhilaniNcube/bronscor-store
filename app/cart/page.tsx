@@ -1,6 +1,6 @@
 import CartDetails from "./CartDetails";
 import { cookies } from "next/headers";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export const dynamic = "force-dynamic";

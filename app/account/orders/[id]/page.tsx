@@ -3,8 +3,9 @@ import { Separator } from "@/components/ui/separator";
 import { getProfile } from "@/lib/getUser";
 import { getOrderById } from "@/lib/orders";
 import { formatCurrency } from "@/lib/utils";
-import { Database } from "@/schema";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import type { Database } from "@/schema";
+import { createClient } from "@/utils/supabase/client";
+
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +17,7 @@ type PageProps = {
 
 const page = async ({params:{id}}:PageProps) => {
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
 
   const order = await getOrderById(id)
@@ -91,7 +92,7 @@ const page = async ({params:{id}}:PageProps) => {
                     type="hidden"
                     name="item_name"
                     value={order.id}
-                  ></input>
+                  />
                   <input
                     type="hidden"
                     name="return_url"

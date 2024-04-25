@@ -4,7 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { getCategory } from "@/lib/categories";
 import { Button } from "@/components/ui/button";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 

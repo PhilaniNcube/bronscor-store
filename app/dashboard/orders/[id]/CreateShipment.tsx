@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 
 const CreateShipment = ({order}:{order:Database['public']['Tables']['orders']['Row']}) => {
 

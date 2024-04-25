@@ -25,8 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Database } from "@/schema";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import type { Database } from "@/schema";
+import { createClient } from "@/utils/supabase/client";
 import { EyeIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
@@ -48,7 +48,7 @@ type FormProps = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   const router  = useRouter()
 

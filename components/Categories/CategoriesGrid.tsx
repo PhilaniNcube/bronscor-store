@@ -1,4 +1,4 @@
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import Link from "next/link";
 
 type Props = {

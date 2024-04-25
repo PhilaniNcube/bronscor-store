@@ -1,6 +1,6 @@
 import ProductItem from "@/components/Products/ProductItem";
 import { Separator } from "@/components/ui/separator";
-import { Database } from "@/schema";
+import type { Database } from "@/schema";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 
