@@ -10,6 +10,7 @@ const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger
 
+//ts-ignore
 const DialogPortal = ({
   className,
   children,
