@@ -5,6 +5,7 @@ export async function POST(request: Request) {
 
  console.log({type, company, street_address, local_area, city, zone, country, code, first_name, last_name, email, phone, parcels, orderValue})
 
+ // biome-ignore lint/suspicious/noExplicitAny: <explanation>
  const newParcels = parcels[0].map((parcel:any) => {
   return {
           submitted_length_cm: parcel.depth,
@@ -16,7 +17,7 @@ export async function POST(request: Request) {
 
 
 
- const req = await fetch(`https://api.shiplogic.com/v2/shipments`, {
+ const req = await fetch("https://api.shiplogic.com/v2/shipments", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",
@@ -63,11 +64,16 @@ export async function POST(request: Request) {
     special_instructions_delivery: "This is a test shipment - DO NOT DELIVER",
     declared_value: orderValue,
       // "collection_min_date": "2023-07-10T00:00:00.000Z",
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     "collection_after": "08:00",
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     "collection_before": "16:00",
     // "delivery_min_date": "2023-07-21T00:00:00.000Z",
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     "delivery_after": "10:00",
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     "delivery_before": "17:00",
+    // biome-ignore lint/complexity/useLiteralKeys: <explanation>
     "custom_tracking_reference": "",
     // "customer_reference": "ORDERNO123",
     service_level_code: "ECO",
