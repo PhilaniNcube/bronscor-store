@@ -2,15 +2,22 @@ import ProductItem from "@/components/Products/ProductItem";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import type { Database } from "@/schema";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
+
 import Link from "next/link";
 
 const page = async ({params: {slug}}:{params:{slug:string}}) => {
 
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createClient()
 
 const {data:category, error:category_error} = await supabase.from("categories").select("*").eq("slug", slug).single();
+
+if (category_error) {
+  console.error(category_error);
+  return {
+    notFound: true,
+  };
+}
 
 const {data:products, error:products_error} = await supabase.from("products").select("*, category_id(*)").eq("category_id", category?.id );
 
