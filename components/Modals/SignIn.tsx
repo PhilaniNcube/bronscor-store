@@ -1,7 +1,6 @@
 "use client";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Slot } from "@radix-ui/react-slot";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -28,8 +27,12 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import type { Database } from "@/schema";
 import { createClient } from "@/utils/supabase/client";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { EyeIcon } from "lucide-react";
+import { toast } from "sonner";
+import { revalidatePath } from "next/cache";
+import { signInAction } from "@/utils/actions/sign-in-action";
+import { SubmitButton } from "../ui/submit-button";
 
 const formSchema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -39,9 +42,15 @@ const formSchema = z.object({
 		.max(50, "Too Long!"),
 });
 
+const initialState = {
+  message: "",
+}
+
 const SignIn = () => {
 
    const [isOpen, setIsOpen] = useState(false);
+
+
 
 
    const form = useForm<z.infer<typeof formSchema>>({
@@ -58,23 +67,28 @@ const SignIn = () => {
     inputType === "password" ? setInputType("text") : setInputType("password");
   }
 
-  const supabase = createClient();
 
-  const router = useRouter();
+
+
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
 			const { password, email } = data;
 
-			const { data: user, error } = await supabase.auth.signInWithPassword({
-				email,
-				password,
-			});
+		  const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
 
-			if (error) {
-				alert(`Error login in: ${error.message}`);
-			}
 
-			router.refresh();
+      startTransition(() => {
+        signInAction(formData);
+        setIsOpen(false);
+      });
+
+      toast('Please wait while we log you in', {
+        duration: 4000,
+        position: 'top-center',
+      })
+
 		};
 
   return (
@@ -86,17 +100,18 @@ const SignIn = () => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Sign In</DialogTitle>
+          <DialogTitle className="text-black">Sign In</DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
             <div className="flex flex-col items-start py-4 space-y-2">
               <FormField
+
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
+                  <FormItem className="w-full">
+                    <FormLabel className="text-black">Email</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
@@ -118,8 +133,8 @@ const SignIn = () => {
                 control={form.control}
                 name="password"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
+                  <FormItem className="w-full">
+                    <FormLabel className="text-black">Password</FormLabel>
                     <FormControl>
                       <div className="relative isolate">
                         <Input
@@ -140,12 +155,9 @@ const SignIn = () => {
               />
             </div>
             <div className="flex flex-col items-start py-4 space-y-2">
-              <Button
+              <SubmitButton
                 className="w-full text-black bg-amber-500 hover:bg-amber-500/80"
-                type="submit"
-              >
-                Sign In
-              </Button>
+              />
             </div>
           </form>
         </Form>
