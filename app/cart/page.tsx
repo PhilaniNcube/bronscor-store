@@ -1,19 +1,19 @@
 import CartDetails from "./CartDetails";
-import { cookies } from "next/headers";
-import type { Database } from "@/schema";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 const page = async () => {
 
-const supabase = createServerComponentClient<Database>({ cookies });
+const supabase = createClient();
 
-const {data: {session}} = await supabase.auth.getSession();
+const {
+	data: {user}
+} = await supabase.auth.getUser();
 
   return (
     <main className="container my-6">
-      <CartDetails userId={session?.user.id} />
+      <CartDetails userId={user?.id} />
     </main>
   );
 };

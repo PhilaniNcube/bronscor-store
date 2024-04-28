@@ -144,6 +144,27 @@ const CartDetails = ({ userId }: ComponentProps) => {
     } else if (order) {
       const items = order.order_items;
 
+      // create an array of objects with the dimensions of each item
+      const newGroup: Group = [];
+
+      //for eact item in the order, create an object with the dimensions of the item
+       items.map((item) => {
+        let i = 1;
+        while (i <= item.quantity) {
+          newGroup.push({
+            width: item.product.dimensions?.width,
+            height: item.product.dimensions?.height,
+            length: item.product.dimensions?.depth,
+            weight: item.product.dimensions?.weight ? item.product.dimensions?.weight / 1000 : 0,
+          });
+          i++;
+        }
+
+        return newGroup;
+      });
+
+      console.log("New Group", newGroup);
+
       const group: Group = [];
       const dimensions = items.map((item) => {
         let i = 1;
@@ -176,6 +197,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
           country: order.shipping_address.country,
           code: order.shipping_address.code,
           parcels: dimensions,
+          group: newGroup,
         }),
       })
         .then((res) => res.json())

@@ -1,18 +1,25 @@
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
- const {type, company, street_address, local_area, city, zone, country, code, parcels} = await request.json();
+ const {type, company, street_address, local_area, city, zone, country, code,  group} = await request.json();
 
- const newParcels = parcels[0].map((parcel:any) => {
+
+
+ const newParcels = group.map((parcel:{length:number, width:number, height:number, weight:number}) => {
+
+
+
   return {
-          submitted_length_cm: parcel.depth,
+          submitted_length_cm: parcel.length,
           submitted_width_cm: parcel.width,
           submitted_height_cm: parcel.height,
           submitted_weight_kg: parcel.weight,
   }
  })
 
- const req = await fetch(`https://api.shiplogic.com/v2/rates`, {
+  console.log({ group, newParcels })
+
+ const req = await fetch("https://api.shiplogic.com/v2/rates", {
   method: "POST",
   headers: {
     "Content-Type": "application/json",

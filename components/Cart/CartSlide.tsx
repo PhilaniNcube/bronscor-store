@@ -34,12 +34,7 @@ import { ScrollArea } from "../ui/scroll-area";
 
 const CartSlide = () => {
 
-    const router = useRouter();
-
-    const [open, setOpen] = useState(false);
-
-
-    // const qty = useSelector(totalCartItemsSelector);
+    const qty = useSelector(totalCartItemsSelector);
     const isOpen = useAppSelector((state) => state.cart.open);
     const cartItems = useAppSelector((state) => state.cart.cartItems);
     const totalPrice = useAppSelector(totalPriceSelector);

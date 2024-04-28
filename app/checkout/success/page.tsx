@@ -38,7 +38,7 @@ const updatedOrder = await updateOrderStatus(order)
             <p className="text-lg font-medium">
               Status: <span className="uppercase">{order.status}</span>
             </p>
-            <p className="flex flex-col gap-1 mt-4 text-lg font-medium">
+            <div className="flex flex-col gap-1 mt-4 text-lg font-medium">
               <span>Address:</span>
               <div className="flex flex-col">
                 <p className="text-sm text-amber-600">
@@ -60,7 +60,7 @@ const updatedOrder = await updateOrderStatus(order)
                   {order.shipping_address.phone}
                 </p>
               </div>
-            </p>
+            </div>
           </div>
           <div className="w-full">
             <h2 className="mb-4 text-xl font-medium">
