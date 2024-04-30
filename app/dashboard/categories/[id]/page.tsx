@@ -3,10 +3,11 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { getCategory } from "@/lib/categories";
 import { Button } from "@/components/ui/button";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
 import type { Database } from "@/schema";
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
+import { createClient } from "@/utils/supabase/server";
 
 const page = async ({params: {id}}:{params: {id: number}}) => {
 
@@ -15,15 +16,13 @@ const page = async ({params: {id}}:{params: {id: number}}) => {
   const updateCategory = async (formData:FormData) => {
    "use server"
 
-    const supabase = createServerComponentClient<Database>({ cookies });
+    const supabase = createClient()
 
     const name = formData.get('name');
 
 
-    if(!name) {
+    if(!name || typeof name !== 'string') {
        throw new Error("Please enter a name");
-    } else if (typeof name !== 'string') {
-      throw new Error("Please enter a valid name");
     }
 
     const slug = name.toLowerCase().replace(/ /g, "-");

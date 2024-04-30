@@ -1,5 +1,5 @@
 import { getPaidOrders } from "@/lib/orders";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import {
   Card,
   CardContent,

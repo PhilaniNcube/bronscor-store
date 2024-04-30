@@ -57,7 +57,7 @@ import { createClient } from "@/utils/supabase/server"
 
   const supabase = createClient()
 
-  const {data:profiles, error, count} = await supabase.from("profiles").select('*', {count: "exact"}).range(start, end).order('first_name', {ascending: true})
+  const {data:profiles, error, count} = await supabase.from("profiles").select('*', {count: "exact"}).order('first_name', {ascending: true})
 
   if (error) {
     throw new Error(error.message);

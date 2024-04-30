@@ -1,11 +1,12 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
 import { BoxSelectIcon, BoxesIcon, LassoSelectIcon, LucideShoppingCart, Users2 } from "lucide-react";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
 import { cookies, headers } from "next/headers";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { createClient } from "@/utils/supabase/server";
 
 
 export const dynamic = "force-dynamic";
@@ -15,9 +16,18 @@ type Props ={
 }
 const layout = async ({children}:Props) => {
 
-   const supabase = createServerComponentClient({ cookies });
+   const supabase = createClient()
 
+  const data = await supabase.rpc('is_admin')
 
+  if(data === null || data.data === false) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
 
    const {
      data: { session },

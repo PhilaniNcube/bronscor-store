@@ -8,13 +8,15 @@ const page = async ({searchParams: {page}}:{searchParams:{page: string}}) => {
 
   const {profiles, count} = await getProfiles(currentPage,8)
 
-   const lastPage = Math.ceil(count! / 8);
+  const newCount = count || 0;
+
+   const lastPage = Math.ceil(newCount / 8) || 1;
 
 
   return (
     <div className="w-1/2">
       <CustomersTable profiles={profiles} />
-      <Pagination currentPage={currentPage} lastPage={lastPage} total={count!} />
+      <Pagination currentPage={currentPage} lastPage={lastPage} total={newCount} />
     </div>
   );
 };
