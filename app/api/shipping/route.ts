@@ -57,7 +57,9 @@ export async function POST(request: Request) {
 
  const result = await req
 
- console.log(result)
+
+
+
 
  return NextResponse.json({data: result})
 
