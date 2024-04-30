@@ -7,7 +7,7 @@ import { createClient } from "@/utils/supabase/server"
   export const getAdmin = async () => {
      const supabase = createClient()
 
-     const {data:is_admin, error} = await supabase.rpc("is_admin").single()
+     const {data:is_admin, error} = await supabase.rpc("is_admin")
 
      if(error) {
         console.error(error)
@@ -20,8 +20,6 @@ import { createClient } from "@/utils/supabase/server"
 
 
   export const getProfile = async (id:string) => {
-
-    console.log(id)
 
    const supabase = createClient()
 

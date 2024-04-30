@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import { cn } from "@/lib/utils";
 import slugify from "slugify";
 import { createClient } from '@/utils/supabase/client';
+import { toast } from 'sonner';
 
 
 const ProductSchema = z.object({
@@ -183,8 +184,8 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 					return;
 				}
 
-				alert("Product created successfully");
-				console.log(product);
+				toast('Product created successfully');
+
 				router.push(`/dashboard/products/${product?.id}`);
 
   }

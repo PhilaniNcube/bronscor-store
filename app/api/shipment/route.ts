@@ -8,12 +8,14 @@ export async function POST(request: Request) {
  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
  const newParcels = parcels[0].map((parcel:any) => {
   return {
-          submitted_length_cm: parcel.depth,
-          submitted_width_cm: parcel.width,
-          submitted_height_cm: parcel.height,
+           submitted_length_cm: parcel.length/10,
+          submitted_width_cm: parcel.width/10,
+          submitted_height_cm: parcel.height/10,
           submitted_weight_kg: parcel.weight,
   }
  })
+
+ console.log({ parcels, newParcels })
 
 
 
