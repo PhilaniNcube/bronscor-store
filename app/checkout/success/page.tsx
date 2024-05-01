@@ -4,6 +4,8 @@ import { getOrderById, updateOrderStatus } from "@/lib/orders";
 import Link from "next/link";
 import Image from 'next/image'
 import { formatCurrency } from "@/lib/utils";
+import { clearCart } from "@/app/store/features/cartSlice";
+import ClearCart from "./clear-cart";
 
 const page = async ({searchParams: {order_id}}:{searchParams:{order_id:string}}) => {
 
@@ -19,6 +21,7 @@ const order = await getOrderById(order_id)
       <h1 className="mb-4 text-2xl font-medium md:text-3xl">
         Thank you for your order{" "}
       </h1>
+      <ClearCart />
 
       <Separator className="my-4" />
       <Link className="mt-4" href="/account">
