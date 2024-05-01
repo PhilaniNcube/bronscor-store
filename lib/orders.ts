@@ -1,6 +1,8 @@
+"use server"
 
 import type { Database } from '@/schema';
 import { createClient } from '@/utils/supabase/server'
+import { revalidatePath } from 'next/cache';
 
 export const getOrders = async () => {
 
@@ -38,7 +40,7 @@ export const updateOrderStatus = async (order:Database["public"]['Tables']['orde
       return order
     }
 
-        const {data:updatedOrder, error} = await supabase.from("orders").update({
+        const {data, error} = await supabase.from("orders").update({
       status: 'paid',
     }).eq('id', order.id).single()
 
@@ -46,9 +48,11 @@ export const updateOrderStatus = async (order:Database["public"]['Tables']['orde
       throw new Error(error.message);
     }
 
+    console.log({data, order})
 
+    revalidatePath(`/account/orders/${order.id}`)
 
-     return updatedOrder
+     return data
 
 }
 

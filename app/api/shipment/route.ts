@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
  const {type, company, street_address, local_area, city, zone, country, code, first_name, last_name, email, phone, parcels, orderValue} = await request.json();
 
- console.log({type, company, street_address, local_area, city, zone, country, code, first_name, last_name, email, phone, parcels, orderValue})
+
 
  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
  const newParcels = parcels[0].map((parcel:any) => {
@@ -15,7 +15,6 @@ export async function POST(request: Request) {
   }
  })
 
- console.log({ parcels, newParcels })
 
 
 

@@ -29,8 +29,8 @@ import type { Database } from "@/schema";
 import { createClient } from "@/utils/supabase/client";
 import { EyeIcon } from "lucide-react";
 import { useState } from "react";
-import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 
 
@@ -48,6 +48,8 @@ type FormProps = z.infer<typeof FormSchema>;
 
 const SignUp = () => {
 
+  const [isOpen, setIsOpen] = useState(false);
+
   const supabase = createClient();
 
   const router  = useRouter()
@@ -58,41 +60,36 @@ const SignUp = () => {
     });
 
 
-    const onSubmit: SubmitHandler<FormProps> = async (data: any) => {
-      const { first_name, last_name, password, email } = data;
+    const onSubmit = async (
+					data: z.infer<typeof FormSchema>,
+				) => {
+					const { first_name, last_name, password, email } = data;
 
-      const { data: user, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-          data: {
-            first_name,
-            last_name,
-          },
-        },
-      });
+					const { data: user, error } = await supabase.auth.signUp({
+						email,
+						password,
+						options: {
+							emailRedirectTo: `${location.origin}/auth/callback`,
+							data: {
+								first_name,
+								last_name,
+							},
+						},
+					});
 
-      if (error) {
-        console.log(error);
-        toast({
-          title: "There was an error signing up",
-          description: error.message,
-        })
-        router.refresh();
-      } else if (user) {
-        toast({
-          title: "Sign up successful",
-          description: "Please check your email for the confirmation link",
-        })
-        router.refresh()
-      } else {
-        toast({
-          title: "There was an error, please try again later",
-        })
-        router.refresh()
-      }
-    };
+					if (error) {
+						console.log(error);
+						toast(`There was an error signing up: ${error.message}`);
+					} else if (user) {
+						toast("Please check your email for the confirmation link");
+
+					} else {
+						toast("There was an error, please try again later");
+
+					}
+
+					setIsOpen(false);
+				};
 
       const [inputType, setInputType] = useState("password");
 
@@ -103,131 +100,133 @@ const SignUp = () => {
       };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="text-amber-500 bg-black hover:bg-amber-600 hover:text-black">
-          Sign Up
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Sign Up</DialogTitle>
-          <DialogDescription>
-            Create an account to get started.
-          </DialogDescription>
-        </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex flex-col items-start space-y-2 py-4">
-              <FormField
-                control={form.control}
-                name="first_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900">First Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="John"
-                        {...field}
-                        className="text-gray-900"
-                      />
-                    </FormControl>
-                    {/* <FormDescription>
+			<Dialog open={isOpen} onOpenChange={setIsOpen}>
+				<DialogTrigger asChild>
+					<Button className="bg-black text-amber-500 hover:bg-amber-600 hover:text-black">
+						Sign Up
+					</Button>
+				</DialogTrigger>
+				<DialogContent className="sm:max-w-[425px]">
+					<DialogHeader>
+						<DialogTitle>Sign Up</DialogTitle>
+						<DialogDescription>
+							Create an account to get started.
+						</DialogDescription>
+					</DialogHeader>
+					<Form {...form}>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+							<div className="flex flex-col items-start w-full py-4 space-y-2">
+								<FormField
+									control={form.control}
+									name="first_name"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-gray-900">
+												First Name
+											</FormLabel>
+											<FormControl>
+												<Input
+													type="text"
+													placeholder="John"
+													{...field}
+													className="text-gray-900"
+												/>
+											</FormControl>
+											{/* <FormDescription>
                       This is your public display name.
                     </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
-              <FormField
-                control={form.control}
-                name="last_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900">Last Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Doe"
-                        {...field}
-                        className="text-gray-900"
-                      />
-                    </FormControl>
-                    {/* <FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className="flex flex-col items-start py-4 space-y-2">
+								<FormField
+									control={form.control}
+									name="last_name"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-gray-900">Last Name</FormLabel>
+											<FormControl>
+												<Input
+													type="text"
+													placeholder="Doe"
+													{...field}
+													className="text-gray-900"
+												/>
+											</FormControl>
+											{/* <FormDescription>
                       This is your public display name.
                     </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="Email"
-                        {...field}
-                        className="text-gray-900"
-                      />
-                    </FormControl>
-                    {/* <FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className="flex flex-col items-start py-4 space-y-2">
+								<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-gray-900">Email</FormLabel>
+											<FormControl>
+												<Input
+													type="email"
+													placeholder="Email"
+													{...field}
+													className="text-gray-900"
+												/>
+											</FormControl>
+											{/* <FormDescription>
                       This is your public display name.
                     </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-gray-900">Password</FormLabel>
-                    <FormControl>
-                      <div className="relative isolate">
-                        <Input
-                          type={inputType}
-                          placeholder="Password"
-                          {...field}
-                          className="text-gray-900"
-                        />
-                        <EyeIcon
-                          className="absolute top-1/2 right-2 transform -translate-y-1/2 w-6 h-6 text-gray-900 cursor-pointer"
-                          onClick={toggleInputType}
-                        />
-                      </div>
-                    </FormControl>
-                    {/* <FormDescription>
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className="flex flex-col items-start py-4 space-y-2">
+								<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-gray-900">Password</FormLabel>
+											<FormControl>
+												<div className="relative isolate">
+													<Input
+														type={inputType}
+														placeholder="Password"
+														{...field}
+														className="text-gray-900"
+													/>
+													<EyeIcon
+														className="absolute w-6 h-6 text-gray-900 transform -translate-y-1/2 cursor-pointer top-1/2 right-2"
+														onClick={toggleInputType}
+													/>
+												</div>
+											</FormControl>
+											{/* <FormDescription>
                       This is your public display name.
                     </FormDescription> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="flex flex-col items-start space-y-2 py-4">
-              <Button
-                className="w-full bg-amber-500 text-black hover:bg-amber-500/80"
-                type="submit"
-              >
-                Sign Up
-              </Button>
-            </div>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
-  );
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className="flex flex-col items-start py-4 space-y-2">
+								<Button
+									className="w-full text-black bg-amber-500 hover:bg-amber-500/80"
+									type="submit"
+								>
+									Sign Up
+								</Button>
+							</div>
+						</form>
+					</Form>
+				</DialogContent>
+			</Dialog>
+		);
 };
 export default SignUp;

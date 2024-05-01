@@ -11,7 +11,6 @@ const page = async ({searchParams: {order_id}}:{searchParams:{order_id:string}})
 
 const order = await getOrderById(order_id)
 
-const updatedOrder = await updateOrderStatus(order)
 
 
 
