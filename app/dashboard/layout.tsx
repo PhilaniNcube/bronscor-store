@@ -7,6 +7,7 @@ import { BoxSelectIcon, BoxesIcon, LassoSelectIcon, LucideShoppingCart, Users2 }
 import { cookies, headers } from "next/headers";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
 
 
 export const dynamic = "force-dynamic";
@@ -21,12 +22,7 @@ const layout = async ({children}:Props) => {
   const data = await supabase.rpc('is_admin')
 
   if(data === null || data.data === false) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+     redirect('/')
   }
 
    const {
@@ -37,58 +33,58 @@ const layout = async ({children}:Props) => {
     <div className="flex flex-nowrap">
       <aside className="relative isolate bg-gray-950">
         <div className="sticky top-0 flex flex-col items-center justify-between h-[calc(100vh-75px)] w-64 bg-gray-950 border-t border-white">
-          <div className="flex flex-col items-center justify-start space-y-4 py-4 h-full w-full">
+          <div className="flex flex-col items-center justify-start w-full h-full py-4 space-y-4">
             <Link href="/">
               <Image
                 src="/images/logo.png"
                 width={822}
                 height={303}
                 alt="Bronscor"
-                className="w-3/4 object-cover"
+                className="object-cover w-3/4"
               />
             </Link>
             <Separator className="w-full text-amber-500" />
-            <div className="flex flex-col px-4 items-center justify-center space-y-4 w-full">
+            <div className="flex flex-col items-center justify-center w-full px-4 space-y-4">
               <Link
                 href="/dashboard/products"
-                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex w-full px-3 py-2 space-x-4 rounded text-amber-500 hover:bg-gray-900"
               >
                 <BoxesIcon className="w-6 h-6" />
                 <span>Products</span>
               </Link>
               <Link
                 href="/dashboard/categories"
-                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex w-full px-3 py-2 space-x-4 rounded text-amber-500 hover:bg-gray-900"
               >
                 <BoxSelectIcon className="w-6 h-6" />
                 <span>Categories</span>
               </Link>
               <Link
                 href="/dashboard/customers"
-                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex w-full px-3 py-2 space-x-4 rounded text-amber-500 hover:bg-gray-900"
               >
                 <Users2 className="w-6 h-6" />
                 <span>Customers</span>
               </Link>
               {/* <Link
                 href="/dashboard/brands"
-                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex w-full px-3 py-2 space-x-4 rounded text-amber-500 hover:bg-gray-900"
               >
                 <LassoSelectIcon className="w-6 h-6" />
                 <span>Brands</span>
               </Link> */}
               <Link
                 href="/dashboard/orders"
-                className="flex space-x-4 text-amber-500 px-3 py-2 hover:bg-gray-900 rounded w-full"
+                className="flex w-full px-3 py-2 space-x-4 rounded text-amber-500 hover:bg-gray-900"
               >
                 <LucideShoppingCart className="w-6 h-6" />
                 <span>Orders</span>
               </Link>
             </div>
             <Separator className="w-full text-amber-500" />
-            <div className="flex-1 flex  w-full flex-col h-full px-4 items-center justify-end">
-              <div className="flex flex-col items-center justify-center space-y-4 w-full">
-                <p className="w-full bg-gray-800 px-3 py-2 rounded text-white">
+            <div className="flex flex-col items-center justify-end flex-1 w-full h-full px-4">
+              <div className="flex flex-col items-center justify-center w-full space-y-4">
+                <p className="w-full px-3 py-2 text-white bg-gray-800 rounded">
                   {session?.user.email}
                 </p>
               </div>

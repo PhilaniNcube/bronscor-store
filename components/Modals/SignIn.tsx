@@ -33,6 +33,7 @@ import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { signInAction } from "@/utils/actions/sign-in-action";
 import { SubmitButton } from "../ui/submit-button";
+import Link from "next/link";
 
 const formSchema = z.object({
 	email: z.string().email("Invalid email address"),
@@ -161,6 +162,19 @@ const SignIn = () => {
             </div>
           </form>
         </Form>
+        <div className="w-full" onClick={() => setIsOpen(false)} onKeyDown={() => setIsOpen(false)}>
+          <DialogFooter>
+            <DialogDescription>
+              Forgot your password?{" "}
+              <Link
+                href="forgot-password"
+                className="text-amber-500 hover:text-amber-600"
+              >
+                Reset password.
+              </Link>
+            </DialogDescription>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );
