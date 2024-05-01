@@ -61,7 +61,7 @@ export default function ResetPassword() {
 
 		console.log({ resetPassword, error });
 
-		toast("Password reset instructions sent to your email address.");
+		toast("Your password has been reset. Please sign in.");
 	};
 
 	return (
