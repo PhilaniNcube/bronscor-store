@@ -4,7 +4,7 @@ import { getProducts } from "@/lib/products";
 import { PlusIcon } from "lucide-react";
 import Link from "next/link";
 import ProductsTable from "./ProductsTable";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import Pagination from "@/components/Layout/Pagination";
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const page = async ({ searchParams }: { searchParams: { page: string } }) => {
 
-   const page = searchParams.page ? parseInt(searchParams.page) : 1;
+   const page = searchParams.page ? Number(searchParams.page) : 1;
 
 
 
@@ -24,7 +24,7 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
    const productsData = getProducts(page, 8);
 
    const [data] = await Promise.all([productsData]);
-   const lastPage = Math.ceil(data?.count! / 8);
+   const lastPage = data.count !== null ?  Math.ceil(data?.count / 8) : 1;
 
   return (
     <div>
@@ -39,7 +39,7 @@ const page = async ({ searchParams }: { searchParams: { page: string } }) => {
       <Separator className="my-4" />
       <div>
         <ProductsTable products={data.products} />
-        <Pagination currentPage={page} lastPage={lastPage} total={data.count!} />
+        <Pagination currentPage={page} lastPage={lastPage} total={data.count || 1} />
       </div>
     </div>
   );

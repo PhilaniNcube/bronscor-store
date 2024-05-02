@@ -37,6 +37,7 @@ import { toast } from "sonner";
 const FormSchema = z.object({
   first_name: z.string().min(2, "Too Short!").max(50, "Too Long!"),
   last_name: z.string().min(2, "Too Short!").max(50, "Too Long!"),
+  contact_number: z.string(),
   email: z.string().email("Invalid email address"),
   password: z
     .string()
@@ -63,7 +64,7 @@ const SignUp = () => {
     const onSubmit = async (
 					data: z.infer<typeof FormSchema>,
 				) => {
-					const { first_name, last_name, password, email } = data;
+					const { first_name, last_name, password, email, contact_number } = data;
 
 					const { data: user, error } = await supabase.auth.signUp({
 						email,
@@ -73,6 +74,7 @@ const SignUp = () => {
 							data: {
 								first_name,
 								last_name,
+                contact_number,
 							},
 						},
 					});
@@ -151,6 +153,29 @@ const SignUp = () => {
 												<Input
 													type="text"
 													placeholder="Doe"
+													{...field}
+													className="text-gray-900"
+												/>
+											</FormControl>
+											{/* <FormDescription>
+                      This is your public display name.
+                    </FormDescription> */}
+											<FormMessage />
+										</FormItem>
+									)}
+								/>
+							</div>
+							<div className="flex flex-col items-start py-4 space-y-2">
+								<FormField
+									control={form.control}
+									name="contact_number"
+									render={({ field }) => (
+										<FormItem className="w-full">
+											<FormLabel className="text-gray-900">Contact Number</FormLabel>
+											<FormControl>
+												<Input
+													type="text"
+													placeholder="Contact Number"
 													{...field}
 													className="text-gray-900"
 												/>

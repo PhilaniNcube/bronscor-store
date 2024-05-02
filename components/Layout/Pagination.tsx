@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 // import { useRouter } from "next/navigation";
 
 type PaginationProps = {
@@ -12,6 +13,8 @@ type PaginationProps = {
 
 const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
 
+  const pathname = usePathname();
+
 
 
   console.log(location.pathname)
@@ -19,9 +22,9 @@ const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
   const page = currentPage ? currentPage : 1;
 
   return (
-    <div className="flex items-center justify-between p-3 rounded-lg bg-slate-100 text-gray-900">
+    <div className="flex items-center justify-between p-3 text-gray-900 rounded-lg bg-slate-100">
       {page !== 1 && (
-        <Link href={`${location.pathname}?page=${page - 1}`}>
+        <Link href={`${pathname}?page=${page - 1}`}>
           <Button variant="secondary">
             <ChevronLeftIcon className="mr-1" />
             Prev
@@ -32,7 +35,7 @@ const Pagination = ({ currentPage, total, lastPage }: PaginationProps) => {
         Page {page} of {lastPage} Pages
       </p>
       {page !== lastPage && (
-        <Link href={`${location.pathname}?page=${page + 1}`}>
+        <Link href={`${pathname}?page=${page + 1}`}>
           <Button variant="secondary">
             Next
             <ChevronRightIcon className="ml-1" />

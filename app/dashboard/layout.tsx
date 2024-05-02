@@ -25,9 +25,7 @@ const layout = async ({children}:Props) => {
      redirect('/')
   }
 
-   const {
-     data: { session },
-   } = await supabase.auth.getSession();
+  const {data: {user}} = await supabase.auth.getUser()
 
   return (
     <div className="flex flex-nowrap">
@@ -84,8 +82,8 @@ const layout = async ({children}:Props) => {
             <Separator className="w-full text-amber-500" />
             <div className="flex flex-col items-center justify-end flex-1 w-full h-full px-4">
               <div className="flex flex-col items-center justify-center w-full space-y-4">
-                <p className="w-full px-3 py-2 text-white bg-gray-800 rounded">
-                  {session?.user.email}
+                <p className="w-full px-3 py-2 text-xs text-white bg-gray-800 rounded">
+                  {user?.email}
                 </p>
               </div>
             </div>
