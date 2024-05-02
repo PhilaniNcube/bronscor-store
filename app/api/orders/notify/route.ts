@@ -31,7 +31,7 @@ export async function POST(req: NextRequest, res: Response) {
 				status: "paid",
 			})
 			.eq("id", id)
-			.select("*")
+			.select("*, customer_id(*)")
 			.single();
 
 		console.log({ order, error });
