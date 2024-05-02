@@ -11,7 +11,7 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import { Heart, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
+import { Heart, Search, SearchIcon, ShoppingBag, UserIcon, UserMinusIcon } from "lucide-react";
 import SignUp from "../Modals/SignUp";
 import type { User } from "@supabase/supabase-js";
 import { Button } from "../ui/button";
@@ -26,6 +26,7 @@ import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
 import { revalidatePath } from "next/cache";
 import { signOutAction } from "@/utils/actions/sign-out-action";
+import { Input } from "../ui/input";
 
 type Props = {
   user: User | null;
@@ -48,6 +49,15 @@ const signOut = async () => {
 
 }
 
+ const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const values = new FormData(e.currentTarget);
+    const search = values.get("search") as string;
+    console.log(search);
+
+    router.push(`/search?query=${search}`);
+ }
+
   return (
 			<div className="items-center justify-between hidden md:flex">
 				<Link href="/">
@@ -59,7 +69,7 @@ const signOut = async () => {
 						className="object-cover w-40 py-2"
 					/>
 				</Link>
-				<div>
+				<div className="flex items-center justify-start flex-1 w-full">
 					<NavigationMenu className="">
 						<NavigationMenuList>
 							{/* <NavigationMenuItem>
@@ -94,6 +104,22 @@ const signOut = async () => {
 							</NavigationMenuItem>
 						</NavigationMenuList>
 					</NavigationMenu>
+					<form onSubmit={handleSearch} className="relative flex items-center">
+						<Input
+							placeholder="Search"
+							type="search"
+							className="w-full h-12"
+							name="search"
+						/>
+						<Button
+							type="submit"
+							variant="ghost"
+							size="lg"
+							className="absolute right-0"
+						>
+							<SearchIcon size={14} />
+						</Button>
+					</form>
 				</div>
 				<div className="flex items-center space-x-4">
 					{user ? (
