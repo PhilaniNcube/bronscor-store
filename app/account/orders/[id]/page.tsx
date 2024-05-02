@@ -17,6 +17,8 @@ const page = async ({params:{id}}:PageProps) => {
 
   const order = await getOrderById(id)
 
+  console.log({order})
+
 
 
   return (

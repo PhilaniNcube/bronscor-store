@@ -119,7 +119,6 @@ const CartDetails = ({ userId }: ComponentProps) => {
           order_items: cartItems,
           customer_id: userId,
           sub_total: totalPrice,
-
           shipping_address: {
             street_address: values.street_address,
             company: values.company,
@@ -210,13 +209,15 @@ const CartDetails = ({ userId }: ComponentProps) => {
         return;
       }
 
-      const shippingCost = await res.data.rates[0].rate;
+      const calculatedCost = await res.data.rates[0].rate;
+
+      const shippingCost = order.sub_total < 1000 ? Number(calculatedCost) : 0;
 
       const { data: updatedOrder, error: updatedOrderError } = await supabase
         .from("orders")
         .update({
-          shipping_cost: shippingCost.toFixed(2),
-          total_amount: (shippingCost + totalPrice).toFixed(2),
+          shipping_cost:  Number(shippingCost.toFixed(2)),
+          total_amount: Number((shippingCost + totalPrice).toFixed(2)),
         })
         .eq("id", order.id)
         .select("*")
@@ -230,7 +231,7 @@ const CartDetails = ({ userId }: ComponentProps) => {
       }
 
       if (updatedOrder) {
-        console.log(updatedOrder);
+        console.log({updatedOrder});
         alert("Order saved successfully");
         setLoading(false);
         router.push(`/account/orders/${updatedOrder.id}`);
