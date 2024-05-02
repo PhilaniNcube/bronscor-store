@@ -45,9 +45,10 @@ export async function POST(req: NextRequest, res: Response) {
 					{
 						from: "Bronscor <onboarding@resend.dev>",
 						to: [
+              "onlinestore@bronscorcc.co.za",
 							// "ncbphi001@gmail.com",
 							// "countersales@bronscorcc.co.za",
-							order.shipping_address.email,
+							// order.shipping_address.email,
 						],
 						subject: "Order Confirmation",
 						text: `Thank you for your order. Your order has been received and is being processed. Your order number is ${order.id}.`,
@@ -60,7 +61,7 @@ export async function POST(req: NextRequest, res: Response) {
 					{
 						from: "Bronscor <onboarding@resend.dev>",
 						to: [
-							"ncbphi001@gmail.com",
+							"onlinestore@bronscorcc.co.za",
 							// "countersales@bronscorcc.co.za",
 							// order.shipping_address.email,
 						],
