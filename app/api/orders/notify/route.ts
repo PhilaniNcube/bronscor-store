@@ -43,12 +43,12 @@ export async function POST(req: NextRequest, res: Response) {
 
     await resend.batch.send([
 					{
-						from: "Bronscor <onboarding@resend.dev>",
+						from: "Bronscor <onlinestore@bronscorcc.co.za>",
 						to: [
-              "onlinestore@bronscorcc.co.za",
+							"onlinestore@bronscorcc.co.za",
 							// "ncbphi001@gmail.com",
 							// "countersales@bronscorcc.co.za",
-							// order.shipping_address.email,
+							order.shipping_address.email,
 						],
 						subject: "Order Confirmation",
 						text: `Thank you for your order. Your order has been received and is being processed. Your order number is ${order.id}.`,
@@ -59,11 +59,12 @@ export async function POST(req: NextRequest, res: Response) {
                  </div>`,
 					},
 					{
-						from: "Bronscor <onboarding@resend.dev>",
+						from: "Bronscor <onlinestore@bronscorcc.co.za>",
 						to: [
 							"onlinestore@bronscorcc.co.za",
 							// "countersales@bronscorcc.co.za",
 							// order.shipping_address.email,
+              "ncbphi001@gmail.com"
 						],
 						subject: "New Order Received",
 						text: `You have just received a new order. Order number is ${order.id}.`,
