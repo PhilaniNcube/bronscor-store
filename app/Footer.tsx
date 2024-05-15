@@ -12,10 +12,10 @@ type Props = {
 }
 
 export const links = [
-  {
-    title: "About Us",
-    href: "/about-us"
-  },
+  // {
+  //   title: "About Us",
+  //   href: "/about-us"
+  // },
   {
     title: "Contact Us",
     href: "/contact-us"
