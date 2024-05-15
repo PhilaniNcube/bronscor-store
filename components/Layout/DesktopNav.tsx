@@ -108,7 +108,7 @@ const signOut = async () => {
 						<Input
 							placeholder="Search"
 							type="search"
-							className="w-full h-12"
+							className="w-full h-12 mr-4"
 							name="search"
 						/>
 						<Button

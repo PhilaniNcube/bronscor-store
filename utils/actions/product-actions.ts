@@ -19,7 +19,7 @@ export async function deleteProductById(formData: FormData) {
     const {data, error} = await supabase.from("products").delete().eq('id', id)
 
     if (error) {
-      console.log({error})
+      console.log({error, data})
       throw new Error(error.message);
     }
 

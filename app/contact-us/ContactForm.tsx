@@ -57,9 +57,9 @@ const ContactForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="grid grid-cols-5 gap-4"
         >
-          <div className="col-span-5 p-8 text-black md:col-span-2 lg:col-span-2 bg-amber-600">
-            <h1 className="text-3xl font-bold">Contact Us</h1>
-            <Separator className="my-4 text-black bg-black" />
+          <div className="col-span-5 p-8 text-black md:col-span-2 lg:col-span-2 ">
+            <h1 className="text-3xl font-bold text-amber-600">Contact Us</h1>
+            <Separator className="my-4 text-black bg-amber-600" />
           </div>
           <div className="col-span-5 p-4 md:col-span-2 lg:col-span-3 text-amber-600">
             <div className="flex w-full space-x-3">
