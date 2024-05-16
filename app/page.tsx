@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { getFeaturedProducts } from '@/lib/products';
 import HomepageHero from './HomepageHero';
 import FeaturedProducts from './FeaturedProducts';

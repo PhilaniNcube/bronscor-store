@@ -1,7 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import type { Database } from "@/schema";
-import { type } from "os";
 import { formatCurrency } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,9 +13,9 @@ type Props = {
 const FeaturedProducts = ({products}:Props) => {
   return <section className="py-8">
     <div className="container">
-      <h2 className="text-2xl font-bold mb-4">Featured Products</h2>
+      <h2 className="mb-4 text-2xl font-bold">Featured Products</h2>
       <Separator className="" />
-      <div className="w-full mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid w-full grid-cols-2 gap-6 mt-4 md:grid-cols-3 lg:grid-cols-4">
         {products.map((product) => (
           <ProductItem key={product.id} product={product} />
         ))
@@ -49,7 +48,7 @@ const Product = ({product}:ProductProps) => {
             {formatCurrency(product.price)}
           </p>
           <Link href={`/products/${product.slug}`}>
-            <Button className="mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-800 w-full">View Product</Button>
+            <Button className="w-full mt-3 bg-amber-500 hover:shadow-md hover:bg-gray-800">View Product</Button>
           </Link>
         </div>
       </div>
