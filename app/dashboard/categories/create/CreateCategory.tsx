@@ -21,6 +21,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/utils/supabase/client";
+import slugify from "slugify";
 
 const formSchema = z.object({
   name: z.string().nonempty("Please enter a name"),
@@ -46,7 +47,7 @@ const CreateCategory = () => {
     setLoading(true);
 
     const {name} = values;
-    const slug = name.toLowerCase().replace(/ /g, '-');
+    const slug = slugify(name.toLowerCase(), { remove: /[*+~.()'"!:@]/g });
     console.log({name, slug})
 
     const {data, error} = await supabase.from('categories').insert({name, slug}).single();

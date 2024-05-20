@@ -256,6 +256,20 @@ export interface Database {
 						}[];
 					};
 				};
+				product_categories: {
+					Row: {
+						product_id: string;
+						category_id: number;
+					};
+					Insert: {
+						product_id: string;
+						category_id: number;
+					};
+					Update: {
+						product_id?: string;
+						category_id?: number;
+					};
+				};
 				profiles: {
 					Row: {
 						id: string;
@@ -273,7 +287,7 @@ export interface Database {
 						id?: string;
 						first_name?: string;
 						last_name?: string;
-            contact_number?: string | null;
+						contact_number?: string | null;
 					};
 				};
 				wishlist: {

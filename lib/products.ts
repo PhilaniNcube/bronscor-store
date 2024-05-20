@@ -108,3 +108,20 @@ export const getSteelProducts = async () => {
 
   return data
 }
+
+
+export const getProductCategoriesByProductId = async (product_id:string) => {
+
+  const supabase = createClient()
+
+  const {data, error} = await supabase.from("product_categories").select('*').eq('product_id', product_id)
+
+  if (error || data === null) {
+    throw new Error(error.message);
+  }
+
+  console.log(data)
+
+  return data
+
+}
