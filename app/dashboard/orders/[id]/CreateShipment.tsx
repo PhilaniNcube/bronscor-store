@@ -8,18 +8,21 @@ const CreateShipment = ({order}:{order:Database['public']['Tables']['orders']['R
   const createShipment = async () => {
 
 
-    let items = order.order_items;
+    const items = order.order_items;
 
-    let group: any = [];
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    const group: any = [];
     const dimensions = items.map((item) => {
       let i = 1;
       while (i <= item.quantity) {
         group.push({
-          width: item.product.dimensions?.width,
-          height: item.product.dimensions?.height,
-          length: item.product.dimensions?.depth,
-          weight: item.product.dimensions?.weight! / 1000,
-        });
+									width: item.product.dimensions?.width,
+									height: item.product.dimensions?.height,
+									length: item.product.dimensions?.depth,
+									weight:
+										item.product.dimensions?.weight ? item.product.dimensions
+											?.weight / 1000 : 0,
+								});
         i++;
       }
 
