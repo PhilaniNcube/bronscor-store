@@ -1,4 +1,5 @@
 import { createClient } from '@/utils/supabase/server';
+import type { QueryData } from '@supabase/supabase-js';
 
 export const getProducts = async (page = 1, page_size = 8) => {
 
@@ -123,5 +124,36 @@ export const getProductCategoriesByProductId = async (product_id:string) => {
   console.log(data)
 
   return data
+
+}
+
+
+export const getProductsCategoryId = async (category_id:number) => {
+
+  const supabase = createClient()
+
+  const productsQuery = supabase.from("product_categories").select('*,product:products(image, name,slug, id, price,in_stock)').eq('category_id', category_id)
+
+  // get the type of the query
+		type ProductsWithCategory = QueryData<typeof productsQuery>;
+
+    const {data, error} = await productsQuery
+
+
+  if (error || data === null) {
+    throw new Error(error.message || "No data found");
+  }
+
+  console.log(data)
+
+
+  const products = data as ProductsWithCategory;
+
+  const returnedProducts = products.map((item) => item.product)
+
+
+
+  return returnedProducts;
+
 
 }

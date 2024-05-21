@@ -1,6 +1,7 @@
 import ProductItem from "@/components/Products/ProductItem";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { getProductsCategoryId } from "@/lib/products";
 import type { Database } from "@/schema";
 import { createClient } from "@/utils/supabase/server";
 
@@ -19,7 +20,12 @@ if (category_error) {
   };
 }
 
-const {data:products, error:products_error} = await supabase.from("products").select("*, category_id(*)").eq("category_id", category?.id );
+  const {data:prductQuery, error} = await supabase
+			.from("product_categories")
+			.select("products(*)")
+			.eq("category_id", category.id);
+
+  const products = prductQuery?.map((product) => product.products);
 
 
 
@@ -28,7 +34,7 @@ const {data:products, error:products_error} = await supabase.from("products").se
     <main className="container my-6">
       <h1 className="text-2xl font-medium md:text-4xl">{category?.name}</h1>
       <Separator className="my-4" />
-      {products?.length === 0 || !products || products_error ? (
+      {products?.length === 0 || !products  ? (
         <div className="flex items-center justify-between w-full">
           <p className="text-xl">No products found</p>
           <Link href="/">
@@ -42,8 +48,11 @@ const {data:products, error:products_error} = await supabase.from("products").se
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4 my-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-8">
-          {products.map((product) => (
-            <ProductItem key={product.id} product={product} />
+          {products?.map((product, index) => (
+
+            //@ts-ignore
+            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+            <ProductItem key={index} product={product} />
           ))}
         </div>
       )}
