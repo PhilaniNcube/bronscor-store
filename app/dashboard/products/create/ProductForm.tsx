@@ -447,7 +447,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 																	placeholder="enter detail name e.g. colour"
 																	className=""
 																	{...field}
-																	type="number"
+
 																/>
 															</FormControl>
 
@@ -465,7 +465,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
 																	placeholder="enter detail value e.g. black"
 																	className=""
 																	{...field}
-																	type="number"
+
 																/>
 															</FormControl>
 
