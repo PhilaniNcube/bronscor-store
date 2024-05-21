@@ -452,7 +452,7 @@ console.log({ product_categories });
 																	placeholder="enter detail name e.g. colour"
 																	className=""
 																	{...field}
-																	type="number"
+
 																/>
 															</FormControl>
 
@@ -470,7 +470,7 @@ console.log({ product_categories });
 																	placeholder="enter detail value e.g. black"
 																	className=""
 																	{...field}
-																	type="number"
+
 																/>
 															</FormControl>
 
