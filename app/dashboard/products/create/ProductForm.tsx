@@ -158,7 +158,7 @@ const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         categories,
 			} = data;
 
-			const slug = slugify(name.toLowerCase(), { remove: /[*+~.()'"!:@]/g });
+			const slug = slugify(name.toLowerCase(), { remove: /[*+~.()/\'"!:@]/g, strict:true });
 
 			const { data: product, error } = await supabase
 				.from("products")

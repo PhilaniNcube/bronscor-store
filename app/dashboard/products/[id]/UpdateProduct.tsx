@@ -170,7 +170,7 @@ console.log({ product_categories });
           categories
 				} = data;
 
-				const slug = slugify(name.toLowerCase(), { remove: /[*+~.()'"!:@]/g });
+				const slug = slugify(name.toLowerCase(), { remove: /[*+~./\()'"!:@]/g, strict: true });
 
 				const { data: updatedProduct, error } = await supabase
 					.from("products")

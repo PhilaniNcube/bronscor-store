@@ -47,7 +47,7 @@ const CreateCategory = () => {
     setLoading(true);
 
     const {name} = values;
-    const slug = slugify(name.toLowerCase(), { remove: /[*+~.()'"!:@]/g });
+    const slug = slugify(name.toLowerCase(), { remove: /[*+~./\()'"!:@]/g, strict: true });
     console.log({name, slug})
 
     const {data, error} = await supabase.from('categories').insert({name, slug}).single();
