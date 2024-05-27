@@ -14,7 +14,7 @@ const page = async ({searchParams: {page}}:{searchParams:{page: string}}) => {
 
 
   return (
-    <div className="w-1/2">
+    <div className="w-full">
       <CustomersTable profiles={profiles} />
       <Pagination currentPage={currentPage} lastPage={lastPage} total={newCount} />
     </div>

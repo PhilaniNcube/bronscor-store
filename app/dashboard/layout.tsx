@@ -30,7 +30,7 @@ const layout = async ({children}:Props) => {
   return (
     <div className="flex flex-nowrap">
       <aside className="relative isolate bg-gray-950">
-        <div className="sticky top-0 flex flex-col items-center justify-between h-[calc(100vh-75px)] w-64 bg-gray-950 border-t border-white">
+        <div className="sticky top-0 flex flex-col items-center justify-between h-[calc(100vh-75px)] w-64 bg-black border-t border-white">
           <div className="flex flex-col items-center justify-start w-full h-full py-4 space-y-4">
             <Link href="/">
               <Image

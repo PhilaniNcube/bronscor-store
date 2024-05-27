@@ -11,7 +11,10 @@ const page = async ({
    const currentPage = +page || 1;
 
    const { orders, count } = await getAllOrders(currentPage, 8);
-   const lastPage = Math.ceil(count! / 8);
+
+   const newCount = count || 0;
+
+   const lastPage = Math.ceil(newCount / 8);
 
   return (
     <div>
@@ -20,7 +23,7 @@ const page = async ({
       <Pagination
         currentPage={currentPage}
         lastPage={lastPage}
-        total={count!}
+        total={newCount}
       />
     </div>
   );
