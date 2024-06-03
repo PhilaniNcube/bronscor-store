@@ -223,9 +223,9 @@ const CartDetails = ({ userId }: ComponentProps) => {
         .select("*")
         .single();
 
-      if (updatedOrderError) {
+      if (updatedOrderError || !updatedOrder ) {
         alert(
-          `There was an error saving the order: ${updatedOrderError.message}`
+          "There was an error saving the order. Please try again."
         );
         setLoading(false);
       }
