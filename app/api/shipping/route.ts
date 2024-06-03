@@ -20,40 +20,45 @@ export async function POST(request: Request) {
   console.log({ group, newParcels })
 
  const req = await fetch("https://api.shiplogic.com/v2/rates", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${process.env.SHIPLOGIC_API_KEY}`,
-  },
-  body: JSON.stringify({
-    collection_address: {
-      type: "business",
-      company: "Bronscor",
-      street_address: "51 Mangold St",
-      local_area: "Newton Park",
-      city: "Port Elizabeth",
-      zone: "Eastern Cape",
-      country: "ZA",
-    },
-    delivery_address: {
-      type,
-      company,
-      street_address,
-      local_area,
-      city,
-      zone,
-      country,
-      code,
-    },
-    parcels: newParcels,
-  }),
- }).then((res) => res.json()).catch((err) => {
-  console.log(err)
-  return  {
-      error: err,
-      details: "There was an error with the shipping rates request"
-    }
-})
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: `Bearer ${process.env.SHIPLOGIC_API_KEY}`,
+			"Access-Control-Allow-Origin": "*",
+			"Access-Control-Allow-Methods": "GET, POST, PUT",
+			"Access-Control-Allow-Headers": "Content-Type, Authorization",
+		},
+		body: JSON.stringify({
+			collection_address: {
+				type: "business",
+				company: "Bronscor",
+				street_address: "51 Mangold St",
+				local_area: "Newton Park",
+				city: "Port Elizabeth",
+				zone: "Eastern Cape",
+				country: "ZA",
+			},
+			delivery_address: {
+				type,
+				company,
+				street_address,
+				local_area,
+				city,
+				zone,
+				country,
+				code,
+			},
+			parcels: newParcels,
+		}),
+	})
+		.then((res) => res.json())
+		.catch((err) => {
+			console.log(err);
+			return {
+				error: err,
+				details: "There was an error with the shipping rates request",
+			};
+		});
 
  const result = await req
 
