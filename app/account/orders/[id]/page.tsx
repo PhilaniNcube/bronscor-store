@@ -79,11 +79,15 @@ const page = async ({params:{id}}:PageProps) => {
 										action={`${process.env.NEXT_PUBLIC_PAYFAST_URL}`}
 										className="w-full"
 									>
-										<input type="hidden" name="merchant_id" value="12246172" />
+										<input
+											type="hidden"
+											name="merchant_id"
+											value={`${process.env.NEXT_PUBLIC_PAYFAST_MERCHANT_ID}`}
+										/>
 										<input
 											type="hidden"
 											name="merchant_key"
-											value="yscffjpzdlyqy"
+											value={`${process.env.NEXT_PUBLIC_PAYFAST_MERCHANT_KEY}`}
 										/>
 										<input
 											type="hidden"
