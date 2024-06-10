@@ -65,9 +65,9 @@ export async function POST(request: Request) {
 			opt_in_rates: [],
 			opt_in_time_based_rates: [],
 			special_instructions_collection:
-				"This is a test shipment - DO NOT COLLECT - 10 June",
+				"",
 			special_instructions_delivery:
-				"This is a test shipment - DO NOT DELIVER - 10 June",
+				"",
 			declared_value: orderValue,
 			// "collection_min_date": "2023-07-10T00:00:00.000Z",
 			collection_after: "08:00",
