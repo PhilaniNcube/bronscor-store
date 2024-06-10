@@ -65,20 +65,16 @@ export async function POST(request: Request) {
 			opt_in_rates: [],
 			opt_in_time_based_rates: [],
 			special_instructions_collection:
-				"This is a test shipment - DO NOT COLLECT",
-			special_instructions_delivery: "This is a test shipment - DO NOT DELIVER",
+				"This is a test shipment - DO NOT COLLECT - 10 June",
+			special_instructions_delivery:
+				"This is a test shipment - DO NOT DELIVER - 10 June",
 			declared_value: orderValue,
 			// "collection_min_date": "2023-07-10T00:00:00.000Z",
-			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 			collection_after: "08:00",
-			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 			collection_before: "16:00",
 			// "delivery_min_date": "2023-07-21T00:00:00.000Z",
-			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 			delivery_after: "10:00",
-			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 			delivery_before: "17:00",
-			// biome-ignore lint/complexity/useLiteralKeys: <explanation>
 			custom_tracking_reference: "",
 			// "customer_reference": "ORDERNO123",
 			service_level_code: "ECO",
