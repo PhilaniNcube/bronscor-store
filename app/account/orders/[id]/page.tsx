@@ -76,7 +76,7 @@ const page = async ({params:{id}}:PageProps) => {
 
 								{order.status.toLowerCase() === "pending" && (
 									<form
-										action="https://www.payfast.co.za/eng/process"
+										action={`${process.env.NEXT_PUBLIC_PAYFAST_URL}`}
 										className="w-full"
 									>
 										<input type="hidden" name="merchant_id" value="12246172" />
