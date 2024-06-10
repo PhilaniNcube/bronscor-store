@@ -89,13 +89,13 @@ export const getPaidOrders = async () => {
 }
 
 
-export const getAllOrders = async (page = 1, page_size = 8) => {
+export const getAllOrders = async (page = 1, page_size = 12) => {
   const start = (page - 1) * page_size;
   const end = page * page_size - 1
 
   const supabase = createClient()
 
-    const {data:orders, error, count} = await supabase.from("orders").select('*, customer_id(first_name, last_name)', {count: "exact"}).range(start, end).order('created_at', {ascending: true})
+    const {data:orders, error, count} = await supabase.from("orders").select('*, customer_id(first_name, last_name)', {count: "exact"}).range(start, end).order('created_at', {ascending: false})
 
   if (error) {
     throw new Error(error.message);
