@@ -24,10 +24,14 @@ import {
 } from "@/components/ui/form";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
+import { SubmitButton } from "@/components/ui/submit-button";
 
 const formSchema = z.object({
 	email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password is too short! It must be more than 6 characters").max(50, "Too Long!"),
+	password: z
+		.string()
+		.min(6, "Password is too short! It must be more than 6 characters")
+		.max(50, "Too Long!"),
 });
 
 export default function ResetPassword() {
@@ -47,9 +51,9 @@ export default function ResetPassword() {
 		formData.append("email", email);
 
 		const { error, data: resetPassword } = await supabase.auth.updateUser({
-      email: email,
-      password: password
-    });
+			email: email,
+			password: password,
+		});
 
 		if (error) {
 			console.log(error.cause, error.status, error.message);
@@ -69,7 +73,8 @@ export default function ResetPassword() {
 			<CardHeader>
 				<CardTitle className="text-amber-500">Reset Password</CardTitle>
 				<CardDescription className="text-white">
-				 Please enter your email address and new password to reset your password.
+					Please enter your email address and new password to reset your
+					password.
 				</CardDescription>
 			</CardHeader>
 			<CardContent>
@@ -109,12 +114,7 @@ export default function ResetPassword() {
 								)}
 							/>
 						</div>
-						<Button
-							type="submit"
-							className="text-black bg-amber-500 hover:text-white"
-						>
-							Reset Password
-						</Button>
+						<SubmitButton className="text-black bg-amber-500 hover:text-white" />
 					</form>
 				</Form>
 			</CardContent>
