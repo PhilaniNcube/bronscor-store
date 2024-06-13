@@ -14,6 +14,8 @@ import { HeartIcon, ShoppingCartIcon } from "lucide-react";
 import { toast } from "../ui/use-toast";
 import { createClient } from "@/utils/supabase/client";
 
+import { sendGTMEvent } from "@next/third-parties/google";
+
 type ProductProps = {
   product: Database["public"]["Tables"]["products"]["Row"];
 };
@@ -39,6 +41,15 @@ const ProductItem = ({ product }: ProductProps) => {
 							}),
 						);
 						dispatch(openCart());
+            sendGTMEvent({event: 'add_to_cart', currency: 'ZAR', value: product.price, items: [{
+              item_id: product.id,
+              item_name: product.name,
+              index: 0,
+              item_brand: 'Ingco',
+              item_category: 'Tools',
+              price: product.price,
+              quantity: 1,
+            }]})
 					}}
 					aria-disabled={stock_status === false}
 					variant="ghost"
