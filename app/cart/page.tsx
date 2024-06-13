@@ -1,7 +1,7 @@
 import CartDetails from "./CartDetails";
 import { createClient } from "@/utils/supabase/server";
 
-export const dynamic = "force-dynamic";
+
 
 const page = async () => {
 

@@ -1,6 +1,7 @@
 
 import { createClient } from "@/utils/supabase/service";
 import { createServerClient } from "@supabase/ssr";
+import { sub } from "date-fns";
 import { type NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
@@ -34,41 +35,54 @@ export async function POST(req: NextRequest, res: Response) {
 			.select("*, customer_id(*)")
 			.single();
 
-		console.log({ order, error });
-
-    if (error) {
-      return NextResponse.json({ data: error });
+    if (error || order === null) {
+      return NextResponse.json({ message: error.message || 'Error updating the order' });
     }
 
 
+
+  const orderItems = order?.order_items.map((item) => {
+    return {
+      order_id: order.id,
+      product_id: item.product.id,
+      quantity: item.quantity,
+      price: item.product.price,
+      subtotal: item.product.price * item.quantity,
+    }
+  });
+
+		const { data: orderProducts, error: orderItemsError } = await supabase.from('order_items').insert(orderItems);
+
+
+
     await resend.batch.send([
-					{
-						from: "Bronscor <onlinestore@bronscorcc.co.za>",
-						to: [
-							"onlinestore@bronscorcc.co.za",
-							// "ncbphi001@gmail.com",
-							// "countersales@bronscorcc.co.za",
-							order.shipping_address.email,
-						],
-						subject: "Order Confirmation",
-						text: `Thank you for your order. Your order has been received and is being processed. Your order number is ${order.id}.`,
-						html: `<div style="max-width: 500px; margin: auto;">
+			{
+				from: "Bronscor <onlinestore@bronscorcc.co.za>",
+				to: [
+					"onlinestore@bronscorcc.co.za",
+					// "ncbphi001@gmail.com",
+					// "countersales@bronscorcc.co.za",
+					order.shipping_address.email,
+				],
+				subject: "Order Confirmation",
+				text: `Thank you for your order. Your order has been received and is being processed. Your order number is ${order.id}.`,
+				html: `<div style="max-width: 500px; margin: auto;">
                     <h1 style="font-size: 22px; font-weight: bold;">Order Confirmation</h1>
                     <p>Thank you for your order. Your order has been received and is being processed. Your order number is ${order.id}.</p>
                     <a href="${process.env.NEXT_PUBLIC_SITE_URL}/account">View your account</a>
                  </div>`,
-					},
-					{
-						from: "Bronscor <onlinestore@bronscorcc.co.za>",
-						to: [
-							"onlinestore@bronscorcc.co.za",
-							// "countersales@bronscorcc.co.za",
-							// order.shipping_address.email,
-              "ncbphi001@gmail.com"
-						],
-						subject: "New Order Received",
-						text: `You have just received a new order. Order number is ${order.id}.`,
-						html: `<div style="max-width: 500px; margin: auto;">
+			},
+			{
+				from: "Bronscor <onlinestore@bronscorcc.co.za>",
+				to: [
+					"onlinestore@bronscorcc.co.za",
+					// "countersales@bronscorcc.co.za",
+					// order.shipping_address.email,
+					"ncbphi001@gmail.com",
+				],
+				subject: "New Order Received",
+				text: `You have just received a new order. Order number is ${order.id}.`,
+				html: `<div style="max-width: 500px; margin: auto;">
                     <h1 style="font-size: 22px; font-weight: bold;">New Order</h1>
                     <p>You have received a new order. The order number is ${order.id}.</p>
                     <h2>Total: R${order.total_amount}.</h2>
@@ -80,8 +94,8 @@ export async function POST(req: NextRequest, res: Response) {
                       <p>${order.shipping_address.phone}</p>
                     </div>
                  </div>`,
-					},
-				]);
+			},
+		]);
 
 
     return NextResponse.json({ data: order });

@@ -5,7 +5,7 @@ import { formatCurrency } from "@/lib/utils";
 
 
 
-export const dynamic = "force-dynamic";
+
 
 type PageProps = {
   params: {
