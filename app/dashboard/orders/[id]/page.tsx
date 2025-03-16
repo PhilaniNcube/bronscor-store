@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { getOrderById } from "@/lib/orders";
 import CreateShipment from "./CreateShipment";
 
-const page = async ({params: {id}}:{params:{id:string}}) => {
+const page = async ({ params: { id } }: { params: { id: string } }) => {
 
   const order = await getOrderById(id)
 
@@ -21,7 +21,34 @@ const page = async ({params: {id}}:{params:{id:string}}) => {
     <p className="text-md">Province: {order.shipping_address.zone}</p>
 
     <Separator className="my-4" />
-   <CreateShipment order={order} />
+    <h2 className="text-xl font-semibold">Order Items</h2>
+    <div className="mt-4">
+      {order.order_items && order.order_items.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4">
+          {order.order_items.map((item: any, index: number) => (
+            <div key={index} className="border rounded-md p-4 flex justify-between items-center">
+              <div className="flex items-center space-x-4">
+                <img src={item.product?.image || '/product-image-placeholder.svg'} alt={item.product?.name || 'Product Image'} className="w-16 h-16 object-cover" />
+              <div>
+                <p className="font-semibold">{item.product?.name || 'Product Name Unavailable'}</p>
+                <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                {item.product_variant && (
+                  <p className="text-sm text-gray-500">Variant: {item.product_variant}</p>
+                )}
+              </div>
+              </div>
+              
+              <p className="font-medium">R {item.product.price}</p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-500">No order items available</p>
+      )}
+    </div>
+
+    <Separator className="my-4" />
+    <CreateShipment order={order} />
   </div>;
 };
 export default page;
