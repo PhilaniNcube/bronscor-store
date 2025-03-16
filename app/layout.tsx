@@ -17,6 +17,9 @@ export const metadata: Metadata = {
 	description:
 		"Suppliers of Special Steels, Castings, 3D Printing Works and Tools & Hardware",
 	assets: ["/images/logo.png"],
+	verification: {
+		google: "plHfrGxVmG-Re_6VKTKQ4PMNyJbo7adbDsSH_rRCyMU",
+	}
 };
 
 export default async function RootLayout({
