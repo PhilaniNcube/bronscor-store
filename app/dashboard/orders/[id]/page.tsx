@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+
 import { Separator } from "@/components/ui/separator";
 import { getOrderById } from "@/lib/orders";
 import CreateShipment from "./CreateShipment";
+import { Badge } from "@/components/ui/badge";
 
 const page = async ({ params: { id } }: { params: { id: string } }) => {
 
@@ -13,8 +14,13 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
     <h1 className="text-2xl font-semibold">{order.customer_id.first_name} {order.customer_id.last_name}</h1>
     <p className="text-md">{order.shipping_address.email}, {order.shipping_address.phone}</p>
     <Separator className="my-4" />
-    <h2 className="text-xl font-semibold">Order Summary</h2>
-    <p className="text-md">Status: {order.status}</p>
+    <h2 className="text-xl font-semibold">Order Summary {order.status === "paid" ? <Badge className="bg-green-500 uppercase">
+      {order.status}
+    </Badge> : <Badge variant="destructive" className="uppercase">
+      {order
+        .status}
+    </Badge>}</h2>
+    <p className="text-md flex items-center "></p>
     <p className="text-md">Address: {order.shipping_address.street_address}</p>
     <p className="text-md">City: {order.shipping_address.city}</p>
     <p className="text-md">Suburb: {order.shipping_address.local_area}</p>
@@ -29,15 +35,15 @@ const page = async ({ params: { id } }: { params: { id: string } }) => {
             <div key={index} className="border rounded-md p-4 flex justify-between items-center">
               <div className="flex items-center space-x-4">
                 <img src={item.product?.image || '/product-image-placeholder.svg'} alt={item.product?.name || 'Product Image'} className="w-16 h-16 object-cover" />
-              <div>
-                <p className="font-semibold">{item.product?.name || 'Product Name Unavailable'}</p>
-                <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
-                {item.product_variant && (
-                  <p className="text-sm text-gray-500">Variant: {item.product_variant}</p>
-                )}
+                <div>
+                  <p className="font-semibold">{item.product?.name || 'Product Name Unavailable'}</p>
+                  <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                  {item.product_variant && (
+                    <p className="text-sm text-gray-500">Variant: {item.product_variant}</p>
+                  )}
+                </div>
               </div>
-              </div>
-              
+
               <p className="font-medium">R {item.product.price}</p>
             </div>
           ))}
