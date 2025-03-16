@@ -10,33 +10,33 @@ import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 
 
-const CreateShipment = ({order}:{order:Database['public']['Tables']['orders']['Row']}) => {
+const CreateShipment = ({ order }: { order: Database['public']['Tables']['orders']['Row'] }) => {
 
-  const [pending, startTransition] = useTransition()
+	const [pending, startTransition] = useTransition()
 
-  const trackingNumber = order.tracking_number
+	const trackingNumber = order.tracking_number
 
-  const router = useRouter()
+	const router = useRouter()
 
 
-  return (
-			<form
-				action={() => {
-					startTransition(() => {
-						createShipment(order);
-						toast("Please wait while we create your shipment");
-            router.refresh()
-					});
-				}}
-			>
-				{trackingNumber ? (
-					<p>Tracking Number: {trackingNumber}</p>
-				) : (
-					<Button type="submit">
-						{pending ? "Wait..." : "Create Shipment"}
-					</Button>
-				)}
-			</form>
-		);
+	return (
+		<form
+			action={() => {
+				startTransition(() => {
+					createShipment(order);
+					toast("Please wait while we create your shipment");
+					router.refresh()
+				});
+			}}
+		>
+			{trackingNumber ? (
+				<p>Tracking Number: {trackingNumber}</p>
+			) : (
+				<Button type="submit" className="bg-white text-black">
+					{pending ? "Wait..." : "Create Shipment"}
+				</Button>
+			)}
+		</form>
+	);
 };
 export default CreateShipment;
