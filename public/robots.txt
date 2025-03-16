@@ -1,0 +1,10 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /api/
+Disallow: /account/
+
+# Sitemap 
+Sitemap: https://store.bronscorcc.co.za/sitemap.xml
