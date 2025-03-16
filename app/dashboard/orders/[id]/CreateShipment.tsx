@@ -32,7 +32,7 @@ const CreateShipment = ({ order }: { order: Database['public']['Tables']['orders
 			{trackingNumber ? (
 				<p>Tracking Number: {trackingNumber}</p>
 			) : (
-				<Button type="submit" className="bg-white text-black">
+				<Button type="submit" className="bg-white text-black hover:text-white hover:bg-yellow-600">
 					{pending ? "Wait..." : "Create Shipment"}
 				</Button>
 			)}
