@@ -58,10 +58,8 @@ export async function POST(req: NextRequest, res: Response) {
     await resend.batch.send([
 			{
 				from: "Bronscor <onlinestore@bronscorcc.co.za>",
-				to: [
-					"onlinestore@bronscorcc.co.za",
-					// "ncbphi001@gmail.com",
-					// "countersales@bronscorcc.co.za",
+				to: [					
+					"countersales@bronscorcc.co.za",
 					order.shipping_address.email,
 				],
 				subject: "Order Confirmation",
