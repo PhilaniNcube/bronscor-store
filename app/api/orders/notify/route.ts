@@ -74,7 +74,7 @@ export async function POST(req: NextRequest, res: Response) {
 				from: "Bronscor <onlinestore@bronscorcc.co.za>",
 				to: [
 					"onlinestore@bronscorcc.co.za",
-					// "countersales@bronscorcc.co.za",
+					"countersales@bronscorcc.co.za",
 					// order.shipping_address.email,
 					"ncbphi001@gmail.com",
 				],
